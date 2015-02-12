@@ -30,6 +30,7 @@ public class HomeAction extends Action {
 	private FormBeanFactory<LoginForm> formBeanFactory = FormBeanFactory
 			.getInstance(LoginForm.class);
 
+	
 	UserDAO userDao;
 
 	public HomeAction(Model model) {
