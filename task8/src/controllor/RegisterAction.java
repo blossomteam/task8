@@ -59,6 +59,9 @@ public class RegisterAction extends Action {
 
 			errors.addAll(form.getValidationErrors());
 			if (errors.size() != 0) {
+				for (String string : errors) {
+					Util.e(string);
+				}
 				return REGISTER_JSP;
 			}
 
@@ -71,7 +74,7 @@ public class RegisterAction extends Action {
 			
 			request.setAttribute("message",
 					"create employee account successfully!");
-			return Constants.RESULT_JSP;
+			return HomeAction.NAME;
 		} catch (RollbackException e) {
 			errors.add(e.getMessage());
 			Util.i(e);

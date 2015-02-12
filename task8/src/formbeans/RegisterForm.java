@@ -16,31 +16,13 @@ import org.mybeans.form.FormBean;
 public class RegisterForm extends FormBean {
 	private String userName;
 	private String password;
-	private String confirm;
-	private String action;
 
 	public String getPassword() {
 		return password;
 	}
 
-	public String getConfirm() {
-		return confirm;
-	}
-
-	public String getAction() {
-		return action;
-	}
-
 	public void setPassword(String s) {
 		password = s.trim();
-	}
-
-	public void setConfirm(String s) {
-		confirm = s.trim();
-	}
-
-	public void setAction(String s) {
-		action = s;
 	}
 
 	public List<String> getValidationErrors() {
@@ -50,19 +32,10 @@ public class RegisterForm extends FormBean {
 			errors.add("User name is required");
 		if (password == null || password.length() == 0) {
 			errors.add("Password is required");
-		} else if (confirm == null || confirm.length() == 0) {
-			errors.add("Please confirm your password");
-		} else if (!password.equals(confirm)) {
-			errors.add("Two input password is not the same");
 		}
-		if (action == null)
-			errors.add("Action is required");
 
 		if (errors.size() > 0)
 			return errors;
-
-		if (!action.equals("create"))
-			errors.add("Invalid button");
 
 		if (getUserName().matches(".*[<>\"].*"))
 			errors.add("User name may not contain angle brackets or quotes");

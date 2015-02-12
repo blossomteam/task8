@@ -34,6 +34,7 @@ public class Controller extends HttpServlet {
 		// e.printStackTrace();
 		// }
 
+		Action.add(new HomeAction(model));
 		Action.add(new RegisterAction(model));
 		Action.add(new LoginAction(model));
 		Action.add(new InstagramLoginAction(model));

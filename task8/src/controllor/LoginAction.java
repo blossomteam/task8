@@ -63,7 +63,7 @@ public class LoginAction extends Action {
 			if (errors.size() != 0) {
 				return LOGIN_JSP;
 			}
-			
+
 			User user = userDao.readByUserName(form.getUserName());
 			if (user == null) {
 				errors.add("User name not found");
@@ -78,7 +78,7 @@ public class LoginAction extends Action {
 			session.setAttribute("user", user);
 
 			request.setAttribute("message", "login susscess");
-			return Constants.RESULT_JSP;
+			return HomeAction.NAME;
 		} catch (RollbackException e) {
 			Util.e(e);
 			errors.add(e.getMessage());
