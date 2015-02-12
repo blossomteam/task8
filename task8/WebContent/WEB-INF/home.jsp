@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Masonry Responsive Template</title>
+        <title>Petagram</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
@@ -46,18 +46,19 @@
             <div class="site-banner">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-offset-2 col-md-8 text-center">
-                            <h2>Get free templates from <span class="blue">template</span><span class="green">mo</span></h2>
-                            <p>Masonry is free responsive template that can be used for any website. You may download, modify and use this layout for your personal or commercial websites. Please tell your friends about our website. Thank you for visiting us.</p>
-                        </div>
                     </div>
+
                     <div class="row">
                         <form action="#" method="post" class="subscribe-form">
-                            <fieldset class="col-md-offset-4 col-md-3 col-sm-8">
-                                <input type="email" id="subscribe-email" placeholder="Enter your email...">
+                            <div class="col-md-offset-2 col-md-8 text-center">
+                            <h2>Enjoy <span class="blue">colorful</span><span class="green">life</span></h2>
+                        </div>
+
+                            <fieldset class="col-md-offset-2 col-md-7 col-sm-1">
+                                <input type="text" id="subscribe-email" placeholder="Find friends...">
                             </fieldset>
-                            <fieldset class="col-md-5 col-sm-4">
-                                <input type="submit" id="subscribe-submit" class="button white" value="Subscribe!">
+                            <fieldset class="col-md-1 col-sm-1">
+                                <input type="submit" id="subscribe-submit" class="button white" value="Go!">
                             </fieldset>
                         </form>
                     </div>
