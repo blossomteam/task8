@@ -92,7 +92,7 @@ h1, h2, h3, h4 {
 										with instagram</button>
 								</form>
 								<br>
-								<form role="form" action="petagram-login.do">
+								<form role="form" action="login.do">
 									<div class="form-group">
 										<label for="exampleInputEmail1">User Name</label> <input
 											type="text" class="form-control" name="userName">

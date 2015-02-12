@@ -21,6 +21,7 @@ import org.genericdao.RollbackException;
 import org.mybeans.form.FormBeanException;
 import org.mybeans.form.FormBeanFactory;
 
+import util.Constants;
 import util.Util;
 import databeans.User;
 import formbeans.LoginForm;
@@ -77,7 +78,7 @@ public class LoginAction extends Action {
 			session.setAttribute("user", user);
 
 			request.setAttribute("message", "login susscess");
-			return "template-result.jsp";
+			return Constants.RESULT_JSP;
 		} catch (RollbackException e) {
 			Util.e(e);
 			errors.add(e.getMessage());
