@@ -1,5 +1,3 @@
-
-
 package databeans;
 
 import java.security.MessageDigest;
@@ -8,25 +6,17 @@ import java.util.Random;
 
 import org.genericdao.PrimaryKey;
 
-
 @PrimaryKey("id")
 public class User {
 	private int id;
 	private String userName = null;
-	private String userAccount = null;
-	private String type = null;
-	private String token = null;
+	private String twitterId = null;
+	private String twitterToken = null;
+	private String instagramId = null;
+	private String instagramToken = null;
 
 	private String hashedPassword = "*";
 	private int salt = 0;
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
 
 	public boolean checkPassword(String password) {
 		return hashedPassword.equals(hash(password));
@@ -36,12 +26,8 @@ public class User {
 		return id;
 	}
 
-	public String getUserAccount() {
-		return userAccount;
-	}
-
-	public String getType() {
-		return type;
+	public String getTwitterId() {
+		return twitterId;
 	}
 
 	public String getHashedPassword() {
@@ -60,12 +46,8 @@ public class User {
 		this.id = id;
 	}
 
-	public void setUserAccount(String s) {
-		userAccount = s;
-	}
-
-	public void setType(String s) {
-		type = s;
+	public void setTwitterId(String s) {
+		twitterId = s;
 	}
 
 	public void setHashedPassword(String x) {
@@ -128,5 +110,29 @@ public class User {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getInstagramId() {
+		return instagramId;
+	}
+
+	public void setInstagramId(String instagramId) {
+		this.instagramId = instagramId;
+	}
+
+	public String getInstagramToken() {
+		return instagramToken;
+	}
+
+	public void setInstagramToken(String instagramToken) {
+		this.instagramToken = instagramToken;
+	}
+
+	public String getTwitterToken() {
+		return twitterToken;
+	}
+
+	public void setTwitterToken(String twitterToken) {
+		this.twitterToken = twitterToken;
 	}
 }

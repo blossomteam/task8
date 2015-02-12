@@ -20,14 +20,13 @@ import org.genericdao.RollbackException;
 import org.mybeans.form.FormBeanException;
 import org.mybeans.form.FormBeanFactory;
 
-import util.Constants;
 import util.Util;
 import databeans.User;
 import formbeans.RegisterForm;
 
 public class RegisterAction extends Action {
 
-	private static final String REGISTER_DO = "register.do";
+	public static final String REGISTER_NAME = "register.do";
 
 	private static final String REGISTER_JSP = "register.jsp";
 
@@ -42,7 +41,7 @@ public class RegisterAction extends Action {
 	}
 
 	public String getName() {
-		return REGISTER_DO;
+		return REGISTER_NAME;
 	}
 
 	public String perform(HttpServletRequest request) {
@@ -68,10 +67,11 @@ public class RegisterAction extends Action {
 			User user = new User();
 			user.setUserName(form.getUserName());
 			user.setPassword(form.getPassword());
-			userDAO.create(user);
+			userDAO.createByPetagram(user);
+
 			user.setId(userDAO.readByUserName(form.getUserName()).getId());
 			request.getSession(true).setAttribute("user", user);
-			
+
 			request.setAttribute("message",
 					"create employee account successfully!");
 			return HomeAction.NAME;

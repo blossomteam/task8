@@ -1,5 +1,3 @@
-
-
 package model;
 
 import org.genericdao.ConnectionPool;
@@ -9,25 +7,57 @@ import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
 
+import util.Util;
 import databeans.User;
 
 public class UserDAO extends GenericDAO<User> {
 
-	public UserDAO(String tableName, ConnectionPool pool)
-			throws DAOException {
+	public UserDAO(String tableName, ConnectionPool pool) throws DAOException {
 		super(User.class, tableName, pool);
 	}
 
-	public void create(User user) throws RollbackException {
+	public void createByPetagram(User user) throws RollbackException {
 		try {
 			Transaction.begin();
 			if (readByUserName(user.getUserName()) != null) {
 				throw new RollbackException("User name already exists");
 			}
-			
-			if (readByUserAccount(user.getUserAccount()) != null) {
-				throw new RollbackException("User account already exists");
+			super.create(user);
+			Transaction.commit();
+		} finally {
+			if (Transaction.isActive())
+				Transaction.rollback();
+		}
+	}
+
+	public void createByTwitter(String instagramId, String preferredName)
+			throws RollbackException {
+		try {
+			Transaction.begin();
+			if (readByInstagramId(instagramId) != null) {
+				throw new RollbackException("Twitter account already exists");
 			}
+			User user = new User();
+			user.setTwitterId(instagramId);
+			user.setUserName(getValidUserName(preferredName, "Twitter"));
+			super.create(user);
+			Transaction.commit();
+		} finally {
+			if (Transaction.isActive())
+				Transaction.rollback();
+		}
+	}
+
+	public void createByInstagram(String instagramId, String preferredName)
+			throws RollbackException {
+		try {
+			Transaction.begin();
+			if (readByInstagramId(instagramId) != null) {
+				throw new RollbackException("InstagramId already exists");
+			}
+			User user = new User();
+			user.setInstagramId(instagramId);
+			user.setUserName(getValidUserName(preferredName, "Instagram"));
 			super.create(user);
 			Transaction.commit();
 		} finally {
@@ -68,9 +98,9 @@ public class UserDAO extends GenericDAO<User> {
 		}
 		return users[0];
 	}
-	
-	public User readByUserAccount(String userAccount) throws RollbackException {
-		User[] users = match(MatchArg.equals("userAccount", userAccount));
+
+	public User readByTwitterId(String twitterId) throws RollbackException {
+		User[] users = match(MatchArg.equals("twitterId", twitterId));
 
 		if (users.length > 1) {
 			throw new RollbackException("More than one account matched");
@@ -82,5 +112,42 @@ public class UserDAO extends GenericDAO<User> {
 		return users[0];
 	}
 
+	public User readByInstagramId(String instagramId) throws RollbackException {
+		User[] users = match(MatchArg.equals("instagramId", instagramId));
 
+		if (users.length > 1) {
+			throw new RollbackException("More than one account matched");
+		}
+
+		if (users.length == 0) {
+			return null;
+		}
+		return users[0];
+	}
+
+	private String getValidUserName(String preferredUserName, String suffix)
+			throws RollbackException {
+		String userName = preferredUserName;
+		if (readByUserName(userName) == null) {
+			return userName;
+		}
+
+		userName = Util.getString(preferredUserName, "@", suffix);
+		if (readByUserName(userName) == null) {
+			return userName;
+		}
+
+		userName = Util.getString(preferredUserName, "From", suffix);
+		if (readByUserName(userName) == null) {
+			return userName;
+		}
+
+		int tail = 0;
+		do {
+			userName = Util.getString(preferredUserName, tail);
+			tail++;
+		} while (readByUserName(userName) != null);
+
+		return userName;
+	}
 }

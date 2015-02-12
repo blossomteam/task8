@@ -15,16 +15,17 @@ import javax.servlet.http.HttpServletRequest;
 
 import model.Model;
 
+import org.genericdao.Transaction;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.TwitterApi;
-import org.scribe.model.OAuthRequest;
-import org.scribe.model.Response;
 import org.scribe.model.Token;
-import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
+import thirdPartyAPI.Twitter;
 import util.Util;
+import databeans.User;
+import databeans.twitter.VerifyCredentials;
 
 public class TwitterLoginCallbackAction extends Action {
 
@@ -47,38 +48,52 @@ public class TwitterLoginCallbackAction extends Action {
 		List<String> errors = new ArrayList<String>();
 		request.setAttribute("errors", errors);
 
-		String oauth_token = request.getParameter("oauth_token");
-		String oauth_verifier = request.getParameter("oauth_verifier");
-		Util.i("oauth_token = ", oauth_token, ", oauth_verifier = ",
-				oauth_verifier);
-		if (Util.isEmpty(oauth_verifier)) {
-			Util.e("oauth_verifier is null");
-			errors.add(Util.getString("authentication failed, response = ",
-					request.getQueryString()));
+		try {
+			String oauth_token = request.getParameter("oauth_token");
+			String oauth_verifier = request.getParameter("oauth_verifier");
+			Util.i("oauth_token = ", oauth_token, ", oauth_verifier = ",
+					oauth_verifier);
+			if (Util.isEmpty(oauth_verifier)) {
+				Util.e("oauth_verifier is null");
+				errors.add(Util.getString("authentication failed, response = ",
+						request.getQueryString()));
+				return LOGIN_JSP;
+			}
+
+			Verifier v = new Verifier(oauth_verifier);
+
+			OAuthService service = new ServiceBuilder()
+					.provider(TwitterApi.class)
+					.apiKey(model.twitterConfig.consumerKey)
+					.apiSecret(model.twitterConfig.consumerSecret)
+					.callback(model.twitterConfig.callbackUrl).build();
+			Token requestToken = new Token(oauth_token,
+					model.twitterConfig.consumerSecret);
+			Util.i("fetching access token...");
+			Token accessToken = service.getAccessToken(requestToken, v);
+			Util.i("got access token, token = ", accessToken);
+
+			VerifyCredentials verifyCredentials = Twitter.getVerifyCredential(
+					model.twitterConfig, accessToken);
+			User user = model.getUserDAO().readByTwitterId(
+					verifyCredentials.id_str);
+			if (user == null) {
+				model.getUserDAO().createByTwitter(verifyCredentials.id_str,
+						verifyCredentials.screen_name);
+				user = model.getUserDAO().readByTwitterId(
+						verifyCredentials.id_str);
+			}
+			request.getSession(true).setAttribute("user", user);
+
+			return HomeAction.NAME;
+		} catch (Exception e) {
+			Util.e(e);
+			errors.add(e.toString());
 			return LOGIN_JSP;
+		} finally {
+			if (Transaction.isActive()) {
+				Transaction.rollback();
+			}
 		}
-
-		Verifier v = new Verifier(oauth_verifier);
-
-		OAuthService service = new ServiceBuilder().provider(TwitterApi.class)
-				.apiKey(model.twitterConfig.consumerKey)
-				.apiSecret(model.twitterConfig.consumerSecret)
-				.callback(model.twitterConfig.callbackUrl).build();
-		Token requestToken = new Token(oauth_token,
-				model.twitterConfig.consumerSecret);
-		Util.i("fetching access token...");
-		Token accessToken = service.getAccessToken(requestToken, v);
-		Util.i("got access token, token = ", accessToken);
-
-		Util.i("Now we're going to access a protected resource...");
-		String PROTECTED_RESOURCE_URL = "https://api.twitter.com/1.1/account/verify_credentials.json";
-		OAuthRequest requestOfApi = new OAuthRequest(Verb.GET,
-				PROTECTED_RESOURCE_URL);
-		service.signRequest(accessToken, requestOfApi);
-		Response response = requestOfApi.send();
-		Util.i(response.getBody());
-
-		request.setAttribute("message", response.getBody());
-		return HomeAction.NAME;
 	}
 }

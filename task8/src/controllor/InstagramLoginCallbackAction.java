@@ -15,12 +15,18 @@ import javax.servlet.http.HttpServletRequest;
 
 import model.InstagramConfig;
 import model.Model;
+
+import org.genericdao.Transaction;
+
+import thirdPartyAPI.Instagram;
 import util.Http;
 import util.Util;
 
 import com.google.gson.Gson;
 
-import databeans.instagram.RequestToken;
+import databeans.User;
+import databeans.instagram.Token;
+import databeans.instagram.UserInfo;
 
 public class InstagramLoginCallbackAction extends Action {
 
@@ -53,7 +59,7 @@ public class InstagramLoginCallbackAction extends Action {
 				return LOGIN_JSP;
 			}
 
-			String response = Http.doPost(
+			String response = Http.contentByPost(
 					"https://api.instagram.com/oauth/access_token",
 					"client_id", config.CLIENT_ID, "client_secret",
 					config.CLIENT_SECRET, "grant_type", "authorization_code",
@@ -63,14 +69,33 @@ public class InstagramLoginCallbackAction extends Action {
 				errors.add("response of request token faild");
 				return LOGIN_JSP;
 			}
-			RequestToken rq = new Gson().fromJson(response, RequestToken.class);
-			request.setAttribute("message", "auth success, user = "
-					+ rq.user.username);
+			Token token = new Gson().fromJson(response, Token.class);
+
+			UserInfo userInfo = Instagram.getUserInfo(token.user.id,
+					token.access_token);
+			if (userInfo == null) {
+				errors.add(Util.getString("invalid access token, token = ",
+						token));
+				return LOGIN_JSP;
+			}
+
+			User user = model.getUserDAO().readByInstagramId(token.user.id);
+			if (user == null) {
+				model.getUserDAO().createByInstagram(token.user.id,
+						token.user.username);
+				user = model.getUserDAO().readByInstagramId(token.user.id);
+			}
+
+			request.getSession(true).setAttribute("user", user);
 			return HomeAction.NAME;
 		} catch (Exception e) {
 			Util.e(e);
 			errors.add(e.getMessage());
 			return LOGIN_JSP;
+		} finally {
+			if (Transaction.isActive()) {
+				Transaction.rollback();
+			}
 		}
 	}
 }

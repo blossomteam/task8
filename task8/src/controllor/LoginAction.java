@@ -21,7 +21,6 @@ import org.genericdao.RollbackException;
 import org.mybeans.form.FormBeanException;
 import org.mybeans.form.FormBeanFactory;
 
-import util.Constants;
 import util.Util;
 import databeans.User;
 import formbeans.LoginForm;

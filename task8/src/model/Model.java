@@ -42,7 +42,7 @@ public class Model {
 			twitterConfig = new TwitterConfig(configFileDir);
 
 			// DAOs
-			userDAO = new UserDAO("employee", pool);
+			userDAO = new UserDAO("user", pool);
 		} catch (DAOException e) {
 			throw new ServletException(e);
 		}

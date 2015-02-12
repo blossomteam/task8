@@ -1,6 +1,6 @@
 package databeans.instagram;
 
-public class RequestToken {
+public class Token {
 	public String access_token;
 	public User user;
 }

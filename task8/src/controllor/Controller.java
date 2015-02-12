@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.Model;
 import util.Util;
+import databeans.User;
 
 @SuppressWarnings("serial")
 public class Controller extends HttpServlet {
@@ -51,9 +52,6 @@ public class Controller extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String servletPath = request.getServletPath();
-		String action = getActionName(servletPath);
-		Util.i("action = ", action);
 		String nextPage = null;
 		nextPage = performCommonAction(request);
 		sendToNextPage(nextPage, request, response);
@@ -62,6 +60,16 @@ public class Controller extends HttpServlet {
 	private String performCommonAction(HttpServletRequest request) {
 		String servletPath = request.getServletPath();
 		String action = getActionName(servletPath);
+		User user = (User) request.getSession().getAttribute("user");
+
+		if (action.endsWith("login.do")||action.equals(RegisterAction.REGISTER_NAME)) {
+			return Action.perform(action, request);
+		}
+
+		if (user == null) {
+			return LoginAction.NAME;
+		}
+
 		return Action.perform(action, request);
 	}
 
