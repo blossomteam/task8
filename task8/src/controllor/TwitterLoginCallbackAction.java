@@ -79,6 +79,6 @@ public class TwitterLoginCallbackAction extends Action {
 		Util.i(response.getBody());
 
 		request.setAttribute("message", response.getBody());
-		return LOGIN_JSP;
+		return HomeAction.NAME;
 	}
 }

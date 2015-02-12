@@ -33,14 +33,14 @@
            </form>
            <form class="form col-md-12 center-block" method="post" action="login.do">
             <div class="form-group">
-              <input type="email" class="form-control input-lg" placeholder="Email" name="userName">
+              <input type="text" class="form-control input-lg" placeholder="User name" name="userName">
             </div>
             <div class="form-group">
               <input type="password" class="form-control input-lg" placeholder="Password" name="password">
             </div>
             <div class="form-group">
               <button class="btn btn-primary btn-lg btn-block">Log In</button>
-              <span class="pull-right"><a href="register.html">Sign up now</a></span>
+              <span class="pull-right"><a href="register.do">Sign up now</a></span>
             </div>
           </form>
       </div>

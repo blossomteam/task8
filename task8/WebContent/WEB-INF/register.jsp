@@ -49,7 +49,7 @@
            </form>
            <form class="form col-md-12 center-block" method="post" action="register.do">
             <div class="form-group" style="width:440px;height:80px;text-align:center;margin:0 auto;">
-              <input type="email" class="form-control input-lg" placeholder="Email" name="userName">
+              <input type="text" class="form-control input-lg" placeholder="User Name" name="userName">
             </div>
             <div class="form-group" style="width:440px;height:80px;text-align:center;margin:0 auto;">
               <input type="password" class="form-control input-lg" placeholder="Password" name="password">

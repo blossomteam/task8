@@ -66,7 +66,7 @@ public class InstagramLoginCallbackAction extends Action {
 			RequestToken rq = new Gson().fromJson(response, RequestToken.class);
 			request.setAttribute("message", "auth success, user = "
 					+ rq.user.username);
-			return "template-result.jsp";
+			return HomeAction.NAME;
 		} catch (Exception e) {
 			Util.e(e);
 			errors.add(e.getMessage());
