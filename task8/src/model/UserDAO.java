@@ -99,6 +99,11 @@ public class UserDAO extends GenericDAO<User> {
 		return users[0];
 	}
 
+	public User[] searchUserName(String userName) throws RollbackException {
+		User[] users = match(MatchArg.contains("userName", userName));
+		return users;
+	}
+	
 	public User readByTwitterId(String twitterId) throws RollbackException {
 		User[] users = match(MatchArg.equals("twitterId", twitterId));
 

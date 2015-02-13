@@ -42,6 +42,8 @@ public class Controller extends HttpServlet {
 		Action.add(new TwitterLoginAction(model));
 		Action.add(new InstagramLoginCallbackAction(model));
 		Action.add(new TwitterLoginCallbackAction(model));
+		Action.add(new SearchUserAction(model));
+		Action.add(new ViewUserAction(model));
 		Action.add(new LogoutAction(model));
 	}
 
@@ -62,7 +64,8 @@ public class Controller extends HttpServlet {
 		String action = getActionName(servletPath);
 		User user = (User) request.getSession().getAttribute("user");
 
-		if (action.endsWith("login.do")||action.equals(RegisterAction.REGISTER_NAME)) {
+		if (action.endsWith("login.do") || action.endsWith("callback.do")
+				|| action.equals(RegisterAction.REGISTER_NAME)) {
 			return Action.perform(action, request);
 		}
 
@@ -96,11 +99,6 @@ public class Controller extends HttpServlet {
 			RequestDispatcher d = request.getRequestDispatcher("WEB-INF/"
 					+ nextPage);
 			d.forward(request, response);
-			return;
-		}
-
-		if (nextPage.equals("redirect")) {
-			response.sendRedirect((String) request.getAttribute("url"));
 			return;
 		}
 

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import model.InstagramConfig;
 import model.Model;
@@ -86,7 +87,9 @@ public class InstagramLoginCallbackAction extends Action {
 				user = model.getUserDAO().readByInstagramId(token.user.id);
 			}
 
-			request.getSession(true).setAttribute("user", user);
+			HttpSession httpSession = request.getSession(true);
+			httpSession.setAttribute("user", user);
+			httpSession.setAttribute("InstagramToken", token);
 			return HomeAction.NAME;
 		} catch (Exception e) {
 			Util.e(e);

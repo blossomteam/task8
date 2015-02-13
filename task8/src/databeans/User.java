@@ -11,9 +11,7 @@ public class User {
 	private int id;
 	private String userName = null;
 	private String twitterId = null;
-	private String twitterToken = null;
 	private String instagramId = null;
-	private String instagramToken = null;
 
 	private String hashedPassword = "*";
 	private int salt = 0;
@@ -118,21 +116,5 @@ public class User {
 
 	public void setInstagramId(String instagramId) {
 		this.instagramId = instagramId;
-	}
-
-	public String getInstagramToken() {
-		return instagramToken;
-	}
-
-	public void setInstagramToken(String instagramToken) {
-		this.instagramToken = instagramToken;
-	}
-
-	public String getTwitterToken() {
-		return twitterToken;
-	}
-
-	public void setTwitterToken(String twitterToken) {
-		this.twitterToken = twitterToken;
 	}
 }

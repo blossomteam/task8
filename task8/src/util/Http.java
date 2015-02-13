@@ -163,13 +163,12 @@ public class Http {
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
-		if (args[0].toString().contains("://")) {
-			sb.append(args[0]);
-		}
-		sb.append("?");
+		sb.append(args[0]);
 		for (int i = 1; i < args.length; i++) {
 			if (i % 2 == 1) {
-				if (i != 0) {
+				if (i == 1) {
+					sb.append("?");
+				} else {
 					sb.append("&");
 				}
 				sb.append(urlEncode(args[i].toString()));

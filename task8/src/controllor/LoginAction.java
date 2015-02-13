@@ -18,6 +18,7 @@ import model.Model;
 import model.UserDAO;
 
 import org.genericdao.RollbackException;
+import org.genericdao.Transaction;
 import org.mybeans.form.FormBeanException;
 import org.mybeans.form.FormBeanFactory;
 
@@ -86,6 +87,10 @@ public class LoginAction extends Action {
 			Util.e(e);
 			errors.add(e.getMessage());
 			return LOGIN_JSP;
+		} finally {
+			if (Transaction.isActive()) {
+				Transaction.rollback();
+			}
 		}
 	}
 }

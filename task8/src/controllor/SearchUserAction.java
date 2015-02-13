@@ -23,26 +23,28 @@ import org.mybeans.form.FormBeanFactory;
 
 import util.Util;
 import databeans.User;
-import formbeans.RegisterForm;
+import formbeans.SearchUserForm;
 
-public class RegisterAction extends Action {
+public class SearchUserAction extends Action {
 
-	public static final String REGISTER_NAME = "register.do";
+	private static final String SEARCH_RESULT_JSP = "search-result.jsp";
 
-	private static final String REGISTER_JSP = "register.jsp";
+	private static final String SEARCH_JSP = "home.do";
 
-	private FormBeanFactory<RegisterForm> formBeanFactory = FormBeanFactory
-			.getInstance(RegisterForm.class);
+	public static final String NAME = "search-user.do";
 
-	private UserDAO userDAO;
+	private FormBeanFactory<SearchUserForm> formBeanFactory = FormBeanFactory
+			.getInstance(SearchUserForm.class);
 
-	public RegisterAction(Model model) {
+	UserDAO userDao;
+
+	public SearchUserAction(Model model) {
 		super(model);
-		userDAO = model.getUserDAO();
+		userDao = model.getUserDAO();
 	}
 
 	public String getName() {
-		return REGISTER_NAME;
+		return NAME;
 	}
 
 	public String perform(HttpServletRequest request) {
@@ -51,39 +53,29 @@ public class RegisterAction extends Action {
 		request.setAttribute("errors", errors);
 
 		try {
-			RegisterForm form = formBeanFactory.create(request);
+			SearchUserForm form = formBeanFactory.create(request);
 			request.setAttribute("form", form);
-			if (!form.isPresent()) {
-				return REGISTER_JSP;
-			}
+			Util.i(form);
 
+			if (!form.isPresent()) {
+				return SEARCH_JSP;
+			}
 			errors.addAll(form.getValidationErrors());
 			if (errors.size() != 0) {
-				for (String string : errors) {
-					Util.e(string);
-				}
-				return REGISTER_JSP;
+				return SEARCH_JSP;
 			}
 
-			User user = new User();
-			user.setUserName(form.getUserName());
-			user.setPassword(form.getPassword());
-			userDAO.createByPetagram(user);
-
-			user.setId(userDAO.readByUserName(form.getUserName()).getId());
-			request.getSession(true).setAttribute("user", user);
-
-			request.setAttribute("message",
-					"create employee account successfully!");
-			return HomeAction.NAME;
+			User[] users = model.getUserDAO().searchUserName(form.getKeyword());
+			request.setAttribute("users", users);
+			return SEARCH_RESULT_JSP;
 		} catch (RollbackException e) {
+			Util.e(e);
 			errors.add(e.getMessage());
-			Util.i(e);
-			return REGISTER_JSP;
+			return SEARCH_JSP;
 		} catch (FormBeanException e) {
+			Util.e(e);
 			errors.add(e.getMessage());
-			Util.i(e);
-			return REGISTER_JSP;
+			return SEARCH_JSP;
 		} finally {
 			if (Transaction.isActive()) {
 				Transaction.rollback();
