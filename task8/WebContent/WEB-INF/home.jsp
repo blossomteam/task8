@@ -15,6 +15,8 @@
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/templatemo-style.css">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -32,9 +34,20 @@
         <div class="site-top">
             <div class="site-header clearfix">
                 <div class="container">
-                    <a href="#" class="site-brand pull-left"><strong>Petagram</strong></a>
+                     <div class="site-brand pull-left">
+                          <ul class="nav navbar-nav">
+                             <li class="dropdown">
+                               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-th-list"></span> April</a>
+                                <ul class="dropdown-menu">
+                                <li><a href="#">Account Settings </a></li>
+                                <li><a href="#">Messages </a></li>
+                                <li><a href="#">Sign Out </a></li>
+                               </ul>
+                              </li>
+                           </ul>
+                    </div>   
                     <div class="row">
-                          <div class="col-md-4 col-md-offset-6">
+                          <div class="col-md-4 col-md-offset-8">
                                <form action="" class="search-form">
                                   <div class="form-group has-feedback">
                                     <label for="search" class="sr-only">Search</label>
@@ -49,6 +62,9 @@
             <div class="site-banner">
                 <div class="container">
                     <div class="row">
+                    <div class="col-md-offset-2 col-md-8 text-center">
+                            <h2>PETAGRAM <span class="blue">colorful</span><span class="green">life</span></h2>
+                            </div>
                             <div class="col-md-offset-2 col-md-8">
                              <div class="subscribe-form">
                                <div class="subscribe-form">                
