@@ -18,6 +18,7 @@ import util.Util;
 
 public class Model {
 	private UserDAO userDAO;
+	private PhotoDAO photoDAO;
 	private ConnectionPool pool = null;
 	public InstagramConfig instagramConfig = null;
 	public TwitterConfig twitterConfig = null;
@@ -50,6 +51,10 @@ public class Model {
 
 	public UserDAO getUserDAO() {
 		return userDAO;
+	}
+	
+	public PhotoDAO getPhotoDAO() {
+		return photoDAO;
 	}
 
 }

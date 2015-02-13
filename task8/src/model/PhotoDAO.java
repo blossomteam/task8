@@ -1,5 +1,8 @@
 package model;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 import org.genericdao.ConnectionPool;
 import org.genericdao.DAOException;
 import org.genericdao.GenericDAO;
@@ -7,7 +10,9 @@ import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
 
+import util.Constants;
 import databeans.Photo;
+
 
 public class PhotoDAO extends GenericDAO<Photo> {
 
@@ -36,5 +41,28 @@ public class PhotoDAO extends GenericDAO<Photo> {
 			return null;
 		}
 		return photos[0];
+	}
+	
+	public Photo[] getNewPhotos() throws RollbackException {
+		try{
+			Photo[] photo= match(MatchArg.max("id"));
+			if(photo == null || photo.length == 0) {
+				throw new RollbackException("No photo data");
+			}
+			int maxId = photo[0].getId();
+			int minId = maxId - Constants.photoNumbers;
+			Photo[] photos = match(MatchArg.greaterThan("id", minId));
+			Arrays.sort(photos, new Comparator<Photo>() {
+
+				@Override
+				public int compare(Photo o1, Photo o2) {
+					return ((Long) o1.getTime()).compareTo(o2.getTime());
+				}
+			});
+			return photos;
+		}finally {
+			if (Transaction.isActive())
+				Transaction.rollback();
+		}
 	}
 }
