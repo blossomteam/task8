@@ -1,5 +1,3 @@
-
-
 package model;
 
 import org.genericdao.ConnectionPool;
@@ -8,6 +6,7 @@ import org.genericdao.GenericDAO;
 import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
+
 import databeans.Photo;
 
 public class PhotoDAO extends GenericDAO<Photo> {
@@ -19,7 +18,7 @@ public class PhotoDAO extends GenericDAO<Photo> {
 	public void create(Photo photo) throws RollbackException {
 		try {
 			Transaction.begin();
-			if (readByLink(photo.getLink()) != null) {
+			if (photo.getUrl() != null && readByUrl(photo.getUrl()) != null) {
 				throw new RollbackException("Photo already exists");
 			}
 			super.create(photo);
@@ -29,9 +28,9 @@ public class PhotoDAO extends GenericDAO<Photo> {
 				Transaction.rollback();
 		}
 	}
-	
-	public Photo readByLink(String link) throws RollbackException {
-		Photo[] photos = match(MatchArg.equals("link", link));
+
+	public Photo readByUrl(String url) throws RollbackException {
+		Photo[] photos = match(MatchArg.equals("url", url));
 
 		if (photos.length == 0) {
 			return null;

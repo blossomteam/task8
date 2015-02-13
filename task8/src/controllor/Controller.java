@@ -43,6 +43,7 @@ public class Controller extends HttpServlet {
 		Action.add(new InstagramLoginCallbackAction(model));
 		Action.add(new TwitterLoginCallbackAction(model));
 		Action.add(new SearchUserAction(model));
+		Action.add(new SearchPhotoAction(model));
 		Action.add(new ViewUserAction(model));
 		Action.add(new LogoutAction(model));
 	}

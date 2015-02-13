@@ -89,7 +89,7 @@ public class InstagramLoginCallbackAction extends Action {
 
 			HttpSession httpSession = request.getSession(true);
 			httpSession.setAttribute("user", user);
-			httpSession.setAttribute("InstagramToken", token);
+			httpSession.setAttribute("InstagramToken", token.access_token);
 			return HomeAction.NAME;
 		} catch (Exception e) {
 			Util.e(e);

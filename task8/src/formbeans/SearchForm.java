@@ -15,7 +15,7 @@ import org.mybeans.form.FormBean;
 
 import com.google.gson.Gson;
 
-public class SearchUserForm extends FormBean {
+public class SearchForm extends FormBean {
 	private String keyword;
 
 	public List<String> getValidationErrors() {

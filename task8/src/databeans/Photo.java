@@ -1,40 +1,62 @@
-
-
 package databeans;
 
 import org.genericdao.PrimaryKey;
 
+import util.Util;
+
 @PrimaryKey("id")
 public class Photo {
 	private int id;
-	private String link;
+	private String url;
 	private String userName;
-	private String type;
-	private String category;
-	private int hugs;
+	private String tag;
+	private String text;
+	private long time;
+	private long likes;
 
-	public String getType() {
-		return type;
+	public String getText() {
+		return text;
 	}
 
-	public void setType(String type) {
-		this.type = type;
-	}
-	
-	public String getCategory() {
-		return category;
+	public void setText(String text) {
+		this.text = text;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public long getTime() {
+		return time;
 	}
 
-	public String getLink() {
-		return link;
+	public void setTime(String timeString) {
+		try {
+			this.time = Long.valueOf(timeString);
+		} catch (Exception e) {
+			Util.e(e);
+			this.time = System.currentTimeMillis() / 1000;
+		}
 	}
 
-	public void setLink(String link) {
-		this.link = link;
+	public long getLikes() {
+		return likes;
+	}
+
+	public void setLikes(long likes) {
+		this.likes = likes;
+	}
+
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	public int getId() {
@@ -43,14 +65,6 @@ public class Photo {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-	
-	public int getHugs() {
-		return hugs;
-	}
-
-	public void setHugs(int hugs) {
-		this.hugs = hugs;
 	}
 
 	public String getUserName() {
