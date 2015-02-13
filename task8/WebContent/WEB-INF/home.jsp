@@ -48,10 +48,10 @@
                     </div>   
                     <div class="row">
                           <div class="col-md-4 col-md-offset-8">
-                               <form action="" class="search-form">
+                               <form action="search-photo.do" class="search-form">
                                   <div class="form-group has-feedback">
                                     <label for="search" class="sr-only">Search</label>
-                                     <input type="text" class="form-control" name="search" id="search" placeholder="search">
+                                     <input type="text" class="form-control" name="keyword" id="search" placeholder="search">
                                 <span class="glyphicon glyphicon-search form-control-feedback"></span> 
                                   </div>               
                                 </form>
@@ -88,12 +88,12 @@
             <div class="container">
                 <div class="row">
                     <div class="blog-masonry masonry-true">
-                    <c:forEach var="image" items="${images}">
+                    <c:forEach var="photo" items="${photos}">
                          <div class="post-masonry col-md-4 col-sm-6">
                             <div class="post-thumb">
-                                <a href="viewphoto.do"><img src="${image.url}" alt=""></a>
+                                <a href="viewphoto.do"><img src="${photo.getUrl()}" alt=""></a>
                                 <div class="title-over">
-                                    <h4>${image.txt}</h4>
+                                    <h4>${photo.getText()}</h4>
                                 </div>
                             </div>
                             </div> <!-- /.post-masonry -->

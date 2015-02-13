@@ -60,9 +60,9 @@
                         <div class="col-md-offset-2 col-md-8 text-center">
                             <h2>PETAGRAM <span class="blue">colorful</span><span class="green">life</span></h2>
                             </div>
-                            <form action="#" method="post" class="subscribe-form">
+                            <form action="search-photo.do" method="post" class="subscribe-form">
                             <fieldset class="col-md-offset-2 col-md-7 col-sm-1">
-                                <input type="email" id="subscribe-email" placeholder="Find interesting things...">
+                                <input type="text" id="subscribe-email" placeholder="Find interesting things..." name="keyword">
                             </fieldset>
                             <fieldset class="col-md-1 col-sm-1">
                                 <input type="submit" id="subscribe-submit" class="button white" value="Search!">
@@ -78,12 +78,12 @@
             <div class="container">
                 <div class="row">
                     <div class="blog-masonry masonry-true">
-                    <c:forEach var="image" items="${images}">
+                    <c:forEach var="photo" items="${photos}">
                          <div class="post-masonry col-md-4 col-sm-6">
                             <div class="post-thumb">
-                                <a href="viewphoto.do"><img src="${image.url}" alt=""></a>
+                                <a href="viewphoto.do"><img src="${photo.getUrl()}" alt=""></a>
                                 <div class="title-over">
-                                    <h4>${image.txt}</h4>
+                                    <h4>${photo.getText()}</h4>
                                 </div>
                             </div>
                             </div> <!-- /.post-masonry -->

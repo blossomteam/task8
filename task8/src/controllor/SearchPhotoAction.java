@@ -16,29 +16,27 @@ import javax.servlet.http.HttpServletRequest;
 import model.Model;
 import model.UserDAO;
 
-import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
 import org.mybeans.form.FormBeanException;
 import org.mybeans.form.FormBeanFactory;
 
+import thirdPartyAPI.Instagram;
 import util.Util;
-import databeans.User;
+import databeans.Photo;
 import formbeans.SearchForm;
 
-public class SearchUserAction extends Action {
+public class SearchPhotoAction extends Action {
 
-	private static final String SEARCH_RESULT_JSP = "search-result.jsp";
+	private static final String SEARCH_RESULT_JSP = "search.jsp";
 
-	private static final String SEARCH_JSP = "home.do";
-
-	public static final String NAME = "search-user.do";
+	public static final String NAME = "search-photo.do";
 
 	private FormBeanFactory<SearchForm> formBeanFactory = FormBeanFactory
 			.getInstance(SearchForm.class);
 
 	UserDAO userDao;
 
-	public SearchUserAction(Model model) {
+	public SearchPhotoAction(Model model) {
 		super(model);
 		userDao = model.getUserDAO();
 	}
@@ -58,24 +56,22 @@ public class SearchUserAction extends Action {
 			Util.i(form);
 
 			if (!form.isPresent()) {
-				return SEARCH_JSP;
+				return SEARCH_RESULT_JSP;
 			}
 			errors.addAll(form.getValidationErrors());
 			if (errors.size() != 0) {
-				return SEARCH_JSP;
+				return SEARCH_RESULT_JSP;
 			}
 
-			User[] users = model.getUserDAO().searchUserName(form.getKeyword());
-			request.setAttribute("users", users);
+			String accessToken = (String) request.getSession().getAttribute(
+					"InstagramToken");
+			List<Photo> photos = Instagram.getPictureOf(accessToken, form.getKeyword());
+			request.setAttribute("photos", photos);
 			return SEARCH_RESULT_JSP;
-		} catch (RollbackException e) {
-			Util.e(e);
-			errors.add(e.getMessage());
-			return SEARCH_JSP;
 		} catch (FormBeanException e) {
 			Util.e(e);
 			errors.add(e.getMessage());
-			return SEARCH_JSP;
+			return SEARCH_RESULT_JSP;
 		} finally {
 			if (Transaction.isActive()) {
 				Transaction.rollback();
