@@ -36,9 +36,9 @@ public class InstagramLoginAction extends Action {
 		List<String> errors = new ArrayList<String>();
 		request.setAttribute("errors", errors);
 
-		InstagramConfig config = this.model.instagramConfig;
 		String instagramAuthUrl = null;
 		try {
+			InstagramConfig config = this.model.instagramConfig;
 			instagramAuthUrl = Http.urlString(
 					"https://api.instagram.com/oauth/authorize/", "client_id",
 					config.CLIENT_ID, "redirect_uri", config.REDIRECT_URI,
