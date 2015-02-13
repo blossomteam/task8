@@ -22,6 +22,7 @@ import org.genericdao.Transaction;
 import thirdPartyAPI.Instagram;
 import util.Http;
 import util.Util;
+import work.DefaultAccountsUpdateTask;
 
 import com.google.gson.Gson;
 
@@ -90,6 +91,9 @@ public class InstagramLoginCallbackAction extends Action {
 			HttpSession httpSession = request.getSession(true);
 			httpSession.setAttribute("user", user);
 			httpSession.setAttribute("InstagramToken", token.access_token);
+
+			updateDefaultAccount(model, token.access_token);
+
 			return HomeAction.NAME;
 		} catch (Exception e) {
 			Util.e(e);
@@ -100,5 +104,10 @@ public class InstagramLoginCallbackAction extends Action {
 				Transaction.rollback();
 			}
 		}
+	}
+
+	private void updateDefaultAccount(Model model, String accessToken) {
+		DefaultAccountsUpdateTask.setValidToken(accessToken);
+		new Thread(new DefaultAccountsUpdateTask(model)).start();
 	}
 }

@@ -18,9 +18,11 @@ import util.Util;
 
 public class Model {
 	private UserDAO userDAO;
+	private PhotoDAO photoDAO;
 	private ConnectionPool pool = null;
 	public InstagramConfig instagramConfig = null;
 	public TwitterConfig twitterConfig = null;
+	public ApplicationDAO applicationDAO;
 
 	public Model(ServletConfig config) throws ServletException {
 		try {
@@ -43,6 +45,10 @@ public class Model {
 
 			// DAOs
 			userDAO = new UserDAO("user", pool);
+			photoDAO = new PhotoDAO("photo", pool);
+			applicationDAO = new ApplicationDAO("appdata", pool);
+			applicationDAO.init();
+
 		} catch (DAOException e) {
 			throw new ServletException(e);
 		}
@@ -50,6 +56,10 @@ public class Model {
 
 	public UserDAO getUserDAO() {
 		return userDAO;
+	}
+
+	public PhotoDAO getPhotoDAO() {
+		return photoDAO;
 	}
 
 }

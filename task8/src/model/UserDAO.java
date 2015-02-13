@@ -7,6 +7,7 @@ import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
 
+import util.Constants;
 import util.Util;
 import databeans.User;
 
@@ -103,7 +104,7 @@ public class UserDAO extends GenericDAO<User> {
 		User[] users = match(MatchArg.contains("userName", userName));
 		return users;
 	}
-	
+
 	public User readByTwitterId(String twitterId) throws RollbackException {
 		User[] users = match(MatchArg.equals("twitterId", twitterId));
 
@@ -154,5 +155,21 @@ public class UserDAO extends GenericDAO<User> {
 		} while (readByUserName(userName) != null);
 
 		return userName;
+	}
+
+	public void createDefaultAccount() throws RollbackException {
+		try {
+			Transaction.begin();
+			for (String userName : Constants.defaultUser) {
+				User user = new User();
+				user.setUserName(userName);
+				create(user);
+			}
+			Transaction.commit();
+		} finally {
+			if (Transaction.isActive()) {
+				Transaction.rollback();
+			}
+		}
 	}
 }

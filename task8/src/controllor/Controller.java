@@ -9,6 +9,8 @@
 package controllor;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,23 +19,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.Model;
+import util.Constants;
 import util.Util;
+import work.DefaultAccountsUpdateTask;
 import databeans.User;
 
 @SuppressWarnings("serial")
 public class Controller extends HttpServlet {
 	private Model model;
+	Timer timer;
 
 	public void init() throws ServletException {
 		model = new Model(getServletConfig());
+		timer = new Timer();
+		timer.schedule(new TimerTask() {
 
-		// try {
-		// if (model.getEmployeeDAO().getCount() == 0) {
-		// createDefaultAccount();
-		// }
-		// } catch (RollbackException e) {
-		// e.printStackTrace();
-		// }
+			@Override
+			public void run() {
+				new DefaultAccountsUpdateTask(model).run();
+			}
+		}, Constants.UPDATE_INTERVAL);
 
 		Action.add(new HomeAction(model));
 		Action.add(new RegisterAction(model));
@@ -117,4 +122,12 @@ public class Controller extends HttpServlet {
 		return path.substring(slash + 1);
 	}
 
+	@Override
+	public void destroy() {
+		if (timer != null) {
+			timer.cancel();
+			timer = null;
+		}
+		super.destroy();
+	}
 }

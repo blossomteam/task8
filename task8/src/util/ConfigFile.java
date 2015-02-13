@@ -4,14 +4,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
-
-import util.Util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -70,20 +68,20 @@ public class ConfigFile {
 	protected void writeToJsonFile() {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		String jsonString = gson.toJson(this);
-		FileWriter fileWriter = null;
+		RandomAccessFile randomAccessFile = null;
 		try {
 			File file = new File(getConfigFilePath());
-			if (!file.exists()) {
+			if(!file.exists()){
 				file.createNewFile();
 			}
-			fileWriter = new FileWriter(file);
-			fileWriter.write(jsonString);
+			randomAccessFile = new RandomAccessFile(file, "rws");
+			randomAccessFile.writeUTF(jsonString);
 		} catch (IOException e) {
 			Util.e(e);
 		} finally {
-			if (fileWriter != null) {
+			if (randomAccessFile != null) {
 				try {
-					fileWriter.close();
+					randomAccessFile.close();
 				} catch (IOException e) {
 				}
 			}
