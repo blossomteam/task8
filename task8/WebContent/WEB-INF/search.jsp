@@ -17,6 +17,14 @@
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        
+        <style>
+            .dropdown-menu > li > a:hover{ background: none; color: #fff;}
+            .nav .open > a{ background: none !important; color: #fff !important; }
+            .nav > li > a:hover{ background: none; }
+            .dropdown ul.dropdown-menu{ margin-top: -10px; }
+            .navbar-nav > li > a{ text-align: left !important; }
+        </style>
     </head>
     <body>
         <!--[if lt IE 7]>

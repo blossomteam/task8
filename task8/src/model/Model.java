@@ -57,7 +57,7 @@ public class Model {
 	public UserDAO getUserDAO() {
 		return userDAO;
 	}
-
+	
 	public PhotoDAO getPhotoDAO() {
 		return photoDAO;
 	}

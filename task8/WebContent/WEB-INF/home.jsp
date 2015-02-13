@@ -17,6 +17,14 @@
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        
+        <style>
+            .dropdown-menu > li > a:hover{ background: none; color: #fff;}
+            .nav .open > a{ background: none !important; color: #fff !important; }
+            .nav > li > a:hover{ background: none; }
+            .dropdown ul.dropdown-menu{ margin-top: -10px; }
+            .navbar-nav > li > a{ text-align: left !important; }
+        </style>
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -37,7 +45,7 @@
                      <div class="site-brand pull-left">
                           <ul class="nav navbar-nav">
                              <li class="dropdown">
-                               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-th-list"></span> April</a>
+                               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-th-list col-md-offset-5"></span> April</a>
                                 <ul class="dropdown-menu">
                                 <li><a href="#">Account Settings </a></li>
                                 <li><a href="#">Messages </a></li>
