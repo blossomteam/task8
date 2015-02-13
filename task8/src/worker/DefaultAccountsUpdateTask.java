@@ -1,4 +1,4 @@
-package work;
+package worker;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import model.ApplicationDAO;
 import model.Model;
 
 import org.genericdao.RollbackException;
+import org.genericdao.Transaction;
 
 import thirdPartyAPI.Instagram;
 import util.Constants;
@@ -24,7 +25,16 @@ public class DefaultAccountsUpdateTask implements Runnable {
 			Util.i("no need to update, skip");
 			return false;
 		}
-		appData.setNextUpdateTime(nextUpdateTime + Constants.UPDATE_INTERVAL);
+		appData.setNextUpdateTime(currentTime + Constants.UPDATE_INTERVAL);
+		try {
+			applicationDAO.update(appData);
+		} catch (RollbackException e) {
+			Util.e(e);
+		}finally{
+			if(Transaction.isActive()){
+				Transaction.rollback();
+			}
+		}
 		Util.i("need to execute update, nextUpdateTime = ", nextUpdateTime,
 				", currentTime = ", currentTime);
 		return true;
@@ -59,7 +69,6 @@ public class DefaultAccountsUpdateTask implements Runnable {
 				try {
 					model.getPhotoDAO().create(photo);
 				} catch (RollbackException e) {
-					Util.e(e);
 				}
 			}
 		}

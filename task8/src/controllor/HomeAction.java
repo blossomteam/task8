@@ -10,11 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import model.Model;
 import model.PhotoDAO;
 
-import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
 
-import databeans.Photo;
 import util.Util;
+import databeans.Photo;
 
 public class HomeAction extends Action {
 

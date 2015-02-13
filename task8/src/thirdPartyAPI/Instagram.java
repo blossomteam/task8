@@ -1,5 +1,6 @@
 package thirdPartyAPI;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,11 @@ public class Instagram {
 	 * @param tag
 	 */
 	public static List<Photo> getPictureOf(String accessToken, String tag) {
+		try {
+			tag = Http.urlEncode(tag);
+		} catch (UnsupportedEncodingException e) {
+			Util.e(e);
+		}
 		String url = Util.getString("https://api.instagram.com/v1/tags/", tag,
 				"/media/recent");
 		TagResponse response = Http.contentByGet(TagResponse.class, url,
@@ -52,9 +58,13 @@ public class Instagram {
 			Photo photo = new Photo();
 			photo.setLikes(info.likes.count);
 			photo.setTag(tag);
-			photo.setTime(info.caption.created_time);
+			if (info.caption != null) {
+				photo.setTime(info.caption.created_time);
+				photo.setText(info.caption.text);
+			} else {
+				photo.setTime(String.valueOf(System.currentTimeMillis() / 1000));
+			}
 			photo.setUrl(info.images.standard_resolution.url);
-			photo.setText(info.caption.text);
 			photos.add(photo);
 		}
 		return photos;

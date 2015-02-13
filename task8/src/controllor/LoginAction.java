@@ -52,6 +52,11 @@ public class LoginAction extends Action {
 		request.setAttribute("errors", errors);
 
 		try {
+			User user = (User) request.getSession().getAttribute("user");
+			if(user != null){
+				return HomeAction.NAME;
+			}
+			
 			LoginForm form = formBeanFactory.create(request);
 			request.setAttribute("form", form);
 			Util.i(form);
@@ -64,7 +69,7 @@ public class LoginAction extends Action {
 				return LOGIN_JSP;
 			}
 
-			User user = userDao.readByUserName(form.getUserName());
+			user = userDao.readByUserName(form.getUserName());
 			if (user == null) {
 				errors.add("User name not found");
 				return LOGIN_JSP;

@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.Model;
 import util.Constants;
 import util.Util;
-import work.DefaultAccountsUpdateTask;
+import worker.DefaultAccountsUpdateTask;
 import databeans.User;
 
 @SuppressWarnings("serial")

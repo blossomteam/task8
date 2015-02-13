@@ -22,7 +22,7 @@ import org.genericdao.Transaction;
 import thirdPartyAPI.Instagram;
 import util.Http;
 import util.Util;
-import work.DefaultAccountsUpdateTask;
+import worker.DefaultAccountsUpdateTask;
 
 import com.google.gson.Gson;
 

@@ -4,7 +4,7 @@ import org.genericdao.PrimaryKey;
 
 @PrimaryKey("id")
 public class ApplicationData {
-	int id;
+	private int id;
 	private long nextUpdateTime;
 
 	public long getNextUpdateTime() {
@@ -13,5 +13,13 @@ public class ApplicationData {
 
 	public void setNextUpdateTime(long nextUpdateTime) {
 		this.nextUpdateTime = nextUpdateTime;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

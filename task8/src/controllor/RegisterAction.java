@@ -51,6 +51,11 @@ public class RegisterAction extends Action {
 		request.setAttribute("errors", errors);
 
 		try {
+			User user = (User) request.getSession().getAttribute("user");
+			if(user != null){
+				return HomeAction.NAME;
+			}
+			
 			RegisterForm form = formBeanFactory.create(request);
 			request.setAttribute("form", form);
 			if (!form.isPresent()) {
@@ -65,7 +70,7 @@ public class RegisterAction extends Action {
 				return REGISTER_JSP;
 			}
 
-			User user = new User();
+			user = new User();
 			user.setUserName(form.getUserName());
 			user.setPassword(form.getPassword());
 			userDAO.createByPetagram(user);
