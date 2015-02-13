@@ -8,6 +8,7 @@ import org.genericdao.PrimaryKey;
 public class Photo {
 	private int id;
 	private String link;
+	private String userName;
 	private String type;
 	private String category;
 	private int hugs;
@@ -50,6 +51,14 @@ public class Photo {
 
 	public void setHugs(int hugs) {
 		this.hugs = hugs;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 }
