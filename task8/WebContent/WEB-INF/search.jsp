@@ -31,53 +31,43 @@
         <div class="bg-overlay"></div>
 
         <!-- SITE TOP -->
+
         <div class="site-top">
             <div class="site-header clearfix">
                 <div class="container">
-                     <div class="site-brand pull-left">
+                    <div class="site-brand">
                           <ul class="nav navbar-nav">
-                             <li class="dropdown">
-                               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-th-list"></span> April</a>
-                                <ul class="dropdown-menu">
-                                <li><a href="#">Account Settings </a></li>
-                                <li><a href="#">Messages </a></li>
-                                <li><a href="#">Sign Out </a></li>
-                               </ul>
-                              </li>
-                           </ul>
-                    </div>   
-                    <div class="row">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-th-list col-md-offset-5"></span> April</a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Account Settings </a></li>
+            <li><a href="#">Sign Out </a></li>
+          </ul>
+        </li>
+      </ul>
+                    </div>                   
                           <div class="col-md-4 col-md-offset-8">
-                               <form action="" class="search-form">
-                                  <div class="form-group has-feedback">
-                                    <label for="search" class="sr-only">Search</label>
-                                     <input type="text" class="form-control" name="search" id="search" placeholder="search">
-                                <span class="glyphicon glyphicon-search form-control-feedback"></span> 
-                                  </div>               
-                                </form>
-                           </div>
-                     </div>
+                               <form action="" method = "post"class="pull-right">
+                                <a href="#" class="pull-right"><span class="glyphicon glyphicon-pencil"></span> Post new picture</a>                 
+                               </form>
+                                  
+                          </div>
                 </div>
             </div> <!-- .site-header -->
             <div class="site-banner">
                 <div class="container">
                     <div class="row">
-                    <div class="col-md-offset-2 col-md-8 text-center">
+                        <div class="col-md-offset-2 col-md-8 text-center">
                             <h2>PETAGRAM <span class="blue">colorful</span><span class="green">life</span></h2>
                             </div>
-                            <div class="col-md-offset-2 col-md-8">
-                             <div class="subscribe-form">
-                               <div class="subscribe-form">                
-                                  <form accept-charset="UTF-8" action="" method="POST">
-                                   <textarea class="form-control counted" name="message" placeholder="What's happening..." rows="4" style="margin-bottom:5px; background:transparent;"></textarea>   
-                                   <div class="pull-right">
-                                      <button class="btn btn-info" type="submit">Post</button>
-                                   </div>
-                                     <h6 id="counter">320 characters remaining</h6>
-                                  </form>
-                               </div>
-                             </div>
-                            </div>
+                            <form action="#" method="post" class="subscribe-form">
+                            <fieldset class="col-md-offset-2 col-md-7 col-sm-1">
+                                <input type="email" id="subscribe-email" placeholder="Find interesting things...">
+                            </fieldset>
+                            <fieldset class="col-md-1 col-sm-1">
+                                <input type="submit" id="subscribe-submit" class="button white" value="Search!">
+                            </fieldset>
+                        </form>
                     </div>
                 </div>
             </div> <!-- .site-banner -->
@@ -101,7 +91,7 @@
                     </div>
                 </div>
             </div>
-         </div>
+        </div>
 
         <!-- FOOTER -->
         <footer class="site-footer">
