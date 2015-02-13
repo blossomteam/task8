@@ -5,8 +5,8 @@ import org.genericdao.PrimaryKey;
 @PrimaryKey("id")
 public class Connection {
 	private int id;
-	private String hero;
-	private String fan;
+	private String followed;
+	private String follower;
 
 	public int getId() {
 		return id;
@@ -16,20 +16,20 @@ public class Connection {
 		this.id = id;
 	}
 
-	public String getHero() {
-		return hero;
+	public String getFollowed() {
+		return followed;
 	}
 
-	public void setHero(String hero) {
-		this.hero = hero;
+	public void setFollowed(String hero) {
+		this.followed = hero;
 	}
 
-	public String getFan() {
-		return fan;
+	public String getFollower() {
+		return follower;
 	}
 
-	public void setFan(String fan) {
-		this.fan = fan;
+	public void setFollower(String follower) {
+		this.follower = follower;
 	}
 
 }

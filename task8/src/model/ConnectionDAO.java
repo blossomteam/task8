@@ -21,8 +21,8 @@ public class ConnectionDAO extends GenericDAO<Connection> {
 		try {
 			Transaction.begin();
 			Connection[] connections = match(MatchArg.and(
-					MatchArg.equals("hero", connection.getHero()),
-					MatchArg.equals("fan", connection.getFan())));
+					MatchArg.equals("followed", connection.getFollowed()),
+					MatchArg.equals("follower", connection.getFollower())));
 			if (connections == null || connections.length == 0) {
 				create(connection);
 			}
@@ -38,12 +38,12 @@ public class ConnectionDAO extends GenericDAO<Connection> {
 	}
 
 	public Connection[] getHerosOf(String userName) throws RollbackException {
-		Connection[] connections = match(MatchArg.equals("fan", userName));
+		Connection[] connections = match(MatchArg.equals("follower", userName));
 		return connections;
 	}
 
 	public Connection[] getFansOf(String userName) throws RollbackException {
-		Connection[] connections = match(MatchArg.equals("hero", userName));
+		Connection[] connections = match(MatchArg.equals("followed", userName));
 		return connections;
 	}
 

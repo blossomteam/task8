@@ -39,7 +39,7 @@
         <div class="bg-overlay"></div>
 
         <!-- SITE TOP -->
-        <div class="site-top">
+        <div class="site-top" >
             <div class="site-header clearfix">
                 <div class="container">
                      <div class="site-brand pull-left">
@@ -100,9 +100,9 @@
                          <div class="post-masonry col-md-4 col-sm-6">
                             <div class="post-thumb">
                                 <a href="viewphoto.do"><img src="${photo.getUrl()}" alt=""></a>
-                                <div class="title-over">
-                                    <h4>${photo.getText()}</h4>
-                                </div>
+<!--                                 <div class="title-over"> -->
+<%--                                     <h4>${photo.getText()}</h4> --%>
+<!--                                 </div> -->
                             </div>
                             </div> <!-- /.post-masonry -->
 							</c:forEach>

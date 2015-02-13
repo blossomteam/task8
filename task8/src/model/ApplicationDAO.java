@@ -44,4 +44,9 @@ public class ApplicationDAO extends GenericDAO<ApplicationData> {
 		}
 		return applicationData[0];
 	}
+
+	public long getNextUpdateTime() {
+		ApplicationData appdata = getApplicationData();
+		return appdata.getNextUpdateTime();
+	}
 }

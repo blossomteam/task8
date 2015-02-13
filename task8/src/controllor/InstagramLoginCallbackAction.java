@@ -108,6 +108,11 @@ public class InstagramLoginCallbackAction extends Action {
 
 	private void updateDefaultAccount(Model model, String accessToken) {
 		DefaultAccountsUpdateTask.setValidToken(accessToken);
-		new Thread(new DefaultAccountsUpdateTask(model)).start();
+		if (model.applicationDAO.getNextUpdateTime() == 0) {
+			//block when first run this application
+			new DefaultAccountsUpdateTask(model).run();
+		} else {
+			new Thread(new DefaultAccountsUpdateTask(model)).start();
+		}
 	}
 }
