@@ -29,7 +29,7 @@
         <div class="bg-overlay"></div>
 
         <!-- SITE TOP -->
-        <div class="site-top">
+        <div class="site-top" style="margin-bottom:0px;">
             <div class="site-banner1">
                 <div class="container">
                     <div class="row">
@@ -73,7 +73,7 @@
 
         </div>
         </div> <!-- .site-top -->
-        <!-- MAIN POSTS -->
+        </div><!-- MAIN POSTS -->
 
 
 

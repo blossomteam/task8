@@ -17,6 +17,14 @@
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        
+        <style>
+            .dropdown-menu > li > a:hover{ background: none; color: #fff;}
+            .nav .open > a{ background: none !important; color: #fff !important; }
+            .nav > li > a:hover{ background: none; }
+            .dropdown ul.dropdown-menu{ margin-top: -10px; }
+            .navbar-nav > li > a{ text-align: left !important; }
+        </style>
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -37,7 +45,7 @@
                      <div class="site-brand pull-left">
                           <ul class="nav navbar-nav">
                              <li class="dropdown">
-                               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-th-list"></span> April</a>
+                               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-th-list col-md-offset-5"></span> April</a>
                                 <ul class="dropdown-menu">
                                 <li><a href="#">Account Settings </a></li>
                                 <li><a href="#">Messages </a></li>
@@ -48,10 +56,10 @@
                     </div>   
                     <div class="row">
                           <div class="col-md-4 col-md-offset-8">
-                               <form action="" class="search-form">
+                               <form action="search-photo.do" class="search-form">
                                   <div class="form-group has-feedback">
                                     <label for="search" class="sr-only">Search</label>
-                                     <input type="text" class="form-control" name="search" id="search" placeholder="search">
+                                     <input type="text" class="form-control" name="keyword" id="search" placeholder="search">
                                 <span class="glyphicon glyphicon-search form-control-feedback"></span> 
                                   </div>               
                                 </form>
@@ -88,12 +96,12 @@
             <div class="container">
                 <div class="row">
                     <div class="blog-masonry masonry-true">
-                    <c:forEach var="image" items="${images}">
+                    <c:forEach var="photo" items="${photos}">
                          <div class="post-masonry col-md-4 col-sm-6">
                             <div class="post-thumb">
-                                <a href="viewphoto.do"><img src="${image.url}" alt=""></a>
+                                <a href="viewphoto.do"><img src="${photo.getUrl()}" alt=""></a>
                                 <div class="title-over">
-                                    <h4>${image.txt}</h4>
+                                    <h4>${photo.getText()}</h4>
                                 </div>
                             </div>
                             </div> <!-- /.post-masonry -->
