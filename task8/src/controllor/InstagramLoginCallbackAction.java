@@ -14,18 +14,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import model.InstagramConfig;
 import model.Model;
 
 import org.genericdao.Transaction;
 
 import thirdPartyAPI.Instagram;
-import util.Http;
 import util.Util;
 import worker.DefaultInstagramAccountsUpdateTask;
-
-import com.google.gson.Gson;
-
 import databeans.User;
 import databeans.instagram.Token;
 import databeans.instagram.UserInfo;
@@ -52,7 +47,6 @@ public class InstagramLoginCallbackAction extends Action {
 		request.setAttribute("errors", errors);
 
 		try {
-			InstagramConfig config = model.instagramConfig;
 			String code = request.getParameter("code");
 
 			if (Util.isEmpty(code)) {
@@ -61,17 +55,11 @@ public class InstagramLoginCallbackAction extends Action {
 				return LOGIN_JSP;
 			}
 
-			String response = Http.contentByPost(
-					"https://api.instagram.com/oauth/access_token",
-					"client_id", config.CLIENT_ID, "client_secret",
-					config.CLIENT_SECRET, "grant_type", "authorization_code",
-					"redirect_uri", config.REDIRECT_URI, "code", code);
-			Util.i(response);
-			if (Util.isEmpty(response)) {
+			Token token = Instagram.getToken(model.instagramConfig, code);
+			if (token == null) {
 				errors.add("response of request token faild");
 				return LOGIN_JSP;
 			}
-			Token token = new Gson().fromJson(response, Token.class);
 
 			UserInfo userInfo = Instagram.getUserInfo(token.user.id,
 					token.access_token);
@@ -109,7 +97,7 @@ public class InstagramLoginCallbackAction extends Action {
 	private void updateDefaultAccount(Model model, String accessToken) {
 		DefaultInstagramAccountsUpdateTask.setValidToken(accessToken);
 		if (model.applicationDAO.getNextUpdateTime() == 0) {
-			//block when first run this application
+			// block when first run this application
 			new DefaultInstagramAccountsUpdateTask(model).run();
 		} else {
 			new Thread(new DefaultInstagramAccountsUpdateTask(model)).start();

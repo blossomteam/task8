@@ -26,13 +26,17 @@ public class Photo {
 		return time;
 	}
 
-	public void setTime(String timeString) {
+	public void setTimeString(String timeString) {
 		try {
 			this.time = Long.valueOf(timeString);
 		} catch (Exception e) {
 			Util.e(e);
 			this.time = System.currentTimeMillis() / 1000;
 		}
+	}
+
+	public void setTime(long time) {
+		this.time = time;
 	}
 
 	public long getLikes() {

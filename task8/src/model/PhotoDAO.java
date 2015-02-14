@@ -56,7 +56,7 @@ public class PhotoDAO extends GenericDAO<Photo> {
 
 				@Override
 				public int compare(Photo o1, Photo o2) {
-					return ((Long) o1.getTime()).compareTo(o2.getTime());
+					return -((Long) o1.getTime()).compareTo(o2.getTime());
 				}
 			});
 			return photos;

@@ -231,7 +231,7 @@ public class Util {
 			}
 			String fileName = file[i].toString();
 			sb.append(fileName);
-			if (!fileName.endsWith(File.separator)) {
+			if (i < file.length -1 && !fileName.endsWith(File.separator)) {
 				sb.append(File.separator);
 			}
 		}

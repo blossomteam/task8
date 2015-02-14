@@ -76,12 +76,13 @@
                             <div class="col-md-offset-2 col-md-8">
                              <div class="subscribe-form">
                                <div class="subscribe-form">                
-                                  <form accept-charset="UTF-8" action="" method="POST">
-                                   <textarea class="form-control counted" name="message" placeholder="What's happening..." rows="4" style="margin-bottom:5px; background:transparent;"></textarea>   
+                                  <form accept-charset="UTF-8" method="POST" action="upload-photo.do" enctype="multipart/form-data">
+                                   <textarea class="form-control counted" name="text" placeholder="What's happening..." rows="4" style="margin-bottom:5px; background:transparent;" maxlength="150"></textarea>   
+                                   <input type="file" name="file" accept="image/*"/>
                                    <div class="pull-right">
                                       <button class="btn btn-info" type="submit">Post</button>
                                    </div>
-                                     <h6 id="counter">320 characters remaining</h6>
+<!--                                      <h6 id="counter">320 characters remaining</h6> -->
                                   </form>
                                </div>
                              </div>
@@ -100,9 +101,9 @@
                          <div class="post-masonry col-md-4 col-sm-6">
                             <div class="post-thumb">
                                 <a href="viewphoto.do"><img src="${photo.getUrl()}" alt=""></a>
-<!--                                 <div class="title-over"> -->
-<%--                                     <h4>${photo.getText()}</h4> --%>
-<!--                                 </div> -->
+                                <div class="title-over">
+                                    <h4>${photo.getText()}</h4>
+                                </div>
                             </div>
                             </div> <!-- /.post-masonry -->
 							</c:forEach>
