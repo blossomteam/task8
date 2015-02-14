@@ -2,6 +2,7 @@ package model;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.PriorityQueue;
 
 import org.genericdao.ConnectionPool;
 import org.genericdao.DAOException;
@@ -11,8 +12,8 @@ import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
 
 import util.Constants;
+import util.Util;
 import databeans.Photo;
-
 
 public class PhotoDAO extends GenericDAO<Photo> {
 
@@ -42,14 +43,10 @@ public class PhotoDAO extends GenericDAO<Photo> {
 		}
 		return photos[0];
 	}
-	
+
 	public Photo[] getNewPhotos() throws RollbackException {
-		try{
-			Photo[] photo= match(MatchArg.max("id"));
-			if(photo == null || photo.length == 0) {
-				throw new RollbackException("No photo data");
-			}
-			int maxId = photo[0].getId();
+		try {
+			int maxId = getMaxId();
 			int minId = maxId - Constants.photoNumbers;
 			Photo[] photos = match(MatchArg.greaterThan("id", minId));
 			Arrays.sort(photos, new Comparator<Photo>() {
@@ -60,7 +57,48 @@ public class PhotoDAO extends GenericDAO<Photo> {
 				}
 			});
 			return photos;
-		}finally {
+		} finally {
+			if (Transaction.isActive())
+				Transaction.rollback();
+		}
+	}
+
+	private int getMaxId() throws RollbackException {
+		Photo[] photo = match(MatchArg.max("id"));
+		if (photo == null || photo.length == 0) {
+			return 0;
+		}
+		int maxId = photo[0].getId();
+		return maxId;
+	}
+
+	private Photo[] getLatestPhotos(Photo[] photos, int count) {
+		PriorityQueue<Photo> latestPhotos = new PriorityQueue<>(count,
+				new Comparator<Photo>() {
+
+					@Override
+					public int compare(Photo o1, Photo o2) {
+						return -((Long) o1.getTime()).compareTo(o2.getTime());
+					}
+				});
+		for (Photo photo : photos) {
+			latestPhotos.add(photo);
+		}
+		
+		Photo[] orderedPhotos = new Photo[latestPhotos.size()];
+		int i = 0;
+		while (!latestPhotos.isEmpty()) {
+			orderedPhotos[i++] = latestPhotos.poll();
+		}
+		return orderedPhotos;
+	}
+
+	public Photo[] getPhotosOf(String tag) throws RollbackException {
+		try {
+			String tagPattern = Util.getString("#", tag, " ");
+			Photo[] photos = match(MatchArg.contains("text", tagPattern));
+			return getLatestPhotos(photos, Constants.photoNumbers);
+		} finally {
 			if (Transaction.isActive())
 				Transaction.rollback();
 		}

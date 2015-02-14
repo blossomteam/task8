@@ -16,11 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import model.Model;
 import model.UserDAO;
 
+import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
 import org.mybeans.form.FormBeanException;
 import org.mybeans.form.FormBeanFactory;
 
-import thirdPartyAPI.Instagram;
 import util.Util;
 import databeans.Photo;
 import formbeans.SearchForm;
@@ -63,12 +63,18 @@ public class SearchPhotoAction extends Action {
 				return SEARCH_RESULT_JSP;
 			}
 
-			String accessToken = (String) request.getSession().getAttribute(
-					"InstagramToken");
-			List<Photo> photos = Instagram.getPictureOf(accessToken, form.getKeyword());
+			Photo[] photos = model.getPhotoDAO().getPhotosOf(form.getKeyword());
+			if(photos == null || photos.length == 0) {
+				errors.add("No photo data");
+				return SEARCH_RESULT_JSP;
+			}
 			request.setAttribute("photos", photos);
 			return SEARCH_RESULT_JSP;
 		} catch (FormBeanException e) {
+			Util.e(e);
+			errors.add(e.getMessage());
+			return SEARCH_RESULT_JSP;
+		} catch (RollbackException e) {
 			Util.e(e);
 			errors.add(e.getMessage());
 			return SEARCH_RESULT_JSP;
