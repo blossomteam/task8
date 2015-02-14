@@ -50,7 +50,7 @@ public class Http {
 		return client;
 	}
 
-	public static String contentByGet(String url) {
+	private static String contentByGet(String url) {
 		Util.i(url);
 		Request request = new Request.Builder().url(url).build();
 		Response response;
@@ -73,27 +73,6 @@ public class Http {
 		}
 		String url = Util.getString(host, queryString);
 		return contentByGet(url);
-	}
-
-	public static Response responseByGet(String host, Object... args) {
-		String queryString;
-		try {
-			queryString = queryString(args);
-		} catch (UnsupportedEncodingException e) {
-			Util.e(e);
-			return null;
-		}
-		String url = Util.getString(host, queryString);
-		Util.i(url);
-		Request request = new Request.Builder().url(url).build();
-		Response response;
-		try {
-			response = getClient().newCall(request).execute();
-			return response;
-		} catch (IOException e) {
-			Util.e(e);
-		}
-		return null;
 	}
 
 	public static <T> T contentByGet(Class<T> clazz, String host,
@@ -135,7 +114,7 @@ public class Http {
 		return URLEncoder.encode(string, "utf-8");
 	}
 
-	public static String queryString(Object... args)
+	private static String queryString(Object... args)
 			throws UnsupportedEncodingException {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < args.length; i++) {
