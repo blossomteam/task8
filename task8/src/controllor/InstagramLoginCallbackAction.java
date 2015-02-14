@@ -22,7 +22,7 @@ import org.genericdao.Transaction;
 import thirdPartyAPI.Instagram;
 import util.Http;
 import util.Util;
-import worker.DefaultAccountsUpdateTask;
+import worker.DefaultInstagramAccountsUpdateTask;
 
 import com.google.gson.Gson;
 
@@ -107,12 +107,12 @@ public class InstagramLoginCallbackAction extends Action {
 	}
 
 	private void updateDefaultAccount(Model model, String accessToken) {
-		DefaultAccountsUpdateTask.setValidToken(accessToken);
+		DefaultInstagramAccountsUpdateTask.setValidToken(accessToken);
 		if (model.applicationDAO.getNextUpdateTime() == 0) {
 			//block when first run this application
-			new DefaultAccountsUpdateTask(model).run();
+			new DefaultInstagramAccountsUpdateTask(model).run();
 		} else {
-			new Thread(new DefaultAccountsUpdateTask(model)).start();
+			new Thread(new DefaultInstagramAccountsUpdateTask(model)).start();
 		}
 	}
 }

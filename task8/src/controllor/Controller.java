@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.Model;
 import util.Constants;
 import util.Util;
-import worker.DefaultAccountsUpdateTask;
+import worker.DefaultInstagramAccountsUpdateTask;
 import databeans.User;
 
 @SuppressWarnings("serial")
@@ -36,7 +36,7 @@ public class Controller extends HttpServlet {
 
 			@Override
 			public void run() {
-				new DefaultAccountsUpdateTask(model).run();
+				new DefaultInstagramAccountsUpdateTask(model).run();
 			}
 		}, Constants.UPDATE_INTERVAL);
 

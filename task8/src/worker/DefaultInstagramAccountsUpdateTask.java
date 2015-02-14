@@ -14,7 +14,7 @@ import util.Util;
 import databeans.ApplicationData;
 import databeans.Photo;
 
-public class DefaultAccountsUpdateTask implements Runnable {
+public class DefaultInstagramAccountsUpdateTask implements Runnable {
 	Model model;
 
 	public static boolean needToUpdate(ApplicationDAO applicationDAO) {
@@ -43,10 +43,10 @@ public class DefaultAccountsUpdateTask implements Runnable {
 	public static String accessToken;
 
 	public static void setValidToken(String accessToken) {
-		DefaultAccountsUpdateTask.accessToken = accessToken;
+		DefaultInstagramAccountsUpdateTask.accessToken = accessToken;
 	}
 
-	public DefaultAccountsUpdateTask(Model model) {
+	public DefaultInstagramAccountsUpdateTask(Model model) {
 		this.model = model;
 	}
 
