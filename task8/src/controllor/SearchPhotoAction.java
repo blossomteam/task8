@@ -25,6 +25,7 @@ import org.mybeans.form.FormBeanFactory;
 import util.Constants;
 import util.Util;
 import databeans.Photo;
+import databeans.User;
 import formbeans.SearchForm;
 
 public class SearchPhotoAction extends Action {
@@ -53,7 +54,9 @@ public class SearchPhotoAction extends Action {
 		request.setAttribute("errors", errors);
 
 		try {
-
+			User user = (User) request.getSession().getAttribute("user");
+			request.setAttribute("user", user);
+			
 			SearchForm form = formBeanFactory.create(request);
 			request.setAttribute("form", form);
 			Util.i(form);

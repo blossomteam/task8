@@ -12,6 +12,7 @@ import org.genericdao.Transaction;
 
 import util.Util;
 import databeans.Photo;
+import databeans.User;
 
 public class HomeAction extends Action {
 
@@ -35,6 +36,9 @@ public class HomeAction extends Action {
 		List<String> errors = new ArrayList<String>();
 		request.setAttribute("errors", errors);
 		try {
+			User user = (User) request.getSession().getAttribute("user");
+			request.setAttribute("user", user);
+
 			// get maxId
 			String maxIdString = request.getParameter("maxId");
 			int maxId = Integer.MAX_VALUE;

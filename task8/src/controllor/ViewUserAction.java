@@ -43,18 +43,21 @@ public class ViewUserAction extends Action {
 		request.setAttribute("errors", errors);
 
 		try {
+			User user = (User) request.getSession().getAttribute("user");
+			request.setAttribute("user", user);
+			
 			// get user
 			String userName = request.getParameter("userName");
 			if (userName == null) {
 				errors.add("user name is required");
 				return HOME_JSP;
 			}
-			User user = model.getUserDAO().readByUserName(userName);
-			if (user == null) {
+			User viewUser = model.getUserDAO().readByUserName(userName);
+			if (viewUser == null) {
 				errors.add("invalid user name");
 				return HOME_JSP;
 			}
-			request.setAttribute("user", user);
+			request.setAttribute("viewUser", viewUser);
 
 			// get maxId
 			String maxIdString = request.getParameter("maxId");
@@ -71,7 +74,7 @@ public class ViewUserAction extends Action {
 
 			// get photos
 			PhotoDAO photoDAO = model.getPhotoDAO();
-			Photo[] photos = photoDAO.getPhotosOfUser(user.getId());
+			Photo[] photos = photoDAO.getPhotosOfUser(viewUser.getId());
 			Photo[] validPhotos = PhotoDAO.getTopN(
 					PhotoDAO.filter(photos, 0, maxId),
 					Constants.PHOTO_NUMBER_PER_PAGE);

@@ -46,7 +46,7 @@
                     <div class="site-brand">
                           <ul class="nav navbar-nav">
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-th-list col-md-offset-5"></span> April</a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"> ${user.getUserName() }</a>
           <ul class="dropdown-menu">
             <li><a href="#">Account Settings </a></li>
             <li><a href="#">Sign Out </a></li>
