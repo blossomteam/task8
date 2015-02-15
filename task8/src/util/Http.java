@@ -64,14 +64,13 @@ public class Http {
 	}
 
 	public static String contentByGet(String host, Object... args) {
-		String queryString;
+		String url = null;
 		try {
-			queryString = queryString(args);
+			url = urlString(host, args);
 		} catch (UnsupportedEncodingException e) {
 			Util.e(e);
 			return null;
 		}
-		String url = Util.getString(host, queryString);
 		return contentByGet(url);
 	}
 
@@ -114,9 +113,10 @@ public class Http {
 		return URLEncoder.encode(string, "utf-8");
 	}
 
-	private static String queryString(Object... args)
+	public static String urlString(String url, Object... args)
 			throws UnsupportedEncodingException {
 		StringBuilder sb = new StringBuilder();
+		sb.append(url);
 		for (int i = 0; i < args.length; i++) {
 			if (i % 2 == 0) {
 				if (i == 0) {
@@ -130,30 +130,6 @@ public class Http {
 					if (args[i + 1] != null) {
 						sb.append(urlEncode(args[i + 1].toString()));
 					}
-				}
-			}
-		}
-		return sb.toString();
-	}
-
-	public static String urlString(Object... args)
-			throws UnsupportedEncodingException {
-		if (args == null || args.length == 0) {
-			return null;
-		}
-		StringBuilder sb = new StringBuilder();
-		sb.append(args[0]);
-		for (int i = 1; i < args.length; i++) {
-			if (i % 2 == 1) {
-				if (i == 1) {
-					sb.append("?");
-				} else {
-					sb.append("&");
-				}
-				sb.append(urlEncode(args[i].toString()));
-				if (i + 1 < args.length) {
-					sb.append("=");
-					sb.append(urlEncode(args[i + 1].toString()));
 				}
 			}
 		}

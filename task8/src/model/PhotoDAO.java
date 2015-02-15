@@ -96,7 +96,7 @@ public class PhotoDAO extends GenericDAO<Photo> {
 	public Photo[] getPhotosOf(String tag) throws RollbackException {
 		try {
 			String tagPattern = Util.getString("#", tag, " ");
-			Photo[] photos = match(MatchArg.contains("text", tagPattern));
+			Photo[] photos = match(MatchArg.containsIgnoreCase("text", tagPattern));
 			return getLatestPhotos(photos, Constants.photoNumbers);
 		} finally {
 			if (Transaction.isActive())
