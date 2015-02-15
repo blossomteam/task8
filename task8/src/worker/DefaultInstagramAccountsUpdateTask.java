@@ -30,8 +30,8 @@ public class DefaultInstagramAccountsUpdateTask implements Runnable {
 			applicationDAO.update(appData);
 		} catch (RollbackException e) {
 			Util.e(e);
-		}finally{
-			if(Transaction.isActive()){
+		} finally {
+			if (Transaction.isActive()) {
 				Transaction.rollback();
 			}
 		}
@@ -59,13 +59,24 @@ public class DefaultInstagramAccountsUpdateTask implements Runnable {
 		if (!needToUpdate(model.applicationDAO)) {
 			return;
 		}
-		for (int i = 0; i < Constants.defaultUserTag.length; i++) {
+		for (int i = 0; i < Constants.defaultUser.length; i++) {
 			String userName = Constants.defaultUser[i];
 			String tag = Constants.defaultUserTag[i];
+			databeans.User user;
+			try {
+				user = model.getUserDAO().readByUserName(userName);
+			} catch (RollbackException e1) {
+				Util.e(e1);
+				throw new RuntimeException("database is broken");
+			}
+			if (user == null) {
+				Util.e("user is null");
+				continue;
+			}
 
 			List<Photo> photos = Instagram.getPictureOf(accessToken, tag);
 			for (Photo photo : photos) {
-				photo.setUserName(userName);
+				photo.setUserId(user.getId());
 				try {
 					model.getPhotoDAO().create(photo);
 				} catch (RollbackException e) {

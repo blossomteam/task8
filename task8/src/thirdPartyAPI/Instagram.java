@@ -46,14 +46,16 @@ public class Instagram {
 		} catch (UnsupportedEncodingException e) {
 			Util.e(e);
 		}
+
 		String url = Util.getString("https://api.instagram.com/v1/tags/", tag,
 				"/media/recent");
 		TagResponse response = Http.contentByGet(TagResponse.class, url,
 				"access_token", accessToken, "count", 100);
-		if (response == null||response.data == null) {
+		if (response == null || response.data == null) {
 			Util.e("exit, response is null");
 			return null;
 		}
+
 		Util.i(response);
 		List<Photo> photos = new ArrayList<Photo>();
 		for (TagResponse.ImageInfo info : response.data) {
@@ -61,10 +63,11 @@ public class Instagram {
 				continue;
 			}
 			Photo photo = parsePhoto(info);
-			if(photo != null){
+			if (photo != null) {
 				photos.add(photo);
 			}
 		}
+		Util.i("photos.size() = ", photos.size());
 		return photos;
 	}
 
@@ -72,7 +75,7 @@ public class Instagram {
 		try {
 			Photo photo = new Photo();
 			photo.setUrl(info.images.standard_resolution.url);
-			if(info.likes != null){
+			if (info.likes != null) {
 				photo.setLikes(info.likes.count);
 			}
 			if (info.caption != null) {

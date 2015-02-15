@@ -100,7 +100,7 @@
                     <c:forEach var="photo" items="${photos}">
                          <div class="post-masonry col-md-4 col-sm-6">
                             <div class="post-thumb">
-                                <a href="viewphoto.do"><img src="${photo.getUrl()}" alt=""></a>
+                                <a href="view-photo.do?id=${photo.getId() }"><img src="${photo.getUrl()}" alt=""></a>
                                 <div class="title-over">
                                     <h4>${photo.getText()}</h4>
                                 </div>

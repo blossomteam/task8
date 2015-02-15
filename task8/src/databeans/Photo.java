@@ -8,7 +8,7 @@ import util.Util;
 public class Photo {
 	private int id;
 	private String url;
-	private String userName;
+	private int userId;
 	private String tag;
 	private String text;
 	private long time;
@@ -71,12 +71,12 @@ public class Photo {
 		this.id = id;
 	}
 
-	public String getUserName() {
-		return userName;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 }

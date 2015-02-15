@@ -63,7 +63,7 @@ public class SearchPhotoAction extends Action {
 				return SEARCH_RESULT_JSP;
 			}
 
-			Photo[] photos = model.getPhotoDAO().getPhotosOf(form.getKeyword());
+			Photo[] photos = model.getPhotoDAO().getPhotosOfTag(form.getKeyword());
 			if(photos == null || photos.length == 0) {
 				errors.add("No photo data");
 				return SEARCH_RESULT_JSP;

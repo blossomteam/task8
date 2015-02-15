@@ -51,11 +51,11 @@ public class UploadPhotoAction extends Action {
 				return ERROR_JSP;
 
 			FileProperty fileProp = form.getFile();
-			if(getFileNameSuffix(fileProp.getFileName()) == null){
+			if (getFileNameSuffix(fileProp.getFileName()) == null) {
 				errors.add("unsupported file type");
 				return ERROR_JSP;
 			}
-			
+
 			// save file to WebContent/images/upload
 			String webContentPath = request.getServletContext()
 					.getRealPath("/");
@@ -74,7 +74,7 @@ public class UploadPhotoAction extends Action {
 			if (!Util.isEmpty(form.getText())) {
 				photo.setText(fixBadChars(form.getText()));
 			}
-			photo.setUserName(user.getUserName());
+			photo.setUserId(user.getId());
 			photo.setTime(System.currentTimeMillis() / 1000);
 			model.getPhotoDAO().create(photo);
 
@@ -93,15 +93,16 @@ public class UploadPhotoAction extends Action {
 			return ERROR_JSP;
 		}
 	}
-	
-	private static String[] SUFFIXEX = new String[]{".jpg", ".jpeg", ".png", ".gif"};
-	
-	private String getFileNameSuffix(String fileName){
-		if(Util.isEmpty(fileName)){
+
+	private static String[] SUFFIXEX = new String[] { ".jpg", ".jpeg", ".png",
+			".gif" };
+
+	private String getFileNameSuffix(String fileName) {
+		if (Util.isEmpty(fileName)) {
 			return null;
 		}
 		for (String suffix : SUFFIXEX) {
-			if(fileName.endsWith(suffix)){
+			if (fileName.endsWith(suffix)) {
 				return suffix;
 			}
 		}
@@ -111,7 +112,8 @@ public class UploadPhotoAction extends Action {
 	private String generateFileName(FileProperty file) {
 		String sha1 = Util.getSHA1(file.getBytes(), null);
 		String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
-		return Util.getString(sha1, timestamp, getFileNameSuffix(file.getFileName()));
+		return Util.getString(sha1, timestamp,
+				getFileNameSuffix(file.getFileName()));
 	}
 
 	private String fixBadChars(String s) {

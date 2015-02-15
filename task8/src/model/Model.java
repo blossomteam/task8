@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 
 import org.genericdao.ConnectionPool;
 import org.genericdao.DAOException;
+import org.genericdao.RollbackException;
 
 import util.Util;
 
@@ -45,11 +46,14 @@ public class Model {
 
 			// DAOs
 			userDAO = new UserDAO("user", pool);
+			userDAO.createDefaultAccount();
 			photoDAO = new PhotoDAO("photo", pool);
 			applicationDAO = new ApplicationDAO("appdata", pool);
 			applicationDAO.init();
 
 		} catch (DAOException e) {
+			throw new ServletException(e);
+		} catch (RollbackException e) {
 			throw new ServletException(e);
 		}
 	}

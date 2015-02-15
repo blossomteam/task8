@@ -50,6 +50,7 @@ public class Controller extends HttpServlet {
 		Action.add(new SearchUserAction(model));
 		Action.add(new SearchPhotoAction(model));
 		Action.add(new ViewUserAction(model));
+		Action.add(new ViewPhotoAction(model));
 		Action.add(new UploadPhotoAction(model));
 		Action.add(new LogoutAction(model));
 	}

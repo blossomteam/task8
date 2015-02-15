@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import model.Model;
 
+import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
 
 import thirdPartyAPI.Instagram;
@@ -48,7 +49,6 @@ public class InstagramLoginCallbackAction extends Action {
 
 		try {
 			String code = request.getParameter("code");
-
 			if (Util.isEmpty(code)) {
 				errors.add(Util.getString("authentication failed, response = ",
 						request.getQueryString()));
@@ -83,7 +83,7 @@ public class InstagramLoginCallbackAction extends Action {
 			updateDefaultAccount(model, token.access_token);
 
 			return HomeAction.NAME;
-		} catch (Exception e) {
+		} catch (RollbackException e) {
 			Util.e(e);
 			errors.add(e.getMessage());
 			return LOGIN_JSP;

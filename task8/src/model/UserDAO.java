@@ -161,7 +161,11 @@ public class UserDAO extends GenericDAO<User> {
 		try {
 			Transaction.begin();
 			for (String userName : Constants.defaultUser) {
-				User user = new User();
+				User user = readByUserName(userName);
+				if (user != null) {
+					continue;
+				}
+				user = new User();
 				user.setUserName(userName);
 				create(user);
 			}

@@ -18,11 +18,12 @@ import model.Model;
 import org.genericdao.Transaction;
 
 import util.Util;
+import databeans.Photo;
 import databeans.User;
 
 public class ViewUserAction extends Action {
 
-	private static final String HOME_JSP = "template-result.jsp";
+	private static final String HOME_JSP = "view-user.jsp";
 
 	public static final String NAME = "view-user.do";
 
@@ -40,7 +41,7 @@ public class ViewUserAction extends Action {
 		request.setAttribute("errors", errors);
 
 		try {
-			String userName = request.getParameter("user_name");
+			String userName = request.getParameter("userName");
 			if (userName == null) {
 				errors.add("user name is required");
 				return HOME_JSP;
@@ -52,8 +53,15 @@ public class ViewUserAction extends Action {
 				return HOME_JSP;
 			}
 
-			request.setAttribute("message", "to be impletemented");
 			request.setAttribute("user", user);
+
+			Photo[] photos = model.getPhotoDAO().getPhotosOfUser(user.getId());
+			if (photos == null || photos.length == 0) {
+				errors.add("No photo data");
+				return HOME_JSP;
+			}
+			request.setAttribute("photos", photos);
+
 			return HOME_JSP;
 		} catch (Exception e) {
 			errors.add(e.toString());

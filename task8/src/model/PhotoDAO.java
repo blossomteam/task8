@@ -84,7 +84,7 @@ public class PhotoDAO extends GenericDAO<Photo> {
 		for (Photo photo : photos) {
 			latestPhotos.add(photo);
 		}
-		
+
 		Photo[] orderedPhotos = new Photo[latestPhotos.size()];
 		int i = 0;
 		while (!latestPhotos.isEmpty()) {
@@ -93,14 +93,27 @@ public class PhotoDAO extends GenericDAO<Photo> {
 		return orderedPhotos;
 	}
 
-	public Photo[] getPhotosOf(String tag) throws RollbackException {
+	public Photo[] getPhotosOfTag(String tag) throws RollbackException {
 		try {
 			String tagPattern = Util.getString("#", tag, " ");
-			Photo[] photos = match(MatchArg.containsIgnoreCase("text", tagPattern));
+			Photo[] photos = match(MatchArg.containsIgnoreCase("text",
+					tagPattern));
 			return getLatestPhotos(photos, Constants.photoNumbers);
 		} finally {
-			if (Transaction.isActive())
+			if (Transaction.isActive()) {
 				Transaction.rollback();
+			}
+		}
+	}
+
+	public Photo[] getPhotosOfUser(int id) throws RollbackException {
+		try {
+			Photo[] photos = match(MatchArg.equals("userId", id));
+			return getLatestPhotos(photos, Constants.photoNumbers);
+		} finally {
+			if (Transaction.isActive()) {
+				Transaction.rollback();
+			}
 		}
 	}
 }
