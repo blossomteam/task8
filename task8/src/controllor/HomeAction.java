@@ -57,7 +57,10 @@ public class HomeAction extends Action {
 			request.setAttribute("photos", photos);
 			request.setAttribute("maxId", photos[0]);
 			request.setAttribute("minId", photos[photos.length - 1]);
-
+			request.setAttribute("hasPrev",
+					photos[0].getId() < photoDAO.getMaxId());
+			request.setAttribute("hasNext",
+					photos[photos.length - 1].getId() > 1);
 			return HOME_JSP;
 		} catch (Exception e) {
 			return HOME_JSP;

@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -44,7 +45,7 @@ public class PhotoDAO extends GenericDAO<Photo> {
 		return photos[0];
 	}
 
-	private int getMaxId() throws RollbackException {
+	public int getMaxId() throws RollbackException {
 		Photo[] photo = match(MatchArg.max("id"));
 		if (photo == null || photo.length == 0) {
 			return 0;
@@ -53,7 +54,7 @@ public class PhotoDAO extends GenericDAO<Photo> {
 		return maxId;
 	}
 
-	Comparator<Photo> decreaseById = new Comparator<Photo>() {
+	static Comparator<Photo> decreaseById = new Comparator<Photo>() {
 
 		@Override
 		public int compare(Photo o1, Photo o2) {
@@ -76,28 +77,42 @@ public class PhotoDAO extends GenericDAO<Photo> {
 		}
 	}
 
-	private Photo[] getTopN(Photo[] photos, int n) {
+	public static Photo[] getTopN(Photo[] photos, int n) {
+		if (photos == null) {
+			return null;
+		}
 		PriorityQueue<Photo> latestPhotos = new PriorityQueue<>(n, decreaseById);
 		for (Photo photo : photos) {
 			latestPhotos.add(photo);
 		}
 
-		Photo[] orderedPhotos = new Photo[latestPhotos.size()];
+		Photo[] orderedPhotos = new Photo[n];
 		int i = 0;
-		while (!latestPhotos.isEmpty()) {
+		while (i < n) {
 			orderedPhotos[i++] = latestPhotos.poll();
 		}
 		return orderedPhotos;
 	}
 
-	public Photo[] getPhotosOfTag(String tag, int maxId)
-			throws RollbackException {
+	public static Photo[] filter(Photo[] photos, int minId, int maxId) {
+		if (photos == null) {
+			return null;
+		}
+		ArrayList<Photo> validPhotos = new ArrayList<>();
+		for (Photo photo : photos) {
+			if (photo.getId() >= minId && photo.getId() <= maxId) {
+				validPhotos.add(photo);
+			}
+		}
+		return validPhotos.toArray(new Photo[validPhotos.size()]);
+	}
+
+	public Photo[] getPhotosOfTag(String tag) throws RollbackException {
 		try {
 			String tagPattern = Util.getString("#", tag, " ");
-			Photo[] photos = match(MatchArg.and(
-					MatchArg.containsIgnoreCase("text", tagPattern),
-					MatchArg.lessThanOrEqualTo("id", maxId)));
-			return getTopN(photos, Constants.PHOTO_NUMBER_PER_PAGE);
+			Photo[] photos = match(MatchArg.containsIgnoreCase("text",
+					tagPattern));
+			return photos;
 		} finally {
 			if (Transaction.isActive()) {
 				Transaction.rollback();
@@ -105,11 +120,10 @@ public class PhotoDAO extends GenericDAO<Photo> {
 		}
 	}
 
-	public Photo[] getPhotosOfUser(int id, int maxId) throws RollbackException {
+	public Photo[] getPhotosOfUser(int id) throws RollbackException {
 		try {
-			Photo[] photos = match(MatchArg.and(MatchArg.equals("userId", id),
-					MatchArg.lessThanOrEqualTo("id", maxId)));
-			return getTopN(photos, Constants.PHOTO_NUMBER_PER_PAGE);
+			Photo[] photos = match(MatchArg.equals("userId", id));
+			return photos;
 		} finally {
 			if (Transaction.isActive()) {
 				Transaction.rollback();

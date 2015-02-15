@@ -14,9 +14,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import model.Model;
+import model.PhotoDAO;
 
 import org.genericdao.Transaction;
 
+import util.Constants;
 import util.Util;
 import databeans.Photo;
 import databeans.User;
@@ -68,15 +70,24 @@ public class ViewUserAction extends Action {
 			}
 
 			// get photos
-			Photo[] photos = model.getPhotoDAO().getPhotosOfUser(user.getId(),
-					maxId);
-			if (photos == null || photos.length == 0) {
+			PhotoDAO photoDAO = model.getPhotoDAO();
+			Photo[] photos = photoDAO.getPhotosOfUser(user.getId());
+			Photo[] validPhotos = PhotoDAO.getTopN(
+					PhotoDAO.filter(photos, 0, maxId),
+					Constants.PHOTO_NUMBER_PER_PAGE);
+
+			if (validPhotos == null || validPhotos.length == 0) {
 				errors.add("No photo data");
 				return HOME_JSP;
 			}
-			request.setAttribute("photos", photos);
-			request.setAttribute("maxId", photos[0]);
-			request.setAttribute("minId", photos[photos.length - 1]);
+			
+			request.setAttribute("photos", validPhotos);
+			request.setAttribute("hasPrev", validPhotos[0] != photos[0]);
+			request.setAttribute("maxId", validPhotos[0]);
+			request.setAttribute("minId", validPhotos[validPhotos.length - 1]);
+			request.setAttribute(
+					"hasNext",
+					validPhotos[validPhotos.length - 1] != photos[photos.length - 1]);
 
 			return HOME_JSP;
 		} catch (Exception e) {
