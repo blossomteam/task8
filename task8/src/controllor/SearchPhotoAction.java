@@ -51,10 +51,10 @@ public class SearchPhotoAction extends Action {
 		request.setAttribute("errors", errors);
 
 		try {
+
 			SearchForm form = formBeanFactory.create(request);
 			request.setAttribute("form", form);
 			Util.i(form);
-
 			if (!form.isPresent()) {
 				return SEARCH_RESULT_JSP;
 			}
@@ -63,12 +63,16 @@ public class SearchPhotoAction extends Action {
 				return SEARCH_RESULT_JSP;
 			}
 
-			Photo[] photos = model.getPhotoDAO().getPhotosOfTag(form.getKeyword());
-			if(photos == null || photos.length == 0) {
+			Photo[] photos = model.getPhotoDAO().getPhotosOfTag(
+					form.getKeyword(), form.getMaxIdValue());
+			if (photos == null || photos.length == 0) {
 				errors.add("No photo data");
 				return SEARCH_RESULT_JSP;
 			}
 			request.setAttribute("photos", photos);
+			request.setAttribute("maxId", photos[0]);
+			request.setAttribute("minId", photos[photos.length - 1]);
+
 			return SEARCH_RESULT_JSP;
 		} catch (FormBeanException e) {
 			Util.e(e);

@@ -41,26 +41,42 @@ public class ViewUserAction extends Action {
 		request.setAttribute("errors", errors);
 
 		try {
+			// get user
 			String userName = request.getParameter("userName");
 			if (userName == null) {
 				errors.add("user name is required");
 				return HOME_JSP;
 			}
-
 			User user = model.getUserDAO().readByUserName(userName);
 			if (user == null) {
 				errors.add("invalid user name");
 				return HOME_JSP;
 			}
-
 			request.setAttribute("user", user);
 
-			Photo[] photos = model.getPhotoDAO().getPhotosOfUser(user.getId());
+			// get maxId
+			String maxIdString = request.getParameter("maxId");
+			int maxId = Integer.MAX_VALUE;
+			try {
+				if (maxIdString != null) {
+					maxId = Integer.valueOf(maxIdString);
+				}
+			} catch (NumberFormatException e) {
+				Util.e(e);
+				errors.add("invalid maxId");
+				return HOME_JSP;
+			}
+
+			// get photos
+			Photo[] photos = model.getPhotoDAO().getPhotosOfUser(user.getId(),
+					maxId);
 			if (photos == null || photos.length == 0) {
 				errors.add("No photo data");
 				return HOME_JSP;
 			}
 			request.setAttribute("photos", photos);
+			request.setAttribute("maxId", photos[0]);
+			request.setAttribute("minId", photos[photos.length - 1]);
 
 			return HOME_JSP;
 		} catch (Exception e) {
