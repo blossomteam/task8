@@ -17,6 +17,7 @@ import org.mybeans.form.FileProperty;
 import org.mybeans.form.FormBeanException;
 import org.mybeans.form.FormBeanFactory;
 
+import util.Constants;
 import util.Util;
 import databeans.Photo;
 import databeans.User;
@@ -94,14 +95,11 @@ public class UploadPhotoAction extends Action {
 		}
 	}
 
-	private static String[] SUFFIXEX = new String[] { ".jpg", ".jpeg", ".png",
-			".gif" };
-
 	private String getFileNameSuffix(String fileName) {
 		if (Util.isEmpty(fileName)) {
 			return null;
 		}
-		for (String suffix : SUFFIXEX) {
+		for (String suffix : Constants.IMAGE_SUFFIXES) {
 			if (fileName.endsWith(suffix)) {
 				return suffix;
 			}

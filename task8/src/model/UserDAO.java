@@ -160,7 +160,16 @@ public class UserDAO extends GenericDAO<User> {
 	public void createDefaultAccount() throws RollbackException {
 		try {
 			Transaction.begin();
-			for (String userName : Constants.defaultUser) {
+			for (String userName : Constants.DEFAULT_INSTAGRAM_ACCOUNTS) {
+				User user = readByUserName(userName);
+				if (user != null) {
+					continue;
+				}
+				user = new User();
+				user.setUserName(userName);
+				create(user);
+			}
+			for (String userName : Constants.DEFAULT_TWITTER_ACCOUNTS) {
 				User user = readByUserName(userName);
 				if (user != null) {
 					continue;

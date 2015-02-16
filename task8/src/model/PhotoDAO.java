@@ -81,7 +81,9 @@ public class PhotoDAO extends GenericDAO<Photo> {
 		if (photos == null) {
 			return null;
 		}
-		PriorityQueue<Photo> latestPhotos = new PriorityQueue<>(n, decreaseById);
+		n = Math.min(n, photos.length);
+		PriorityQueue<Photo> latestPhotos = new PriorityQueue<>(photos.length,
+				decreaseById);
 		for (Photo photo : photos) {
 			latestPhotos.add(photo);
 		}

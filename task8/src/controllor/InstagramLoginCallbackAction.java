@@ -24,7 +24,7 @@ import util.Util;
 import worker.DefaultInstagramAccountsUpdateTask;
 import databeans.User;
 import databeans.instagram.Token;
-import databeans.instagram.UserInfo;
+import databeans.instagram.UserInfoResponse.UserInfo;
 
 public class InstagramLoginCallbackAction extends Action {
 

@@ -22,6 +22,7 @@ import model.Model;
 import util.Constants;
 import util.Util;
 import worker.DefaultInstagramAccountsUpdateTask;
+import worker.DefaultTwitterAccountsUpdateTask;
 import databeans.User;
 
 @SuppressWarnings("serial")
@@ -37,8 +38,9 @@ public class Controller extends HttpServlet {
 			@Override
 			public void run() {
 				new DefaultInstagramAccountsUpdateTask(model).run();
+				new DefaultTwitterAccountsUpdateTask(model).run();
 			}
-		}, Constants.UPDATE_INTERVAL);
+		}, 0, Constants.UPDATE_INTERVAL);
 
 		Action.add(new HomeAction(model));
 		Action.add(new RegisterAction(model));
