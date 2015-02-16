@@ -41,7 +41,7 @@ public class ViewPhotoAction extends Action {
 		request.setAttribute("errors", errors);
 
 		try {
-			String idString = request.getParameter("user_name");
+			String idString = request.getParameter("id");
 			if (Util.isEmpty(idString)) {
 				errors.add("id is required");
 				return VIEW_PHOTO_JSP;
@@ -62,7 +62,7 @@ public class ViewPhotoAction extends Action {
 
 			User user = model.getUserDAO().read(photo.getUserId());
 			request.setAttribute("photo", photo);
-			request.setAttribute("user", user);
+			request.setAttribute("owner", user);
 			return VIEW_PHOTO_JSP;
 		} catch (Exception e) {
 			errors.add(e.toString());

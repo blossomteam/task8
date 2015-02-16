@@ -3,10 +3,12 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
+<%@ page contentType="text/html;charset=UTF-8"%>
 <html class="no-js">
 <!--<![endif]-->
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Petagram</title>
 <meta name="description" content="">
@@ -131,18 +133,14 @@
 					<div class="testimonial-wrap">
 						<div class="row">
 							<div class="col-md-12 testimonial">
-								<div class="quote">
-									<h4>Title</h4>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-										In ultrices, elit sed faucibus pharetra, diam mauris bibendum
-										orci, sit amet ullamcorper purus dui sit amet augue. Donec
-										aliquet diam ut neque mattis, eu tristique sem rutrum.</p>
+                            <div class="post-masonry col-md-12">
+							<div class="post-thumb">
+								<img src="${photo.getUrl()}" alt="">
+								<div class="title-over">
+									<h4>${photo.getText()}</h4>
 								</div>
-								<div class="student">
-									<div class="photo"></div>
-									<p>John Doe</p>
-									<p>Important person, some Company</p>
-								</div>
+							</div>
+						</div>
 							</div>
 						</div>
 					</div>

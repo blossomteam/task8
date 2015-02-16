@@ -4,12 +4,14 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js">
+<%@ page contentType="text/html;charset=UTF-8"%>
 <!--<![endif]-->
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Petagram</title>
 <meta name="description" content="">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet" href="css/normalize.css">
@@ -19,7 +21,6 @@
 <script src="js/vendor/modernizr-2.6.2.min.js"></script>
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-
 <style>
 .dropdown-menu>li>a:hover {
 	background: none;
@@ -65,9 +66,9 @@
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown"> ${user.getUserName() }</a>
 							<ul class="dropdown-menu">
-								<li><a href="#">Account Settings </a></li>
+								<li><a href="view-user.do?userName=${user.getUserName() }">Account Settings </a></li>
 								<li><a href="#">Messages </a></li>
-								<li><a href="#">Sign Out </a></li>
+								<li><a href="logout.do">Sign Out </a></li>
 							</ul></li>
 					</ul>
 				</div>
