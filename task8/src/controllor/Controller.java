@@ -55,6 +55,7 @@ public class Controller extends HttpServlet {
 		Action.add(new ViewPhotoAction(model));
 		Action.add(new UploadPhotoAction(model));
 		Action.add(new LogoutAction(model));
+		Action.add(new CommentAction(model));
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)

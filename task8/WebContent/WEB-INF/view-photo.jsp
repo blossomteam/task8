@@ -117,7 +117,7 @@
 		<div class="row">
 			<div class="container">
 				<div class="col-md-12" style="text-align: center">
-					<img src="images/4.jpg" />
+					<img src=""/>
 				</div>
 			</div>
 		</div>
@@ -165,7 +165,7 @@
 					<div class="col-md-12">
 						<div class="subscribe-form">
 							<div class="subscribe-form">
-								<form accept-charset="UTF-8" method="POST" action=""
+								<form accept-charset="UTF-8" method="POST" action="comment.do"
 									enctype="multipart/form-data">
 									<textarea class="form-control counted" name="text"
 										placeholder="Your comments: ..." rows="4"
