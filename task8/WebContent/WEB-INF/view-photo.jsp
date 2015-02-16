@@ -19,9 +19,12 @@
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="css/foundation.css" />
 <link rel="stylesheet" href="css/foundation-icons.css" />
+
 <script src="js/vendor/modernizr-2.6.2.min.js"></script>
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/foundation.min.js"></script>
+<script src="js/foundation.js"></script>
 
 <style>
 .dropdown-menu>li>a:hover {
@@ -148,7 +151,7 @@
 					</div>
 					<hr>
 					<div class="hug">
-						<a href="#" class="button ">Give it a Hug!</a>
+						<a href="#" class="button">Give it a Hug!</a>
 					</div>
 					<div class="row social-button">
 						<ul class="button-group even-3">
