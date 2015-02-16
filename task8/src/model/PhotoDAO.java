@@ -78,7 +78,7 @@ public class PhotoDAO extends GenericDAO<Photo> {
 	}
 
 	public static Photo[] getTopN(Photo[] photos, int n) {
-		if (photos == null) {
+		if (photos == null || photos.length == 0) {
 			return null;
 		}
 		n = Math.min(n, photos.length);
