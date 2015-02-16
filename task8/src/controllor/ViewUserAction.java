@@ -25,7 +25,7 @@ import databeans.User;
 
 public class ViewUserAction extends Action {
 
-	private static final String HOME_JSP = "view-user.jsp";
+	private static final String HOME_JSP = "userpage.jsp";
 
 	public static final String NAME = "view-user.do";
 
@@ -43,9 +43,10 @@ public class ViewUserAction extends Action {
 		request.setAttribute("errors", errors);
 
 		try {
+			// set user info
 			User user = (User) request.getSession().getAttribute("user");
 			request.setAttribute("user", user);
-			
+
 			// get user
 			String userName = request.getParameter("userName");
 			if (userName == null) {
@@ -69,7 +70,6 @@ public class ViewUserAction extends Action {
 			} catch (NumberFormatException e) {
 				Util.e(e);
 				errors.add("invalid maxId");
-				return HOME_JSP;
 			}
 
 			// get photos
@@ -79,11 +79,12 @@ public class ViewUserAction extends Action {
 					PhotoDAO.filter(photos, 0, maxId),
 					Constants.PHOTO_NUMBER_PER_PAGE);
 
+			request.setAttribute("likes", calculateLike(photos));
 			if (validPhotos == null || validPhotos.length == 0) {
 				errors.add("No photo data");
 				return HOME_JSP;
 			}
-			
+
 			request.setAttribute("photos", validPhotos);
 			request.setAttribute("hasPrev", validPhotos[0] != photos[0]);
 			request.setAttribute("maxId", validPhotos[0]);
@@ -102,6 +103,16 @@ public class ViewUserAction extends Action {
 				Transaction.rollback();
 			}
 		}
+	}
 
+	private int calculateLike(Photo[] photos) {
+		if (photos == null) {
+			return 0;
+		}
+		int like = 0;
+		for (Photo photo : photos) {
+			like += photo.getLikes();
+		}
+		return like;
 	}
 }

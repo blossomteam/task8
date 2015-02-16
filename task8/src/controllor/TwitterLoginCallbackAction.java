@@ -25,6 +25,7 @@ import org.scribe.oauth.OAuthService;
 
 import thirdPartyAPI.Twitter;
 import util.Util;
+import worker.DefaultTwitterAccountsUpdateTask;
 import databeans.User;
 import databeans.twitter.VerifyCredentials;
 
@@ -84,10 +85,12 @@ public class TwitterLoginCallbackAction extends Action {
 				user = model.getUserDAO().readByTwitterId(
 						verifyCredentials.id_str);
 			}
-			
+
 			HttpSession httpSession = request.getSession(true);
 			httpSession.setAttribute("user", user);
 			httpSession.setAttribute("twitterToken", accessToken);
+
+			updateDefaultAccount(model, accessToken);
 
 			return HomeAction.NAME;
 		} catch (Exception e) {
@@ -98,6 +101,16 @@ public class TwitterLoginCallbackAction extends Action {
 			if (Transaction.isActive()) {
 				Transaction.rollback();
 			}
+		}
+	}
+
+	private void updateDefaultAccount(Model model, Token accessToken) {
+		DefaultTwitterAccountsUpdateTask.setValidToken(accessToken);
+		if (model.applicationDAO.getNextUpdateTime() == 0) {
+			// block when first run this application
+			new DefaultTwitterAccountsUpdateTask(model).run();
+		} else {
+			new Thread(new DefaultTwitterAccountsUpdateTask(model)).start();
 		}
 	}
 }

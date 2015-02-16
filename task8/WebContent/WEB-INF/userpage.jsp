@@ -312,8 +312,8 @@ div.user-menu div.user-menu-content:not(.active){
             <div class="row coralbg white">
                 <div class="col-md-6 no-pad">
                     <div class="user-pad">
-                        <h2>Jessica</h2>
-                        <button type="button" class="btn btn-labeled btn-info" href="#">
+                        <h2>${user.getUserName() }</h2>
+                        <button type="button" class="btn btn-labeled btn-info">
                             <span class="btn-label"><i class="fa fa-plus"></i></span>Follow</button>
                     </div>
                     <!--
@@ -470,30 +470,25 @@ div.user-menu div.user-menu-content:not(.active){
             </div> <!-- .site-banner -->
         </div> <!-- .site-top -->
         <!-- MAIN POSTS -->
+        <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
         <div class="main-posts">
             <div class="container">
                 <div class="row">
                     <div class="blog-masonry masonry-true">
-                        <div class="post-masonry col-md-4 col-sm-6">
-                            <div class="post-thumb">
-                                <img src="images/1.jpg" alt="">
-                                <div class="title-over">
-                                    <h4><a href="#">Title one goes here</a></h4>
-                                </div>
-                                <div class="post-hover text-center">
-                                    <div class="inside">
-                                        <i class="fa fa-plus"></i>
-                                        <span class="date">25 Jan 2084</span>
-                                        <h4><a href="#">Title one goes here</a></h4>
-                                        <p>Cum sociis natoque penatibus et magnis dis parturient</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> <!-- /.post-masonry -->
+	                    <c:forEach var="photo" items="${photos}">
+	                         <div class="post-masonry col-md-4 col-sm-6">
+	                            <div class="post-thumb">
+	                                <a href="view-photo.do?id=${photo.getId() }"><img src="${photo.getUrl()}" alt=""></a>
+	                                <div class="title-over">
+	                                    <h4>${photo.getText()}</h4>
+	                                </div>
+	                            </div>
+	                            </div> <!-- /.post-masonry -->
+						</c:forEach>
                     </div>
                 </div>
             </div>
-        </div>
+         </div>
 
         <!-- FOOTER -->
         <footer class="site-footer">

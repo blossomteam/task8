@@ -1,19 +1,18 @@
 package thirdPartyAPI;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import model.InstagramConfig;
+import util.Http;
+import util.Util;
 
 import com.google.gson.Gson;
 
-import util.Http;
-import util.Util;
 import databeans.Photo;
 import databeans.instagram.TagResponse;
 import databeans.instagram.Token;
-import databeans.instagram.UserInfo;
+import databeans.instagram.UserInfoResponse.UserInfo;
 
 public class Instagram {
 
@@ -41,23 +40,19 @@ public class Instagram {
 	 * @param tag
 	 */
 	public static List<Photo> getPictureOf(String accessToken, String tag) {
-		try {
-			tag = Http.urlEncode(tag);
-		} catch (UnsupportedEncodingException e) {
-			Util.e(e);
-		}
+		tag = Http.urlEncode(tag);
 
+		List<Photo> photos = new ArrayList<Photo>();
 		String url = Util.getString("https://api.instagram.com/v1/tags/", tag,
 				"/media/recent");
 		TagResponse response = Http.contentByGet(TagResponse.class, url,
 				"access_token", accessToken, "count", 100);
 		if (response == null || response.data == null) {
 			Util.e("exit, response is null");
-			return null;
+			return photos;
 		}
 
 		Util.i(response);
-		List<Photo> photos = new ArrayList<Photo>();
 		for (TagResponse.ImageInfo info : response.data) {
 			if (info == null) {
 				continue;

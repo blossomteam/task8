@@ -37,12 +37,12 @@ public class ConnectionDAO extends GenericDAO<Connection> {
 		}
 	}
 
-	public Connection[] getHerosOf(String userName) throws RollbackException {
+	public Connection[] getFollowerOf(String userName) throws RollbackException {
 		Connection[] connections = match(MatchArg.equals("follower", userName));
 		return connections;
 	}
 
-	public Connection[] getFansOf(String userName) throws RollbackException {
+	public Connection[] getFollowedOf(String userName) throws RollbackException {
 		Connection[] connections = match(MatchArg.equals("followed", userName));
 		return connections;
 	}

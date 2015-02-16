@@ -8,7 +8,6 @@
 
 package controllor;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,15 +36,11 @@ public class InstagramLoginAction extends Action {
 		request.setAttribute("errors", errors);
 
 		String instagramAuthUrl = null;
-		try {
-			InstagramConfig config = this.model.instagramConfig;
-			instagramAuthUrl = Http.urlString(
-					"https://api.instagram.com/oauth/authorize/", "client_id",
-					config.CLIENT_ID, "redirect_uri", config.REDIRECT_URI,
-					"response_type", "code");
-		} catch (UnsupportedEncodingException e) {
-			Util.e(e);
-		}
+		InstagramConfig config = this.model.instagramConfig;
+		instagramAuthUrl = Http.urlString(
+				"https://api.instagram.com/oauth/authorize/", "client_id",
+				config.CLIENT_ID, "redirect_uri", config.REDIRECT_URI,
+				"response_type", "code");
 		return instagramAuthUrl;
 	}
 }
