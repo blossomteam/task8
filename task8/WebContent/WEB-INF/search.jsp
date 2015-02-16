@@ -50,15 +50,15 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"> ${user.getUserName() }</a>
           <ul class="dropdown-menu">
-            <li><a href="#">Account Settings </a></li>
-            <li><a href="#">Sign Out </a></li>
+            <li><a href="view-user.do?userName=${user.getUserName()}">Account Info </a></li>
+            <li><a href="logout.do">Sign Out </a></li>
           </ul>
         </li>
       </ul>
                     </div>                   
                           <div class="col-md-4 col-md-offset-8">
                                <form action="" method = "post"class="pull-right">
-                                <a href="#" class="pull-right"><span class="glyphicon glyphicon-pencil"></span> Post new picture</a>                 
+                                <a href="home.do" class="pull-right"><span class="glyphicon glyphicon-pencil"></span> Post new picture</a>                 
                                </form>
                                   
                           </div>

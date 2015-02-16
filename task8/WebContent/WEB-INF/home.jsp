@@ -66,8 +66,7 @@
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown"> ${user.getUserName() }</a>
 							<ul class="dropdown-menu">
-								<li><a href="view-user.do?userName=${user.getUserName() }">Account Settings </a></li>
-								<li><a href="#">Messages </a></li>
+								<li><a href="view-user.do?userName=${user.getUserName() }">Account Info </a></li>
 								<li><a href="logout.do">Sign Out </a></li>
 							</ul></li>
 					</ul>
@@ -108,7 +107,6 @@
 									<div class="pull-right">
 										<button class="btn btn-info" type="submit">Post</button>
 									</div>
-									<!--                                      <h6 id="counter">320 characters remaining</h6> -->
 								</form>
 							</div>
 						</div>

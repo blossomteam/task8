@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import model.Model;
 
@@ -60,9 +61,13 @@ public class ViewPhotoAction extends Action {
 				return VIEW_PHOTO_JSP;
 			}
 
-			User user = model.getUserDAO().read(photo.getUserId());
+			HttpSession session = request.getSession();
+			User user = (User) session.getAttribute("user");
+			request.setAttribute("user", user);
+			
+			User owner = model.getUserDAO().read(photo.getUserId());
 			request.setAttribute("photo", photo);
-			request.setAttribute("owner", user);
+			request.setAttribute("owner", owner);
 			return VIEW_PHOTO_JSP;
 		} catch (Exception e) {
 			errors.add(e.toString());

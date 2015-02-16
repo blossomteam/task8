@@ -75,9 +75,8 @@
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown"> ${user.getUserName() }</a>
 							<ul class="dropdown-menu">
-								<li><a href="#">Account Settings </a></li>
-								<li><a href="#">Messages </a></li>
-								<li><a href="#">Sign Out </a></li>
+								<li><a href="view-user.do?userName=${user.getUserName()}">Account Info </a></li>
+								<li><a href="logout.do">Sign Out </a></li>
 							</ul></li>
 					</ul>
 				</div>
@@ -110,7 +109,7 @@
 				<div class="row">
 					<div class="col-md-offset-2 col-md-8 text-center">
 						<h2>
-							PETAGRAM <span class="blue">colorful</span><span class="green">life</span>
+							<a href="home.do">PETAGRAM</a> <span class="green">colorful</span><span class="blue">life</span>
 						</h2>
 					</div>
 				</div>
@@ -118,7 +117,7 @@
 		</div>
 		<!-- .site-banner -->
 	</div>	
-	<div class="site-body">
+	<div class="main-posts">
 		<div class="row">
 			<div class="container">
 				<div class="col-md-12" style="text-align: center">
@@ -129,7 +128,6 @@
 		<div>
 			<br />
 		</div>
-		<hr>
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6">
@@ -139,9 +137,6 @@
                             <div class="post-masonry col-md-12">
 							<div class="post-thumb">
 								<img src="${photo.getUrl()}" alt="">
-								<div class="title-over">
-									<h4>${photo.getText()}</h4>
-								</div>
 							</div>
 						</div>
 							</div>
@@ -149,14 +144,16 @@
 					</div>
 					<hr>
 					<div class="hug">
-						<a href="#" class="button">Give it a Hug!</a>
+					<div class="col-md-6">
+					<p>Posted by   <a href="view-user.do?userName=${owner.getUserName()}">${owner.getUserName()}</a></p>
 					</div>
-					<div class="row social-button">
-						<ul class="button-group even-3">
-							<li><i class="fi-eye large"></i><span>938794</span></li>
-							<li><i class="fi-comments large"></i><span>94</span></li>
-							<li><i class="fi-heart large"></i><span>894</span></li>
-						</ul>
+					<div class="col-md-2">
+					</div>
+					<div class="col-md-4">
+					<span class="glyphicon glyphicon-heart"></span><span>${photo.getLikes()}</span>
+						<a type="button" class="btn btn-labeled btn-info" href="like.do?id=${photo.getId()}">
+	                            Give it a Hug!</a>
+	                            </div>
 					</div>
 				</div>
 				<div class="col-md-1"></div>
