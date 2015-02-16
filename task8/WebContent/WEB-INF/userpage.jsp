@@ -70,17 +70,17 @@
 			var data = google.visualization.arrayToDataTable(rows);
 			
 			var options = {
-				'width':350,
-				'legend':'top',
-				hAxis: {
-				},
-				vAxis: {
-					format:'#',
-				    viewWindowMode:'explicit',
-				    viewWindow: {
-				        min:0,
-				    }
-				}
+'width':350,
+'legend':'top',
+hAxis: {
+},
+vAxis: {
+	format:'#',
+    viewWindowMode:'explicit',
+    viewWindow: {
+        min:0,
+    }
+}
 			};
 			
 			var chart = new google.visualization.LineChart(
@@ -398,20 +398,20 @@ div.user-menu div.user-menu-content:not(.active){
 				<c:choose>
 					<c:when test="${followable == null}">
 	                    <div class="user-pad">
-	                        <h2>${viewUser.getUserName() }</h2>
+	                        <h2>Welcome back, ${viewUser.getUserName() }</h2>
 	                    </div>
 					</c:when>
 					<c:when test="${followable.equals(\"followed\")}">
 	                    <div class="user-pad">
 	                        <h2>${viewUser.getUserName() }</h2>
-	                        <a type="button" class="btn btn-labeled btn-info" href="view-user.do?userName=${viewUser.getUserName() }">
+	                        <a type="button" class="btn btn-labeled btn-info" href="connection.do?action=unfollow&id=${viewUser.getId() }">
 	                            <span class="btn-label"><i class="fa fa-ban-circle"></i></span>Followed</a>
 	                    </div>
 					</c:when>
 					<c:when test="${followable.equals(\"follow\")}">
 	                    <div class="user-pad">
 	                        <h2>${viewUser.getUserName() }</h2>
-	                        <a type="button" class="btn btn-labeled btn-info" href="view-user.do?userName=${viewUser.getUserName() }">
+	                        <a type="button" class="btn btn-labeled btn-info" href="connection.do?action=follow&id=${viewUser.getId() }">
 	                            <span class="btn-label"><i class="fa fa-plus"></i></span>Follow</a>
 	                    </div>
 					</c:when>

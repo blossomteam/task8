@@ -1,30 +1,23 @@
-
-
 package databeans;
+
+import java.text.SimpleDateFormat;
 
 import org.genericdao.PrimaryKey;
 
 @PrimaryKey("id")
 public class Comment {
 	private int id;
-	private int userid;
-	private int photoid;
+	private String userName;
+	private int photoId;
 	private String comment;
+	private long time;
 
-	public int getUserid() {
-		return userid;
+	public int getPhotoId() {
+		return photoId;
 	}
 
-	public void setUserid(int id) {
-		this.userid = id;
-	}
-
-	public int getPhotoid() {
-		return photoid;
-	}
-
-	public void setPhotoid(int id) {
-		this.photoid = id;
+	public void setPhotoId(int id) {
+		this.photoId = id;
 	}
 
 	public String getComment() {
@@ -41,5 +34,26 @@ public class Comment {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public long getTime() {
+		return time;
+	}
+
+	public void setTime(long time) {
+		this.time = time;
+	}
+
+	public String getTimeString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm MMM/dd/yyyy");
+		return sdf.format(time);
 	}
 }

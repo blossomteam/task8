@@ -1,4 +1,3 @@
-
 package controllor;
 
 import java.util.ArrayList;
@@ -8,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import model.CommentDAO;
 import model.Model;
-import model.PhotoDAO;
 
 import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
@@ -25,11 +23,11 @@ public class CommentAction extends Action {
 
 	public static final String COMMENT_NAME = "comment.do";
 
-	private static final String COMMENT_JSP = "view-photo.jsp";
+	private static final String COMMENT_JSP = "template-result.jsp";
 
 	private FormBeanFactory<CommentForm> formBeanFactory = FormBeanFactory
 			.getInstance(CommentForm.class);
-	
+
 	private CommentDAO commentDAO;
 
 	public CommentAction(Model model) {
@@ -47,43 +45,38 @@ public class CommentAction extends Action {
 		request.setAttribute("errors", errors);
 
 		try {
+			// user info
 			User user = (User) request.getSession(false).getAttribute("user");
-			
-			Photo photo = (Photo) request.getSession(false).getAttribute("photo");
-			
-			Comment[] commentList = commentDAO.read(photo.getId());
-			request.setAttribute("comList", commentList);
-			
+			request.setAttribute("user", user);
+
+			// photo info
+			int photoId = getId(request);
+			Photo photo = model.getPhotoDAO().read(photoId);
+			if (photo == null) {
+				errors.add("invalid photo id");
+				return COMMENT_JSP;
+			}
+			request.setAttribute("photo", photo);
+
+			// comment form
 			CommentForm form = formBeanFactory.create(request);
-			request.setAttribute("form", form);
-			
 			if (!form.isPresent()) {
 				return COMMENT_JSP;
 			}
-
 			errors.addAll(form.getValidationErrors());
 			if (errors.size() != 0) {
-				for (String string : errors) {
-					Util.e(string);
-				}
 				return COMMENT_JSP;
 			}
 
-			
-			Comment com = new Comment();
-	        com.setUserid(user.getId());
-	        com.setPhotoid(photo.getId());
-	        com.setComment(form.getComment());
-			
-	        if (form.getAction().equals("Comment")) {
-        		commentDAO.create(com);
-        	} else {
-        		errors.add("Invalid action: " + form.getAction());
-        	}
-	  
-	        request.setAttribute("commentList", commentDAO.read(photo.getId()));
-			
-			return COMMENT_NAME;
+			// save to db
+			Comment comment = new Comment();
+			comment.setUserName(user.getUserName());
+			comment.setPhotoId(form.getIdValue());
+			comment.setComment(form.getComment());
+			comment.setTime(System.currentTimeMillis());
+			commentDAO.create(comment);
+
+			return Util.getString(ViewPhotoAction.NAME, "?id=", photo.getId());
 		} catch (RollbackException e) {
 			errors.add(e.getMessage());
 			Util.i(e);
@@ -97,5 +90,20 @@ public class CommentAction extends Action {
 				Transaction.rollback();
 			}
 		}
+	}
+
+	private int getId(HttpServletRequest request) {
+		String idString = request.getParameter("id");
+		if (idString == null) {
+			Util.e("id is required");
+			return 0;
+		}
+
+		try {
+			return Integer.valueOf(idString);
+		} catch (Exception e) {
+			Util.e("invalid id, id = ", idString);
+		}
+		return 0;
 	}
 }

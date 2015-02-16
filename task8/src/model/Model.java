@@ -60,7 +60,7 @@ public class Model {
 			connectionDAO = new ConnectionDAO("connection", pool);
 			visitHistoryDAO = new VisitHistoryDAO("visit", pool);
 			likeHistoryDAO = new LikeHistoryDAO("likeHistory", pool);
-
+			commentDAO = new CommentDAO("comment", pool);
 		} catch (DAOException e) {
 			throw new ServletException(e);
 		} catch (RollbackException e) {

@@ -164,11 +164,12 @@
 						<div class="subscribe-form">
 							<div class="subscribe-form">
 								<form accept-charset="UTF-8" method="POST" action="comment.do"
-									enctype="multipart/form-data">
-									<textarea class="form-control counted" name="text"
+									>
+									<textarea class="form-control counted" name="comment"
 										placeholder="Your comments: ..." rows="4"
 										style="margin-bottom: 5px; background: transparent;"
 										maxlength="150"></textarea>
+									<input type="hidden" name="id" value="${photo.getId() }">
 									<div class="pull-right">
 										<button class="btn btn-info" type="submit">Comment</button>
 									</div>
@@ -179,16 +180,20 @@
 					</div>
 					</div>
 					<div class="comment">
-						<section class="viewer">
-							<h6 class="byline">
-								<a href="#"><i class="icon"></i>Caleb Winters</a> <small>said
-									<span class="data"> 4h Ago </span>
-								</small>
-							</h6>
-						</section>
-						<section class="content">
-							<p>You've got the look!</p>
-						</section>
+						<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+						<c:if test="${comments !=null && fn:length(comments) > 0}">
+							<c:forEach var="comment" items="${comments}">
+								<section class="viewer">
+									<h6 class="byline">
+										<a href="view-user.do?userName=${comment.getUserName() }"><i class="icon"></i>${comment.getUserName() }</a>
+										 <small>said at <span class="data">${comment.getTimeString() } </span></small>
+									</h6>
+								</section>
+								<section class="content">
+									<p>${comment.getComment() }</p>
+								</section>
+							</c:forEach>
+						</c:if>
 					</div>
 				</div>
 			</div>

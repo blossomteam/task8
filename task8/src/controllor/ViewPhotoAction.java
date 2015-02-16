@@ -68,6 +68,7 @@ public class ViewPhotoAction extends Action {
 			User owner = model.getUserDAO().read(photo.getUserId());
 			request.setAttribute("photo", photo);
 			request.setAttribute("owner", owner);
+			request.setAttribute("comments", model.getCommentDAO().getCommentsOf(photo.getId()));
 			return VIEW_PHOTO_JSP;
 		} catch (Exception e) {
 			errors.add(e.toString());

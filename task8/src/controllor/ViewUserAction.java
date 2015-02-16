@@ -29,6 +29,8 @@ import databeans.VisitHistory;
 
 public class ViewUserAction extends Action {
 
+	private static final String ERROR_PAGE = "template-result.jsp";
+
 	private static final String HOME_JSP = "userpage.jsp";
 
 	public static final String NAME = "view-user.do";
@@ -55,12 +57,12 @@ public class ViewUserAction extends Action {
 			String userName = request.getParameter("userName");
 			if (userName == null) {
 				errors.add("user name is required");
-				return HOME_JSP;
+				return ERROR_PAGE;
 			}
 			User viewUser = model.getUserDAO().readByUserName(userName);
 			if (viewUser == null) {
 				errors.add("invalid user name");
-				return HOME_JSP;
+				return ERROR_PAGE;
 			}
 			request.setAttribute("viewUser", viewUser);
 			boolean isMyself = user.getId() == viewUser.getId();
@@ -73,7 +75,7 @@ public class ViewUserAction extends Action {
 			VisitHistory[] visitHistory = model.visitHistoryDAO
 					.getWeeklyHistory(viewUser.getId());
 			request.setAttribute("visitHistory", visitHistory);
-			
+
 			LikeHistory[] likeHistory = model.likeHistoryDAO
 					.getWeeklyHistory(viewUser.getId());
 			request.setAttribute("likeHistory", likeHistory);
@@ -101,7 +103,7 @@ public class ViewUserAction extends Action {
 
 			if (isMyself) {
 				request.setAttribute("followable", null);
-			} else if (isFollowed(followeds, viewUser)) {
+			} else if (isFollowed(followers, viewUser)) {
 				request.setAttribute("followable", "followed");
 			} else {
 				request.setAttribute("followable", "follow");
@@ -118,7 +120,6 @@ public class ViewUserAction extends Action {
 			Util.i("likes = ", calculateLike(photos));
 
 			if (validPhotos == null || validPhotos.length == 0) {
-				errors.add("No photo data");
 				return HOME_JSP;
 			}
 			request.setAttribute("photos", validPhotos);
@@ -141,9 +142,9 @@ public class ViewUserAction extends Action {
 		}
 	}
 
-	private boolean isFollowed(Connection[] followeds, User viewUser) {
-		for (Connection connection : followeds) {
-			if (viewUser.getUserName().equals(connection.getFollowed())) {
+	private boolean isFollowed(Connection[] followers, User myself) {
+		for (Connection follower : followers) {
+			if (myself.getUserName().equals(follower.getFollowed())) {
 				return true;
 			}
 		}

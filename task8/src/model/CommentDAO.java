@@ -1,5 +1,3 @@
-
-
 package model;
 
 import org.genericdao.ConnectionPool;
@@ -13,7 +11,8 @@ import databeans.Comment;
 
 public class CommentDAO extends GenericDAO<Comment> {
 
-	public CommentDAO(String tableName, ConnectionPool pool) throws DAOException {
+	public CommentDAO(String tableName, ConnectionPool pool)
+			throws DAOException {
 		super(Comment.class, tableName, pool);
 	}
 
@@ -28,8 +27,8 @@ public class CommentDAO extends GenericDAO<Comment> {
 		}
 	}
 
-	public Comment[] read(int photoid) throws RollbackException {
-		Comment[] comments = match(MatchArg.equals("photoid", photoid));
+	public Comment[] getCommentsOf(int photoId) throws RollbackException {
+		Comment[] comments = match(MatchArg.equals("photoId", photoId));
 
 		if (comments.length == 0) {
 			return null;

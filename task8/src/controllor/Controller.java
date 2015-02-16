@@ -53,6 +53,8 @@ public class Controller extends HttpServlet {
 		Action.add(new SearchPhotoAction(model));
 		Action.add(new ViewUserAction(model));
 		Action.add(new ViewPhotoAction(model));
+		Action.add(new CommentAction(model));
+		Action.add(new ConnectionAction(model));
 		Action.add(new UploadPhotoAction(model));
 		Action.add(new LogoutAction(model));
 	}
@@ -93,6 +95,7 @@ public class Controller extends HttpServlet {
 					request.getServletPath());
 			return;
 		}
+		String url = getUrlWithoutQueryString(nextPage);
 
 		Util.i("nextPage = ", nextPage);
 		if (nextPage.indexOf("://") != -1) {
@@ -100,7 +103,7 @@ public class Controller extends HttpServlet {
 			return;
 		}
 
-		if (nextPage.endsWith(".do")) {
+		if (nextPage.endsWith(".do") || url.endsWith(".do")) {
 			response.sendRedirect(nextPage);
 			return;
 		}
@@ -114,6 +117,14 @@ public class Controller extends HttpServlet {
 
 		throw new ServletException(Controller.class.getName()
 				+ ".sendToNextPage(\"" + nextPage + "\"): invalid extension.");
+	}
+
+	private String getUrlWithoutQueryString(String nextPage) {
+		int questionMark = nextPage.lastIndexOf('?');
+		if (questionMark == -1) {
+			return nextPage;
+		}
+		return nextPage.substring(0, questionMark);
 	}
 
 	/*

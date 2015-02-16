@@ -17,7 +17,7 @@ public class ConnectionDAO extends GenericDAO<Connection> {
 		super(Connection.class, tableName, pool);
 	}
 
-	public void create(Connection connection) throws RollbackException {
+	public void createIfNotExists(Connection connection) throws RollbackException {
 		try {
 			Transaction.begin();
 			Connection[] connections = match(MatchArg.and(
@@ -25,6 +25,26 @@ public class ConnectionDAO extends GenericDAO<Connection> {
 					MatchArg.equals("follower", connection.getFollower())));
 			if (connections == null || connections.length == 0) {
 				create(connection);
+			}
+			Transaction.commit();
+		} catch (RollbackException e) {
+			Util.e(e);
+			throw e;
+		} finally {
+			if (Transaction.isActive()) {
+				Transaction.rollback();
+			}
+		}
+	}
+
+	public void deleteIfExists(Connection connection) throws RollbackException {
+		try {
+			Transaction.begin();
+			Connection[] connections = match(MatchArg.and(
+					MatchArg.equals("followed", connection.getFollowed()),
+					MatchArg.equals("follower", connection.getFollower())));
+			if (connections != null && connections.length > 0) {
+				delete(connections[0].getId());
 			}
 			Transaction.commit();
 		} catch (RollbackException e) {
