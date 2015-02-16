@@ -3,8 +3,12 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@page import="databeans.VisitHistory"%>
+<%@page import="databeans.LikeHistory"%>
     <head>
         <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Petagram</title>
         <meta name="description" content="">
@@ -18,33 +22,112 @@
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1','packages':['corechart']}]}"></script>
         <script type="text/javascript">
-              $(document).ready(function() {
-    var $btnSets = $('#responsive'),
-    $btnLinks = $btnSets.find('a');
+		$(document).ready(function() {
+    		var $btnSets = $('#responsive'),
+    		$btnLinks = $btnSets.find('a');
  
-    $btnLinks.click(function(e) {
-        e.preventDefault();
-        $(this).siblings('a.active').removeClass("active");
-        $(this).addClass("active");
-        var index = $(this).index();
-        $("div.user-menu>div.user-menu-content").removeClass("active");
-        $("div.user-menu>div.user-menu-content").eq(index).addClass("active");
-    });
-});
+		    $btnLinks.click(function(e) {
+		        e.preventDefault();
+		        $(this).siblings('a.active').removeClass("active");
+		        $(this).addClass("active");
+		        var index = $(this).index();
+		        $("div.user-menu>div.user-menu-content").removeClass("active");
+		        $("div.user-menu>div.user-menu-content").eq(index).addClass("active");
+		    });
+		});
 
-$( document ).ready(function() {
-    $("[rel='tooltip']").tooltip();    
- 
-    $('.view').hover(
-        function(){
-            $(this).find('.caption').slideDown(250); //.fadeIn(250)
-        },
-        function(){
-            $(this).find('.caption').slideUp(250); //.fadeOut(205)
+		$( document ).ready(function() {
+		    $("[rel='tooltip']").tooltip();    
+		 
+		    $('.view').hover(
+		        function(){
+		            $(this).find('.caption').slideDown(250); //.fadeIn(250)
+		        },
+		        function(){
+		            $(this).find('.caption').slideUp(250); //.fadeOut(205)
+		        }
+		    ); 
+		});                  
+        </script>
+        <script type="text/javascript">
+        google.load('visualization', '1', {packages: ['corechart']});
+        google.setOnLoadCallback(drawVisitChart);
+
+        function drawVisitChart() {
+
+			var rows = new Array();
+			rows[rows.length]=['Date', 'Visits'];
+			<%VisitHistory[] visitHistory = (VisitHistory[]) request
+					.getAttribute("visitHistory");
+			for (int i = 0; i < visitHistory.length; i++) {%>
+				var row = new Array();
+				row[0] = "<%=visitHistory[i].getDateString()%>";
+				row[1] = <%=visitHistory[i].getVisits()%>;
+				rows[rows.length] = row;
+			<%}%>
+			var data = google.visualization.arrayToDataTable(rows);
+			
+			var options = {
+				'width':350,
+				'legend':'top',
+				hAxis: {
+				},
+				vAxis: {
+					format:'#',
+				    viewWindowMode:'explicit',
+				    viewWindow: {
+				        min:0,
+				    }
+				}
+			};
+			
+			var chart = new google.visualization.LineChart(
+			  document.getElementById('visit_trend'));
+			
+			chart.draw(data, options);
+
         }
-    ); 
-});                  
+        </script>
+        <script type="text/javascript">
+        google.load('visualization', '1', {packages: ['corechart']});
+        google.setOnLoadCallback(drawLikeChart);
+
+        function drawLikeChart() {
+
+			var rows = new Array();
+			rows[rows.length]=['Date', 'Likes'];
+			<%LikeHistory[] likeHistory = (LikeHistory[]) request
+					.getAttribute("likeHistory");
+			for (int i = 0; i < likeHistory.length; i++) {%>
+				var row = new Array();
+				row[0] = "<%=likeHistory[i].getDateString()%>";
+				row[1] = <%=likeHistory[i].getLikes()%>;
+				rows[rows.length] = row;
+			<%}%>
+			var data = google.visualization.arrayToDataTable(rows);
+			
+			var options = {
+				'width':350,
+				'legend':'top',
+				hAxis: {
+				},
+				vAxis: {
+					format:'#',
+				    viewWindowMode:'explicit',
+				    viewWindow: {
+				        min:0,
+				    }
+				}
+			};
+			
+			var chart = new google.visualization.LineChart(
+			  document.getElementById('like_trend'));
+			
+			chart.draw(data, options);
+
+        }
         </script>
         <style>
         .square, .btn {
@@ -289,7 +372,7 @@ div.user-menu div.user-menu-content:not(.active){
         <div class="site-top">
             <div class="site-header clearfix">
                 <div class="container">
-                    <a href="index.html" class="site-brand pull-left"><strong>Petagram</strong></a>                  
+                    <a href="home.do" class="site-brand pull-left"><strong>Petagram</strong></a>                  
                         <div class="row">
                           <div class="col-md-4 col-md-offset-6">
                                <form action="" class="search-form">
@@ -311,23 +394,30 @@ div.user-menu div.user-menu-content:not(.active){
         <div class="col-md-7 user-details">
             <div class="row coralbg white">
                 <div class="col-md-6 no-pad">
-                    <div class="user-pad">
-                        <h2>Jessica</h2>
-                        <button type="button" class="btn btn-labeled btn-info" href="#">
-                            <span class="btn-label"><i class="fa fa-plus"></i></span>Follow</button>
-                    </div>
-                    <!--
-                    <div class="user-pad">
-                        <h2>Jessica</h2>
-                        <button type="button" class="btn btn-labeled btn-info" href="#">
-                            <span class="btn-label"><i class="fa fa-ban-circle"></i></span>Followed</button>
-                    </div>
-                -->
-                    <!--
-                    <div class="user-pad">
-                        <h2>Welcome back! Jessica</h2>
-                    </div>
-                -->
+				<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
+				<c:choose>
+					<c:when test="${followable == null}">
+	                    <div class="user-pad">
+	                        <h2>${viewUser.getUserName() }</h2>
+	                    </div>
+					</c:when>
+					<c:when test="${followable.equals(\"followed\")}">
+	                    <div class="user-pad">
+	                        <h2>${viewUser.getUserName() }</h2>
+	                        <a type="button" class="btn btn-labeled btn-info" href="view-user.do?userName=${viewUser.getUserName() }">
+	                            <span class="btn-label"><i class="fa fa-ban-circle"></i></span>Followed</a>
+	                    </div>
+					</c:when>
+					<c:when test="${followable.equals(\"follow\")}">
+	                    <div class="user-pad">
+	                        <h2>${viewUser.getUserName() }</h2>
+	                        <a type="button" class="btn btn-labeled btn-info" href="view-user.do?userName=${viewUser.getUserName() }">
+	                            <span class="btn-label"><i class="fa fa-plus"></i></span>Follow</a>
+	                    </div>
+					</c:when>
+					<c:otherwise>
+					</c:otherwise>
+				</c:choose>                
                 </div>
                 <div class="col-md-6 no-pad">
                     <div class="user-image">
@@ -338,15 +428,15 @@ div.user-menu div.user-menu-content:not(.active){
             <div class="row overview">
                 <div class="col-md-4 user-pad text-center">
                     <h3 style="color:#FF44AA">FOLLOWERS</h3>
-                    <h4>2,784</h4>
+                    <h4>${followers }</h4>
                 </div>
                 <div class="col-md-4 user-pad text-center">
                     <h3 style="color:#FF44AA">FOLLOWING</h3>
-                    <h4>456</h4>
+                    <h4>${followeds }</h4>
                 </div>
                 <div class="col-md-4 user-pad text-center">
                     <h3 style="color:#FF44AA">LIKES</h3>
-                    <h4>4,901</h4>
+                    <h4>${likes }</h4>
                 </div>
             </div>
         </div>
@@ -368,44 +458,10 @@ div.user-menu div.user-menu-content:not(.active){
         </div>
         <div class="col-md-4 user-menu user-pad">
             <div class="user-menu-content active">
-                <h3>
-                    Recent Interactions
-                </h3>
-                <ul class="user-menu-list">
-                    <li>
-                        <h4><i class="fa fa-user coral"></i> Roselynn Smith followed you.</h4>
-                    </li>
-                    <li>
-                        <h4><i class="fa fa-heart-o coral"></i> Jonathan Hawkins followed you.</h4>
-                    </li>
-                    <li>
-                        <h4><i class="fa fa-paper-plane-o coral"></i> Gracie Jenkins followed you.</h4>
-                    </li>
-                    <li>
-                        <button type="button" class="btn btn-labeled btn-success" href="#">
-                            <span class="btn-label"><i class="fa fa-bell-o"></i></span>View all activity</button>
-                    </li>
-                </ul>
+                <div id="visit_trend"></div>
             </div>
             <div class="user-menu-content">
-                <h3>
-                    Your Inbox
-                </h3>
-                <ul class="user-menu-list">
-                    <li>
-                        <h4>From Roselyn Smith <small class="coral"><strong>NEW</strong> <i class="fa fa-clock-o"></i> 7:42 A.M.</small></h4>
-                    </li>
-                    <li>
-                        <h4>From Jonathan Hawkins <small class="coral"><i class="fa fa-clock-o"></i> 10:42 A.M.</small></h4>
-                    </li>
-                    <li>
-                        <h4>From Georgia Jennings <small class="coral"><i class="fa fa-clock-o"></i> 10:42 A.M.</small></h4>
-                    </li>
-                    <li>
-                        <button type="button" class="btn btn-labeled btn-danger" href="#">
-                            <span class="btn-label"><i class="fa fa-envelope-o"></i></span>View All Messages</button>
-                    </li>
-                </ul>
+                <div id="like_trend"></div>
             </div>
             <div class="user-menu-content">
                 <h3>
@@ -470,30 +526,25 @@ div.user-menu div.user-menu-content:not(.active){
             </div> <!-- .site-banner -->
         </div> <!-- .site-top -->
         <!-- MAIN POSTS -->
+        <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
         <div class="main-posts">
             <div class="container">
                 <div class="row">
                     <div class="blog-masonry masonry-true">
-                        <div class="post-masonry col-md-4 col-sm-6">
-                            <div class="post-thumb">
-                                <img src="images/1.jpg" alt="">
-                                <div class="title-over">
-                                    <h4><a href="#">Title one goes here</a></h4>
-                                </div>
-                                <div class="post-hover text-center">
-                                    <div class="inside">
-                                        <i class="fa fa-plus"></i>
-                                        <span class="date">25 Jan 2084</span>
-                                        <h4><a href="#">Title one goes here</a></h4>
-                                        <p>Cum sociis natoque penatibus et magnis dis parturient</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> <!-- /.post-masonry -->
+	                    <c:forEach var="photo" items="${photos}">
+	                         <div class="post-masonry col-md-4 col-sm-6">
+	                            <div class="post-thumb">
+	                                <a href="view-photo.do?id=${photo.getId() }"><img src="${photo.getUrl()}" alt=""></a>
+	                                <div class="title-over">
+	                                    <h4>${photo.getText()}</h4>
+	                                </div>
+	                            </div>
+	                            </div> <!-- /.post-masonry -->
+						</c:forEach>
                     </div>
                 </div>
             </div>
-        </div>
+         </div>
 
         <!-- FOOTER -->
         <footer class="site-footer">

@@ -78,10 +78,12 @@ public class PhotoDAO extends GenericDAO<Photo> {
 	}
 
 	public static Photo[] getTopN(Photo[] photos, int n) {
-		if (photos == null) {
+		if (photos == null || photos.length == 0) {
 			return null;
 		}
-		PriorityQueue<Photo> latestPhotos = new PriorityQueue<>(n, decreaseById);
+		n = Math.min(n, photos.length);
+		PriorityQueue<Photo> latestPhotos = new PriorityQueue<>(photos.length,
+				decreaseById);
 		for (Photo photo : photos) {
 			latestPhotos.add(photo);
 		}

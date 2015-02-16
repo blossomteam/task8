@@ -8,6 +8,8 @@
 
 package model;
 
+import java.sql.SQLException;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 
@@ -25,6 +27,9 @@ public class Model {
 	public InstagramConfig instagramConfig = null;
 	public TwitterConfig twitterConfig = null;
 	public ApplicationDAO applicationDAO;
+	public ConnectionDAO connectionDAO;
+	public VisitHistoryDAO visitHistoryDAO;
+	public LikeHistoryDAO likeHistoryDAO;
 
 	public Model(ServletConfig config) throws ServletException {
 		try {
@@ -38,6 +43,7 @@ public class Model {
 			MySQLConfig mySQLConfig = new MySQLConfig(configFileDir);
 			pool = new ConnectionPool(jdbcDriver, jdbcURL,
 					mySQLConfig.username, mySQLConfig.password);
+			initDB();
 
 			// INSTAGRAM
 			instagramConfig = new InstagramConfig(configFileDir);
@@ -51,10 +57,15 @@ public class Model {
 			photoDAO = new PhotoDAO("photo", pool);
 			applicationDAO = new ApplicationDAO("appdata", pool);
 			applicationDAO.init();
+			connectionDAO = new ConnectionDAO("connection", pool);
+			visitHistoryDAO = new VisitHistoryDAO("visit", pool);
+			likeHistoryDAO = new LikeHistoryDAO("likeHistory", pool);
 
 		} catch (DAOException e) {
 			throw new ServletException(e);
 		} catch (RollbackException e) {
+			throw new ServletException(e);
+		} catch (SQLException e) {
 			throw new ServletException(e);
 		}
 	}
@@ -62,13 +73,19 @@ public class Model {
 	public UserDAO getUserDAO() {
 		return userDAO;
 	}
-	
+
 	public PhotoDAO getPhotoDAO() {
 		return photoDAO;
 	}
-	
+
 	public CommentDAO getCommentDAO() {
 		return commentDAO;
 	}
 
+	public ConnectionDAO getConnectionDAO() {
+		return connectionDAO;
+	}
+
+	private void initDB() throws SQLException {
+	}
 }

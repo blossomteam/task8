@@ -64,13 +64,7 @@ public class Http {
 	}
 
 	public static String contentByGet(String host, Object... args) {
-		String url = null;
-		try {
-			url = urlString(host, args);
-		} catch (UnsupportedEncodingException e) {
-			Util.e(e);
-			return null;
-		}
+		String url = urlString(host, args);
 		return contentByGet(url);
 	}
 
@@ -108,13 +102,16 @@ public class Http {
 		return content;
 	}
 
-	public static String urlEncode(String string)
-			throws UnsupportedEncodingException {
-		return URLEncoder.encode(string, "utf-8");
+	public static String urlEncode(String string) {
+		try {
+			return URLEncoder.encode(string, "utf-8");
+		} catch (UnsupportedEncodingException e) {
+			Util.e(e);
+			return string;
+		}
 	}
 
-	public static String urlString(String url, Object... args)
-			throws UnsupportedEncodingException {
+	public static String urlString(String url, Object... args) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(url);
 		for (int i = 0; i < args.length; i++) {
