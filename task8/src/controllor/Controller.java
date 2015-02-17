@@ -54,6 +54,7 @@ public class Controller extends HttpServlet {
 		Action.add(new ViewUserAction(model));
 		Action.add(new ViewPhotoAction(model));
 		Action.add(new CommentAction(model));
+		Action.add(new LikeAction(model));
 		Action.add(new ConnectionAction(model));
 		Action.add(new UploadPhotoAction(model));
 		Action.add(new LogoutAction(model));
