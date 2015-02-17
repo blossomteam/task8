@@ -109,6 +109,17 @@ public class ViewUserAction extends Action {
 			// get photos
 			PhotoDAO photoDAO = model.getPhotoDAO();
 			Photo[] photos = photoDAO.getPhotosOfUser(viewUser.getId());
+
+			String action = request.getParameter("action");
+			Util.i("action = ", action);
+			if ("follower".equals(action)) {
+				request.setAttribute("likes", calculateLike(photos));
+				return FOLLOWER_JSP;
+			} else if ("followed".equals(action)) {
+				request.setAttribute("likes", calculateLike(photos));
+				return FOLLOWED_JSP;
+			}
+
 			if (photos == null || photos.length == 0) {
 				return HOME_JSP;
 			}
@@ -122,31 +133,24 @@ public class ViewUserAction extends Action {
 						PhotoDAO.filter(photos, minId, maxId),
 						Constants.PHOTO_NUMBER_PER_PAGE);
 			}
-			request.setAttribute("likes", calculateLike(photos));
-
-			String action = request.getParameter("action");
-			if ("follower".equals(action)) {
-				return FOLLOWER_JSP;
-			} else if ("followed".equals(action)) {
-				return FOLLOWED_JSP;
-			} else {
-				if (validPhotos == null || validPhotos.length == 0) {
-					return HOME_JSP;
-				}
-				request.setAttribute("photos", validPhotos);
-				request.setAttribute("hasPrev",
-						validPhotos[0] != photos[photos.length - 1]);
-				request.setAttribute("nextPage", Util.getString(
-						ViewUserAction.NAME, "?maxId=",
-						validPhotos[validPhotos.length - 1].getId(),
-						"&userName=", viewUser.getUserName()));
-				request.setAttribute("prevPage", Util.getString(
-						ViewUserAction.NAME, "?minId=", validPhotos[0].getId(),
-						"&userName=", viewUser.getUserName()));
-				request.setAttribute("hasNext",
-						validPhotos[validPhotos.length - 1] != photos[0]);
+			if (validPhotos == null || validPhotos.length == 0) {
 				return HOME_JSP;
 			}
+
+			request.setAttribute("likes", calculateLike(photos));
+			request.setAttribute("photos", validPhotos);
+			request.setAttribute("hasPrev",
+					validPhotos[0] != photos[photos.length - 1]);
+			request.setAttribute("nextPage", Util.getString(
+					ViewUserAction.NAME, "?maxId=",
+					validPhotos[validPhotos.length - 1].getId(), "&userName=",
+					viewUser.getUserName()));
+			request.setAttribute("prevPage", Util.getString(
+					ViewUserAction.NAME, "?minId=", validPhotos[0].getId(),
+					"&userName=", viewUser.getUserName()));
+			request.setAttribute("hasNext",
+					validPhotos[validPhotos.length - 1] != photos[0]);
+			return HOME_JSP;
 		} catch (RollbackException e) {
 			errors.add(e.toString());
 			Util.e(e);
