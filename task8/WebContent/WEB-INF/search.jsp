@@ -101,6 +101,25 @@
                     </div>
                 </div>
             </div>
+			<div class="container">
+			 <div class = "row">
+			 <div class="col-md-offset-4 col-md-7 text-center" style="font-size:18px;">
+	                    <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
+						<c:if test="${hasPrev}">
+		                    <div class="col-md-3" style="text-decoration: underline">
+		                        <a style="color:#fff" href="${prevPage }"><span
+										class="glyphicon glyphicon-backward"></span> Previous</a>
+		                    </div>
+						</c:if>
+						<c:if test="${hasNext}">
+		                    <div class="col-md-4" style="text-decoration: underline">
+		                        <a style="color:#fff" href="${nextPage }"> Next  <span
+										class="glyphicon glyphicon-forward"></span></a>
+		                    </div>
+						</c:if>               
+						</div>
+			 </div>
+			</div>
         </div>
 
         <!-- FOOTER -->

@@ -143,13 +143,13 @@
                     <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 					<c:if test="${hasPrev}">
 	                    <div class="col-md-3" style="text-decoration: underline">
-	                        <a style="color:#fff" href="home.do?maxId=${minId }"><span
+	                        <a style="color:#fff" href="${prevPage }"><span
 									class="glyphicon glyphicon-backward"></span> Previous</a>
 	                    </div>
 					</c:if>
 					<c:if test="${hasNext}">
 	                    <div class="col-md-4" style="text-decoration: underline">
-	                        <a style="color:#fff" href="home.do?maxId=${minId.getId() }"> Next  <span
+	                        <a style="color:#fff" href="${nextPage }"> Next  <span
 									class="glyphicon glyphicon-forward"></span></a>
 	                    </div>
 					</c:if>               
