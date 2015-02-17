@@ -86,18 +86,6 @@ public class ViewUserAction extends Action {
 					.getWeeklyHistory(viewUser.getId());
 			request.setAttribute("likeHistory", likeHistory);
 
-			// get maxId
-			String maxIdString = request.getParameter("maxId");
-			int maxId = Integer.MAX_VALUE;
-			try {
-				if (maxIdString != null) {
-					maxId = Integer.valueOf(maxIdString);
-				}
-			} catch (NumberFormatException e) {
-				Util.e(e);
-				errors.add("invalid maxId");
-			}
-
 			// follow info
 			Connection[] followers = model.connectionDAO.getFollowerOf(viewUser
 					.getUserName());
@@ -114,13 +102,26 @@ public class ViewUserAction extends Action {
 				request.setAttribute("followable", "follow");
 			}
 
+			// get maxId
+			int maxId = getIntegerParameter(request, "maxId", Integer.MAX_VALUE);
+			int minId = getIntegerParameter(request, "minId", 0);
+
 			// get photos
 			PhotoDAO photoDAO = model.getPhotoDAO();
 			Photo[] photos = photoDAO.getPhotosOfUser(viewUser.getId());
-			Photo[] validPhotos = PhotoDAO.getTopN(
-					PhotoDAO.filter(photos, 0, maxId),
-					Constants.PHOTO_NUMBER_PER_PAGE);
-
+			if (photos == null || photos.length == 0) {
+				return HOME_JSP;
+			}
+			Photo[] validPhotos = null;
+			if (minId != 0) {
+				validPhotos = PhotoDAO.getOldestN(
+						PhotoDAO.filter(photos, minId, maxId),
+						Constants.PHOTO_NUMBER_PER_PAGE);
+			} else {
+				validPhotos = PhotoDAO.getLatestN(
+						PhotoDAO.filter(photos, minId, maxId),
+						Constants.PHOTO_NUMBER_PER_PAGE);
+			}
 			request.setAttribute("likes", calculateLike(photos));
 
 			String action = request.getParameter("action");
@@ -133,13 +134,17 @@ public class ViewUserAction extends Action {
 					return HOME_JSP;
 				}
 				request.setAttribute("photos", validPhotos);
-				request.setAttribute("hasPrev", validPhotos[0] != photos[0]);
-				request.setAttribute("maxId", validPhotos[0]);
-				request.setAttribute("minId",
-						validPhotos[validPhotos.length - 1]);
-				request.setAttribute(
-						"hasNext",
-						validPhotos[validPhotos.length - 1] != photos[photos.length - 1]);
+				request.setAttribute("hasPrev",
+						validPhotos[0] != photos[photos.length - 1]);
+				request.setAttribute("nextPage", Util.getString(
+						ViewUserAction.NAME, "?maxId=",
+						validPhotos[validPhotos.length - 1].getId(),
+						"&userName=", viewUser.getUserName()));
+				request.setAttribute("prevPage", Util.getString(
+						ViewUserAction.NAME, "?minId=", validPhotos[0].getId(),
+						"&userName=", viewUser.getUserName()));
+				request.setAttribute("hasNext",
+						validPhotos[validPhotos.length - 1] != photos[0]);
 				return HOME_JSP;
 			}
 		} catch (RollbackException e) {

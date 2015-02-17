@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import model.Model;
+import util.Util;
 
 public abstract class Action {
 	protected Model model = null;
@@ -49,4 +50,17 @@ public abstract class Action {
 		return a.perform(request);
 	}
 
+	public int getIntegerParameter(HttpServletRequest request, String key,
+			int defaultValue) {
+		String valueString = request.getParameter(key);
+		if (valueString == null) {
+			return defaultValue;
+		}
+		try {
+			return Integer.valueOf(valueString);
+		} catch (NumberFormatException e) {
+			Util.e(e);
+			return defaultValue;
+		}
+	}
 }

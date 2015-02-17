@@ -86,7 +86,7 @@
 
 				<div class="row">
 					<div class="col-md-4 col-md-offset-8">
-						<form action="search-photo.do" class="search-form" method="post">
+						<form action="search-photo.do" class="search-form">
 							<div class="form-group has-feedback">
 								<label for="search" class="sr-only">Search</label> <input
 									type="text" class="form-control" name="keyword" id="search"
@@ -147,18 +147,8 @@
 					<div class="col-md-6">
 					<p>Posted by   <a href="view-user.do?userName=${owner.getUserName()}">${owner.getUserName()}</a></p>
 					</div>
-															
 					<div class="col-md-2">
-					<a href="https://twitter.com/share" 
-					class="twitter-share-button" 
-					data-text="Testing: " 
-					data-url="http://chitoo.sinaapp.com:8080/task8/view-photo.do?id=${photo.getId()}"
-					data-size="large"
-					data-count="none">Tweet</a>
-					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
-					</script>
 					</div>
-													
 					<div class="col-md-4">
 					<span class="glyphicon glyphicon-heart"></span><span>${photo.getLikes()}</span>
 						<a type="button" class="btn btn-labeled btn-info" href="like.do?id=${photo.getId()}">
@@ -173,8 +163,8 @@
 					<div class="col-md-12">
 						<div class="subscribe-form">
 							<div class="subscribe-form">
-								<form accept-charset="UTF-8" method="POST"
-									action="comment.do" enctype="multipart/form-data">
+								<form accept-charset="UTF-8" method="POST" action="comment.do"
+									>
 									<textarea class="form-control counted" name="comment"
 										placeholder="Your comments: ..." rows="4"
 										style="margin-bottom: 5px; background: transparent;"
@@ -183,6 +173,7 @@
 									<div class="pull-right">
 										<button class="btn btn-info" type="submit">Comment</button>
 									</div>
+									<!--                                      <h6 id="counter">320 characters remaining</h6> -->
 								</form>
 							</div>
 						</div>

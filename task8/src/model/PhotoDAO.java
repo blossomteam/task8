@@ -1,10 +1,8 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.PriorityQueue;
 
 import org.genericdao.ConnectionPool;
 import org.genericdao.DAOException;
@@ -54,6 +52,14 @@ public class PhotoDAO extends GenericDAO<Photo> {
 		return maxId;
 	}
 
+	static Comparator<Photo> increaseById = new Comparator<Photo>() {
+
+		@Override
+		public int compare(Photo o1, Photo o2) {
+			return o1.getId() - o2.getId();
+		}
+	};
+
 	static Comparator<Photo> decreaseById = new Comparator<Photo>() {
 
 		@Override
@@ -62,18 +68,14 @@ public class PhotoDAO extends GenericDAO<Photo> {
 		}
 	};
 
-	public Photo[] getNewPhotos(List<Integer> userList, int maxId)
+	public Photo[] getPhotoOfFollowed(List<Integer> userList)
 			throws RollbackException {
 		if (userList == null || userList.size() == 0) {
 			return null;
 		}
 		try {
-			maxId = Math.min(maxId, getMaxId());
-			MatchArg argsOfUserIds = getMatchArgsOfUserIds(userList);
-			Photo[] photos = match(MatchArg.and(argsOfUserIds,
-					MatchArg.lessThanOrEqualTo("id", maxId)));
+			Photo[] photos = match(getMatchArgsOfUserIds(userList));
 			Util.i("photos.length = ", photos.length);
-			Arrays.sort(photos, decreaseById);
 			return photos;
 		} finally {
 			if (Transaction.isActive())
@@ -82,9 +84,6 @@ public class PhotoDAO extends GenericDAO<Photo> {
 	}
 
 	private MatchArg getMatchArgsOfUserIds(List<Integer> userList) {
-		if (userList.size() == 1) {
-			return MatchArg.equals("userId", userList.get(0));
-		}
 		MatchArg[] usermatchers = new MatchArg[userList.size()];
 		for (int i = 0; i < userList.size(); i++) {
 			usermatchers[i] = MatchArg.equals("userId", userList.get(i));
@@ -92,21 +91,30 @@ public class PhotoDAO extends GenericDAO<Photo> {
 		return MatchArg.or(usermatchers);
 	}
 
-	public static Photo[] getTopN(Photo[] photos, int n) {
+	public static Photo[] getLatestN(Photo[] photos, int n) {
 		if (photos == null || photos.length == 0) {
 			return null;
 		}
 		n = Math.min(n, photos.length);
-		PriorityQueue<Photo> latestPhotos = new PriorityQueue<>(photos.length,
-				decreaseById);
-		for (Photo photo : photos) {
-			latestPhotos.add(photo);
-		}
-
 		Photo[] orderedPhotos = new Photo[n];
 		int i = 0;
 		while (i < n) {
-			orderedPhotos[i++] = latestPhotos.poll();
+			orderedPhotos[i] = photos[photos.length-1-i];
+			i++;
+		}
+		return orderedPhotos;
+	}
+
+	public static Photo[] getOldestN(Photo[] photos, int n) {
+		if (photos == null || photos.length == 0) {
+			return null;
+		}
+		n = Math.min(n, photos.length);
+		Photo[] orderedPhotos = new Photo[n];
+		int i = 0;
+		while (i < n) {
+			orderedPhotos[i] = photos[n-1-i];
+			i++;
 		}
 		return orderedPhotos;
 	}

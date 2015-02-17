@@ -11,6 +11,7 @@ import model.PhotoDAO;
 import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
 
+import util.Constants;
 import util.Util;
 import databeans.Connection;
 import databeans.Photo;
@@ -42,32 +43,38 @@ public class HomeAction extends Action {
 			request.setAttribute("user", user);
 
 			// get maxId
-			String maxIdString = request.getParameter("maxId");
-			int maxId = Integer.MAX_VALUE;
-			try {
-				if (maxIdString != null) {
-					maxId = Integer.valueOf(maxIdString);
-				}
-			} catch (NumberFormatException e) {
-				Util.e(e);
-				errors.add("invalid maxId");
-				return HOME_JSP;
-			}
+			int maxId = getIntegerParameter(request, "maxId", Integer.MAX_VALUE);
+			int minId = getIntegerParameter(request, "minId", 0);
 
 			// get photos
 			ArrayList<Integer> followedIds = getFollowedIdsOf(user);
-			Photo[] photos = photoDAO.getNewPhotos(followedIds, maxId);
+			Photo[] photos = photoDAO.getPhotoOfFollowed(followedIds);
 			if (photos == null || photos.length == 0) {
-				errors.add("No photo data");
 				return HOME_JSP;
 			}
-			request.setAttribute("photos", photos);
-			request.setAttribute("maxId", photos[0]);
-			request.setAttribute("minId", photos[photos.length - 1]);
+
+			Photo[] validPhotos = null;
+			if (minId != 0) {
+				validPhotos = PhotoDAO.getOldestN(
+						PhotoDAO.filter(photos, minId, maxId),
+						Constants.PHOTO_NUMBER_PER_PAGE);
+			} else {
+				validPhotos = PhotoDAO.getLatestN(
+						PhotoDAO.filter(photos, minId, maxId),
+						Constants.PHOTO_NUMBER_PER_PAGE);
+			}
+
+			request.setAttribute("photos", validPhotos);
 			request.setAttribute("hasPrev",
-					photos[0].getId() < photoDAO.getMaxId());
+					validPhotos[0] != photos[photos.length - 1]);
+			request.setAttribute("nextPage", Util.getString(HomeAction.NAME,
+					"?maxId=", validPhotos[validPhotos.length - 1].getId()));
+			request.setAttribute(
+					"prevPage",
+					Util.getString(HomeAction.NAME, "?minId=",
+							validPhotos[0].getId()));
 			request.setAttribute("hasNext",
-					photos[photos.length - 1].getId() > 1);
+					validPhotos[validPhotos.length - 1] != photos[0]);
 			return HOME_JSP;
 		} catch (Exception e) {
 			return HOME_JSP;

@@ -43,6 +43,65 @@
 .navbar-nav>li>a {
 	text-align: left !important;
 }
+
+ul.enlarge{
+list-style-type:none; /*remove the bullet point*/
+margin-left:0;
+}
+ul.enlarge li{
+display:inline-block; /*places the images in a line*/
+position: relative;
+z-index: 0; /*resets the stack order of the list items - later we'll increase this*/
+margin:10px 40px 0 20px;
+}
+ul.enlarge img{
+background-color:#eae9d4;
+padding: 6px;
+-webkit-box-shadow: 0 0 6px rgba(132, 132, 132, .75);
+-moz-box-shadow: 0 0 6px rgba(132, 132, 132, .75);
+box-shadow: 0 0 6px rgba(132, 132, 132, .75);
+-webkit-border-radius: 4px; 
+-moz-border-radius: 4px; 
+border-radius: 4px; 
+}
+ul.enlarge span{
+position:absolute;
+left: -9999px;
+background-color:#eae9d4;
+padding: 10px;
+font-family: 'Droid Sans', sans-serif;
+font-size:.9em;
+text-align: center; 
+color: #495a62; 
+-webkit-box-shadow: 0 0 20px rgba(0,0,0, .75));
+-moz-box-shadow: 0 0 20px rgba(0,0,0, .75);
+box-shadow: 0 0 20px rgba(0,0,0, .75);
+-webkit-border-radius: 8px; 
+-moz-border-radius: 8px; 
+border-radius:8px;
+}
+ul.enlarge li:hover{
+z-index: 50;
+cursor:pointer;
+}
+ul.enlarge span img{
+padding:2px;
+background:#ccc;
+}
+ul.enlarge li:hover span{ 
+top: -80px; /*the distance from the bottom of the thumbnail to the top of the popup image*/
+left: -50px; /*distance from the left of the thumbnail to the left of the popup image*/
+}
+ul.enlarge li:hover:nth-child(2) span{
+left: -100px; 
+}
+ul.enlarge li:hover:nth-child(3) span{
+left: -200px; 
+}
+/**IE Hacks - see http://css3pie.com/ for more info on how to use CS3Pie and to download the latest version**/
+ul.enlarge img, ul.enlarge span{
+behavior: url(pie/PIE.htc); 
+}
 </style>
 </head>
 <body>
@@ -123,14 +182,17 @@
 			<div class="row">
 				<div class="blog-masonry masonry-true">
 					<c:forEach var="photo" items="${photos}">
-						<div class="post-masonry col-md-4 col-sm-6">
-							<div class="post-thumb">
-								<a href="view-photo.do?id=${photo.getId() }"><img
-									src="${photo.getUrl()}" alt=""></a>
-								<div class="title-over">
-									<h4>${photo.getText()}</h4>
-								</div>
-							</div>
+					<div class="post-masonry col-md-4 col-sm-6">
+					<ul class="enlarge">
+                           <li><img src="${photo.getUrl()}" width="300px" height="200px" alt="Dechairs" />
+                           <span>
+                                 <a href="view-photo.do?id=${photo.getId() }">
+                                 <img src="${photo.getUrl()}" width="350px" height="250px" alt="Deckchairs" />
+                                 </a><br />
+                                 ${photo.getText()}
+                             </span>
+                             </li>
+                                 </ul>
 						</div>
 						<!-- /.post-masonry -->
 					</c:forEach>
@@ -143,13 +205,13 @@
                     <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 					<c:if test="${hasPrev}">
 	                    <div class="col-md-3" style="text-decoration: underline">
-	                        <a style="color:#fff" href="home.do?maxId=${minId }"><span
+	                        <a style="color:#fff" href="${prevPage }"><span
 									class="glyphicon glyphicon-backward"></span> Previous</a>
 	                    </div>
 					</c:if>
 					<c:if test="${hasNext}">
 	                    <div class="col-md-4" style="text-decoration: underline">
-	                        <a style="color:#fff" href="home.do?maxId=${minId.getId() }"> Next  <span
+	                        <a style="color:#fff" href="${nextPage }"> Next  <span
 									class="glyphicon glyphicon-forward"></span></a>
 	                    </div>
 					</c:if>               

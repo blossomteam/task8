@@ -56,7 +56,7 @@ public class SearchPhotoAction extends Action {
 		try {
 			User user = (User) request.getSession().getAttribute("user");
 			request.setAttribute("user", user);
-			
+
 			SearchForm form = formBeanFactory.create(request);
 			request.setAttribute("form", form);
 			Util.i(form);
@@ -68,26 +68,40 @@ public class SearchPhotoAction extends Action {
 				return SEARCH_RESULT_JSP;
 			}
 
+			// get maxId
+			int maxId = getIntegerParameter(request, "maxId", Integer.MAX_VALUE);
+			int minId = getIntegerParameter(request, "minId", 0);
+
+			// get photos
 			PhotoDAO photoDAO = model.getPhotoDAO();
 			Photo[] photos = photoDAO.getPhotosOf(form.getKeyword());
-			Photo[] validPhotos = PhotoDAO.getTopN(
-					PhotoDAO.filter(photos, 0, form.getMaxIdValue()),
-					Constants.PHOTO_NUMBER_PER_PAGE);
-
-			Util.i("photos.length = ", photos.length,
-					", validPhotos.length = ", validPhotos.length);
-			if (validPhotos == null || validPhotos.length == 0) {
-				errors.add("No photo data");
+			if (photos == null || photos.length == 0) {
 				return SEARCH_RESULT_JSP;
 			}
 
+			Photo[] validPhotos = null;
+			if (minId != 0) {
+				validPhotos = PhotoDAO.getOldestN(
+						PhotoDAO.filter(photos, minId, maxId),
+						Constants.PHOTO_NUMBER_PER_PAGE);
+			} else {
+				validPhotos = PhotoDAO.getLatestN(
+						PhotoDAO.filter(photos, minId, maxId),
+						Constants.PHOTO_NUMBER_PER_PAGE);
+			}
+
 			request.setAttribute("photos", validPhotos);
-			request.setAttribute("hasPrev", validPhotos[0] != photos[0]);
-			request.setAttribute("maxId", validPhotos[0]);
-			request.setAttribute("minId", validPhotos[validPhotos.length - 1]);
-			request.setAttribute(
-					"hasNext",
-					validPhotos[validPhotos.length - 1] != photos[photos.length - 1]);
+			request.setAttribute("hasPrev",
+					validPhotos[0] != photos[photos.length - 1]);
+			request.setAttribute("nextPage", Util.getString(
+					SearchPhotoAction.NAME, "?maxId=",
+					validPhotos[validPhotos.length - 1].getId(), "&keyword=",
+					form.getKeyword()));
+			request.setAttribute("prevPage", Util.getString(
+					SearchPhotoAction.NAME, "?minId=", validPhotos[0].getId(),
+					"&keyword=", form.getKeyword()));
+			request.setAttribute("hasNext",
+					validPhotos[validPhotos.length - 1] != photos[0]);
 
 			return SEARCH_RESULT_JSP;
 		} catch (FormBeanException e) {

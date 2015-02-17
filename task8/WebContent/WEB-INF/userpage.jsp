@@ -70,8 +70,9 @@
 			var data = google.visualization.arrayToDataTable(rows);
 			
 			var options = {
-'width':350,
-'legend':'top',
+'width':360,
+'height':300,
+'legend':'bottom',
 hAxis: {
 },
 vAxis: {
@@ -109,8 +110,9 @@ vAxis: {
 			var data = google.visualization.arrayToDataTable(rows);
 			
 			var options = {
-				'width':350,
-				'legend':'top',
+					'width':360,
+					'height':300,
+					'legend':'bottom',
 				hAxis: {
 				},
 				vAxis: {
@@ -446,10 +448,10 @@ div.user-menu div.user-menu-content:not(.active){
         <div class="col-md-1 user-menu-btns">
             <div class="btn-group-vertical square" id="responsive">
                 <a href="#" class="btn btn-block btn-default active">
-                  <i class="fa fa-bell-o fa-3x"></i>
+                  <i class="fa fa-eye fa-3x"></i>
                 </a>
                 <a href="#" class="btn btn-default">
-                  <i class="fa fa-envelope-o fa-3x"></i>
+                  <i class="fa fa-heart fa-3x"></i>
                 </a>
                 <a href="#" class="btn btn-default">
                   <i class="fa fa-laptop fa-3x"></i>
@@ -459,9 +461,9 @@ div.user-menu div.user-menu-content:not(.active){
                 </a>
             </div>
         </div>
-        <div class="col-md-4 user-menu user-pad">
-            <div class="user-menu-content active">
-                <div id="visit_trend"></div>
+        <div class="col-md-4 user-menu">
+            <div class="user-menu-content">
+                <div id="visit_trend" ></div>
             </div>
             <div class="user-menu-content">
                 <div id="like_trend"></div>
@@ -547,6 +549,25 @@ div.user-menu div.user-menu-content:not(.active){
                     </div>
                 </div>
             </div>
+			<div class="container">
+			 <div class = "row">
+			 <div class="col-md-offset-4 col-md-7 text-center" style="font-size:18px;">
+	                    <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
+						<c:if test="${hasPrev}">
+		                    <div class="col-md-3" style="text-decoration: underline">
+		                        <a style="color:#fff" href="${prevPage }"><span
+										class="glyphicon glyphicon-backward"></span> Previous</a>
+		                    </div>
+						</c:if>
+						<c:if test="${hasNext}">
+		                    <div class="col-md-4" style="text-decoration: underline">
+		                        <a style="color:#fff" href="${nextPage }"> Next  <span
+										class="glyphicon glyphicon-forward"></span></a>
+		                    </div>
+						</c:if>               
+						</div>
+			 </div>
+			</div>     
          </div>
 
         <!-- FOOTER -->

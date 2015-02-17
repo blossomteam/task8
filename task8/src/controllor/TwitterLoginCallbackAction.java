@@ -84,7 +84,6 @@ public class TwitterLoginCallbackAction extends Action {
 						verifyCredentials.screen_name);
 				user = model.getUserDAO().readByTwitterId(
 						verifyCredentials.id_str);
-				model.connectionDAO.createDefaultConnection(user.getUserName());
 			}
 
 			HttpSession httpSession = request.getSession(true);
