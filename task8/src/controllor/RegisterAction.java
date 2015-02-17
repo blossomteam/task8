@@ -76,8 +76,9 @@ public class RegisterAction extends Action {
 			userDAO.createByPetagram(user);
 
 			user.setId(userDAO.readByUserName(form.getUserName()).getId());
+			model.connectionDAO.createDefaultConnection(user.getUserName());
+			
 			request.getSession(true).setAttribute("user", user);
-
 			request.setAttribute("message",
 					"create employee account successfully!");
 			return HomeAction.NAME;

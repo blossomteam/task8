@@ -375,10 +375,10 @@ div.user-menu div.user-menu-content:not(.active){
                     <a href="home.do" class="site-brand pull-left"><strong>Petagram</strong></a>                  
                         <div class="row">
                           <div class="col-md-4 col-md-offset-6">
-                               <form action="" class="search-form">
+                               <form action="search-photo.do" class="search-form" method="post">
                                   <div class="form-group has-feedback">
                                     <label for="search" class="sr-only">Search</label>
-                                     <input type="text" class="form-control" name="search" id="search" placeholder="search">
+                                     <input type="text" class="form-control" name="keyword" id="search" placeholder="search">
                                 <span class="glyphicon glyphicon-search form-control-feedback"></span> 
                                   </div>               
                                </form>

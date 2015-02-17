@@ -69,7 +69,7 @@ public class SearchPhotoAction extends Action {
 			}
 
 			PhotoDAO photoDAO = model.getPhotoDAO();
-			Photo[] photos = photoDAO.getPhotosOfTag(form.getKeyword());
+			Photo[] photos = photoDAO.getPhotosOf(form.getKeyword());
 			Photo[] validPhotos = PhotoDAO.getTopN(
 					PhotoDAO.filter(photos, 0, form.getMaxIdValue()),
 					Constants.PHOTO_NUMBER_PER_PAGE);

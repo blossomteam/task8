@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.PriorityQueue;
 
 import org.genericdao.ConnectionPool;
@@ -12,7 +13,6 @@ import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
 
-import util.Constants;
 import util.Util;
 import databeans.Photo;
 
@@ -62,19 +62,34 @@ public class PhotoDAO extends GenericDAO<Photo> {
 		}
 	};
 
-	public Photo[] getNewPhotos(int maxId) throws RollbackException {
+	public Photo[] getNewPhotos(List<Integer> userList, int maxId)
+			throws RollbackException {
+		if (userList == null || userList.size() == 0) {
+			return null;
+		}
 		try {
 			maxId = Math.min(maxId, getMaxId());
-			int minId = maxId - Constants.PHOTO_NUMBER_PER_PAGE;
-			Photo[] photos = match(MatchArg.and(
-					MatchArg.greaterThan("id", minId),
+			MatchArg argsOfUserIds = getMatchArgsOfUserIds(userList);
+			Photo[] photos = match(MatchArg.and(argsOfUserIds,
 					MatchArg.lessThanOrEqualTo("id", maxId)));
+			Util.i("photos.length = ", photos.length);
 			Arrays.sort(photos, decreaseById);
 			return photos;
 		} finally {
 			if (Transaction.isActive())
 				Transaction.rollback();
 		}
+	}
+
+	private MatchArg getMatchArgsOfUserIds(List<Integer> userList) {
+		if (userList.size() == 1) {
+			return MatchArg.equals("userId", userList.get(0));
+		}
+		MatchArg[] usermatchers = new MatchArg[userList.size()];
+		for (int i = 0; i < userList.size(); i++) {
+			usermatchers[i] = MatchArg.equals("userId", userList.get(i));
+		}
+		return MatchArg.or(usermatchers);
 	}
 
 	public static Photo[] getTopN(Photo[] photos, int n) {
@@ -109,11 +124,9 @@ public class PhotoDAO extends GenericDAO<Photo> {
 		return validPhotos.toArray(new Photo[validPhotos.size()]);
 	}
 
-	public Photo[] getPhotosOfTag(String tag) throws RollbackException {
+	public Photo[] getPhotosOf(String tag) throws RollbackException {
 		try {
-			String tagPattern = Util.getString("#", tag, " ");
-			Photo[] photos = match(MatchArg.containsIgnoreCase("text",
-					tagPattern));
+			Photo[] photos = match(MatchArg.containsIgnoreCase("text", tag));
 			return photos;
 		} finally {
 			if (Transaction.isActive()) {

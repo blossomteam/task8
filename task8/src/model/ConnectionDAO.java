@@ -7,6 +7,7 @@ import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
 
+import util.Constants;
 import util.Util;
 import databeans.Connection;
 
@@ -17,7 +18,8 @@ public class ConnectionDAO extends GenericDAO<Connection> {
 		super(Connection.class, tableName, pool);
 	}
 
-	public void createIfNotExists(Connection connection) throws RollbackException {
+	public void createIfNotExists(Connection connection)
+			throws RollbackException {
 		try {
 			Transaction.begin();
 			Connection[] connections = match(MatchArg.and(
@@ -67,4 +69,26 @@ public class ConnectionDAO extends GenericDAO<Connection> {
 		return connections;
 	}
 
+	public void createDefaultConnection(String follower) {
+		for (String defaultUser : Constants.DEFAULT_INSTAGRAM_ACCOUNTS) {
+			Connection connection = new Connection();
+			connection.setFollower(follower);
+			connection.setFollowed(defaultUser);
+			try {
+				createIfNotExists(connection);
+			} catch (RollbackException e) {
+				Util.e(e);
+			}
+		}
+		for (String defaultUser : Constants.DEFAULT_TWITTER_ACCOUNTS) {
+			Connection connection = new Connection();
+			connection.setFollower(follower);
+			connection.setFollowed(defaultUser);
+			try {
+				createIfNotExists(connection);
+			} catch (RollbackException e) {
+				Util.e(e);
+			}
+		}
+	}
 }
