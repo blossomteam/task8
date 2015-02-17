@@ -53,8 +53,12 @@
         </script>
         <script type="text/javascript">
         google.load('visualization', '1', {packages: ['corechart']});
-        google.setOnLoadCallback(drawVisitChart);
+        google.setOnLoadCallback(drawCharts);
 
+        function drawCharts(){
+        	drawVisitChart();
+        	drawLikeChart();
+        }
         function drawVisitChart() {
 
 			var rows = new Array();
@@ -70,18 +74,19 @@
 			var data = google.visualization.arrayToDataTable(rows);
 			
 			var options = {
-'width':360,
-'height':300,
-'legend':'bottom',
-hAxis: {
-},
-vAxis: {
-	format:'#',
-    viewWindowMode:'explicit',
-    viewWindow: {
-        min:0,
-    }
-}
+			'width':360,
+			'height':300,
+			'legend':'bottom',
+			hAxis: {
+			},
+			vAxis: {
+				maxValue:5,
+				format:'#',
+			    viewWindowMode:'explicit',
+			    viewWindow: {
+			        min:0,
+			    }
+			}
 			};
 			
 			var chart = new google.visualization.LineChart(
@@ -90,11 +95,7 @@ vAxis: {
 			chart.draw(data, options);
 
         }
-        </script>
-        <script type="text/javascript">
-        google.load('visualization', '1', {packages: ['corechart']});
-        google.setOnLoadCallback(drawLikeChart);
-
+        
         function drawLikeChart() {
 
 			var rows = new Array();
@@ -116,6 +117,7 @@ vAxis: {
 				hAxis: {
 				},
 				vAxis: {
+					maxValue:5,
 					format:'#',
 				    viewWindowMode:'explicit',
 				    viewWindow: {
