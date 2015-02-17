@@ -27,7 +27,7 @@ import formbeans.ConnectionForm;
 
 public class ConnectionAction extends Action {
 
-	private static final String HOME_JSP = "template-result.jsp";
+	private static final String RESULT_JSP = "template-result.jsp";
 
 	public static final String NAME = "connection.do";
 
@@ -52,20 +52,21 @@ public class ConnectionAction extends Action {
 			User user = (User) request.getSession().getAttribute("user");
 			request.setAttribute("user", user);
 
-			// comment form
+			// connection form
 			ConnectionForm form = formBeanFactory.create(request);
 			if (!form.isPresent()) {
-				return HOME_JSP;
+				errors.add("arguments are required");
+				return RESULT_JSP;
 			}
 			errors.addAll(form.getValidationErrors());
 			if (errors.size() != 0) {
-				return HOME_JSP;
+				return RESULT_JSP;
 			}
 
 			User targetUser = model.getUserDAO().read(form.getIdValue());
 			if (targetUser == null) {
 				errors.add("invalid user id");
-				return HOME_JSP;
+				return RESULT_JSP;
 			}
 
 			Connection connection = new Connection();
@@ -82,11 +83,11 @@ public class ConnectionAction extends Action {
 		} catch (RollbackException e) {
 			errors.add(e.toString());
 			Util.e(e);
-			return HOME_JSP;
+			return RESULT_JSP;
 		} catch (FormBeanException e1) {
 			errors.add(e1.toString());
 			Util.e(e1);
-			return HOME_JSP;
+			return RESULT_JSP;
 		} finally {
 			if (Transaction.isActive()) {
 				Transaction.rollback();

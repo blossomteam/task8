@@ -23,7 +23,7 @@ public class CommentAction extends Action {
 
 	public static final String COMMENT_NAME = "comment.do";
 
-	private static final String COMMENT_JSP = "template-result.jsp";
+	private static final String RESULT_JSP = "template-result.jsp";
 
 	private FormBeanFactory<CommentForm> formBeanFactory = FormBeanFactory
 			.getInstance(CommentForm.class);
@@ -49,23 +49,23 @@ public class CommentAction extends Action {
 			User user = (User) request.getSession(false).getAttribute("user");
 			request.setAttribute("user", user);
 
+			// comment form
+			CommentForm form = formBeanFactory.create(request);
 			// photo info
-			int photoId = getId(request);
-			Photo photo = model.getPhotoDAO().read(photoId);
+			Photo photo = model.getPhotoDAO().read(form.getIdValue());
 			if (photo == null) {
 				errors.add("invalid photo id");
-				return COMMENT_JSP;
+				return RESULT_JSP;
 			}
 			request.setAttribute("photo", photo);
 
-			// comment form
-			CommentForm form = formBeanFactory.create(request);
 			if (!form.isPresent()) {
-				return COMMENT_JSP;
+				errors.add("arguments are required");
+				return RESULT_JSP;
 			}
 			errors.addAll(form.getValidationErrors());
 			if (errors.size() != 0) {
-				return COMMENT_JSP;
+				return RESULT_JSP;
 			}
 
 			// save to db
@@ -80,30 +80,15 @@ public class CommentAction extends Action {
 		} catch (RollbackException e) {
 			errors.add(e.getMessage());
 			Util.i(e);
-			return COMMENT_JSP;
+			return RESULT_JSP;
 		} catch (FormBeanException e) {
 			errors.add(e.getMessage());
 			Util.i(e);
-			return COMMENT_JSP;
+			return RESULT_JSP;
 		} finally {
 			if (Transaction.isActive()) {
 				Transaction.rollback();
 			}
 		}
-	}
-
-	private int getId(HttpServletRequest request) {
-		String idString = request.getParameter("id");
-		if (idString == null) {
-			Util.e("id is required");
-			return 0;
-		}
-
-		try {
-			return Integer.valueOf(idString);
-		} catch (Exception e) {
-			Util.e("invalid id, id = ", idString);
-		}
-		return 0;
 	}
 }
