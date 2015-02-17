@@ -53,7 +53,7 @@ public class LikeAction extends Action {
 			model.getPhotoDAO().update(photo);
 			model.likeHistoryDAO.inc(photo.getUserId());
 
-			return Util.getString(ViewPhotoAction.NAME, "?id=", photo.getId());
+			return ViewPhotoAction.NAME;
 		} catch (RollbackException e) {
 			Util.e(e);
 			errors.add(e.getMessage());

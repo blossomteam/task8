@@ -74,7 +74,6 @@ public class InstagramLoginCallbackAction extends Action {
 				model.getUserDAO().createByInstagram(token.user.id,
 						token.user.username);
 				user = model.getUserDAO().readByInstagramId(token.user.id);
-				model.connectionDAO.createDefaultConnection(user.getUserName());
 			}
 
 			HttpSession httpSession = request.getSession(true);
