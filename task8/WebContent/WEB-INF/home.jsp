@@ -73,7 +73,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-4 col-md-offset-8">
-						<form action="search-photo.do" class="search-form" method="post">
+						<form action="search-photo.do" class="search-form">
 							<div class="form-group has-feedback">
 								<label for="search" class="sr-only">Search</label> <input
 									type="text" class="form-control" name="keyword" id="search"
@@ -136,6 +136,25 @@
 					</c:forEach>
 				</div>
 			</div>
+		</div>
+		<div class="container">
+		 <div class = "row">
+		 <div class="col-md-offset-4 col-md-7 text-center" style="font-size:18px;">
+                    <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
+					<c:if test="${hasPrev}">
+	                    <div class="col-md-3" style="text-decoration: underline">
+	                        <a style="color:#fff" href="home.do?maxId=${minId }"><span
+									class="glyphicon glyphicon-backward"></span> Previous</a>
+	                    </div>
+					</c:if>
+					<c:if test="${hasNext}">
+	                    <div class="col-md-4" style="text-decoration: underline">
+	                        <a style="color:#fff" href="home.do?maxId=${minId.getId() }"> Next  <span
+									class="glyphicon glyphicon-forward"></span></a>
+	                    </div>
+					</c:if>               
+					</div>
+		 </div>
 		</div>
 	</div>
 
