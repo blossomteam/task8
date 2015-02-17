@@ -58,12 +58,12 @@ public class ConnectionDAO extends GenericDAO<Connection> {
 	}
 
 	public Connection[] getFollowerOf(String userName) throws RollbackException {
-		Connection[] connections = match(MatchArg.equals("follower", userName));
+		Connection[] connections = match(MatchArg.equals("followed", userName));
 		return connections;
 	}
 
 	public Connection[] getFollowedOf(String userName) throws RollbackException {
-		Connection[] connections = match(MatchArg.equals("followed", userName));
+		Connection[] connections = match(MatchArg.equals("follower", userName));
 		return connections;
 	}
 

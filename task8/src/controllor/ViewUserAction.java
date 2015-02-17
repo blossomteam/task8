@@ -33,6 +33,10 @@ public class ViewUserAction extends Action {
 
 	private static final String HOME_JSP = "userpage.jsp";
 
+	private static final String FOLLOWER_JSP = "follower.jsp";
+
+	private static final String FOLLOWED_JSP = "followed.jsp";
+
 	public static final String NAME = "view-user.do";
 
 	public ViewUserAction(Model model) {
@@ -49,11 +53,11 @@ public class ViewUserAction extends Action {
 		request.setAttribute("errors", errors);
 
 		try {
-			// set user info
+			// login user
 			User user = (User) request.getSession().getAttribute("user");
 			request.setAttribute("user", user);
 
-			// get user
+			// target user
 			String userName = request.getParameter("userName");
 			if (userName == null) {
 				errors.add("user name is required");
@@ -72,10 +76,12 @@ public class ViewUserAction extends Action {
 				model.visitHistoryDAO.inc(viewUser.getId());
 			}
 
+			// visit history
 			VisitHistory[] visitHistory = model.visitHistoryDAO
 					.getWeeklyHistory(viewUser.getId());
 			request.setAttribute("visitHistory", visitHistory);
 
+			// like history
 			LikeHistory[] likeHistory = model.likeHistoryDAO
 					.getWeeklyHistory(viewUser.getId());
 			request.setAttribute("likeHistory", likeHistory);
@@ -92,15 +98,14 @@ public class ViewUserAction extends Action {
 				errors.add("invalid maxId");
 			}
 
-			Connection[] followers = model.connectionDAO.getFollowerOf(user
+			// follow info
+			Connection[] followers = model.connectionDAO.getFollowerOf(viewUser
 					.getUserName());
-			Connection[] followeds = model.connectionDAO.getFollowedOf(user
+			Connection[] followeds = model.connectionDAO.getFollowedOf(viewUser
 					.getUserName());
-			request.setAttribute("followers", followers == null ? 0
-					: followers.length);
-			request.setAttribute("followeds", followeds == null ? 0
-					: followeds.length);
-
+			request.setAttribute("followers", followers);
+			request.setAttribute("followeds", followeds);
+			Util.i("followers.length = ", followers.length);
 			if (isMyself) {
 				request.setAttribute("followable", null);
 			} else if (isFollowed(followers, viewUser)) {
@@ -117,24 +122,30 @@ public class ViewUserAction extends Action {
 					Constants.PHOTO_NUMBER_PER_PAGE);
 
 			request.setAttribute("likes", calculateLike(photos));
-			Util.i("likes = ", calculateLike(photos));
 
-			if (validPhotos == null || validPhotos.length == 0) {
+			String action = request.getParameter("action");
+			if ("follower".equals(action)) {
+				return FOLLOWER_JSP;
+			} else if ("followed".equals(action)) {
+				return FOLLOWED_JSP;
+			} else {
+				if (validPhotos == null || validPhotos.length == 0) {
+					return HOME_JSP;
+				}
+				request.setAttribute("photos", validPhotos);
+				request.setAttribute("hasPrev", validPhotos[0] != photos[0]);
+				request.setAttribute("maxId", validPhotos[0]);
+				request.setAttribute("minId",
+						validPhotos[validPhotos.length - 1]);
+				request.setAttribute(
+						"hasNext",
+						validPhotos[validPhotos.length - 1] != photos[photos.length - 1]);
 				return HOME_JSP;
 			}
-			request.setAttribute("photos", validPhotos);
-			request.setAttribute("hasPrev", validPhotos[0] != photos[0]);
-			request.setAttribute("maxId", validPhotos[0]);
-			request.setAttribute("minId", validPhotos[validPhotos.length - 1]);
-			request.setAttribute(
-					"hasNext",
-					validPhotos[validPhotos.length - 1] != photos[photos.length - 1]);
-
-			return HOME_JSP;
 		} catch (RollbackException e) {
 			errors.add(e.toString());
 			Util.e(e);
-			return HOME_JSP;
+			return ERROR_PAGE;
 		} finally {
 			if (Transaction.isActive()) {
 				Transaction.rollback();

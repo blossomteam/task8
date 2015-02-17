@@ -57,17 +57,26 @@ public class ConnectionForm extends FormBean {
 			errors.add("action is required");
 			return;
 		}
-		if (!isFollow() && !isUnFollow()) {
+		if (!isFollow() && !isUnFollow() && !isFollower() && !isFollowed()) {
 			errors.add("invalid action");
 			return;
 		}
 	}
 
-	private boolean isUnFollow() {
+	public boolean isUnFollow() {
 		return "unfollow".equals(action);
 	}
 
 	public boolean isFollow() {
 		return "follow".equals(action);
 	}
+
+	public boolean isFollower() {
+		return "follower".equals(action);
+	}
+
+	public boolean isFollowed() {
+		return "followed".equals(action);
+	}
+
 }
