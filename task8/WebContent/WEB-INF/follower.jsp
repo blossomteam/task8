@@ -532,20 +532,22 @@ div.user-menu div.user-menu-content:not(.active){
         <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
         <div class="main-posts">
             <div class="container">
-                <div class="row">
-                    <div class="blog-masonry masonry-true">
-	                    <c:forEach var="photo" items="${photos}">
-	                         <div class="post-masonry col-md-4 col-sm-6">
-	                            <div class="post-thumb">
-	                                <a href="view-photo.do?id=${photo.getId() }"><img src="${photo.getUrl()}" alt=""></a>
-	                                <div class="title-over">
-	                                    <h4>${photo.getText()}</h4>
-	                                </div>
-	                            </div>
-	                            </div> <!-- /.post-masonry -->
-						</c:forEach>
-                    </div>
+             <c:forEach var="follower" items="${followers}">
+             <br><br>
+            
+        <div class="container-fluid well span6">
+          <div class="row-fluid">
+                <div class="span2" >
+                <img src="https://secure.gravatar.com/avatar/de9b11d0f9c0569ba917393ed5e5b3ab?s=140&r=g&d=mm" class="img-circle">
                 </div>
+                
+                <div class="span8">
+                    <h3>${follower.getFollower()}</h3>
+                    <h6><a href="view-user.do?userName=${follower.getFollower()}">More... </a></h6>
+                </div>
+          </div>
+        </div>
+             </c:forEach>
             </div>
          </div>
 

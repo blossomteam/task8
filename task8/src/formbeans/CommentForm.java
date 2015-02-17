@@ -39,7 +39,11 @@ public class CommentForm extends FormBean {
 	}
 
 	public int getIdValue() {
-		return Integer.valueOf(id);
+		try {
+			return Integer.valueOf(id);
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 
 	private void getIdErrors(List<String> errors) {

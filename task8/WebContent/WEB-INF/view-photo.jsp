@@ -173,8 +173,8 @@
 					<div class="col-md-12">
 						<div class="subscribe-form">
 							<div class="subscribe-form">
-								<form accept-charset="UTF-8" method="POST" action="comment.do"
-									>
+								<form accept-charset="UTF-8" method="POST"
+									action="comment.do" enctype="multipart/form-data">
 									<textarea class="form-control counted" name="comment"
 										placeholder="Your comments: ..." rows="4"
 										style="margin-bottom: 5px; background: transparent;"
@@ -183,7 +183,6 @@
 									<div class="pull-right">
 										<button class="btn btn-info" type="submit">Comment</button>
 									</div>
-									<!--                                      <h6 id="counter">320 characters remaining</h6> -->
 								</form>
 							</div>
 						</div>
