@@ -103,7 +103,7 @@
         function drawLikeChart() {
 
 			var rows = new Array();
-			rows[rows.length]=['Date', 'Likes'];
+			rows[rows.length]=['Date', 'Hugs'];
 			<%LikeHistory[] likeHistory = (LikeHistory[]) request
 					.getAttribute("likeHistory");
 			for (int i = 0; i < likeHistory.length; i++) {%>
