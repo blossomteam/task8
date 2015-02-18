@@ -476,7 +476,7 @@ div.user-menu div.user-menu-content:not(.active){
 				<c:choose>
 					<c:when test="${followable == null}">
 	                    <div class="user-pad">
-	                        <h2>Welcome back, ${viewUser.getUserName() }</h2>
+	                        <h2>Welcome back! ${viewUser.getUserName() }</h2>
 	                    </div>
 					</c:when>
 					<c:when test="${followable.equals(\"followed\")}">
@@ -499,7 +499,7 @@ div.user-menu div.user-menu-content:not(.active){
                 </div>
                 <div class="col-md-6 no-pad">
                     <div class="user-image">
-                        <img src="images/bg.jpg" class="img-responsive thumbnail">
+                        <img src="https://secure.gravatar.com/avatar/de9b11d0f9c0569ba917393ed5e5b3ab?s=140&r=g&d=mm" class="img-responsive thumbnail">
                     </div>
                 </div>
             </div>
@@ -530,10 +530,10 @@ div.user-menu div.user-menu-content:not(.active){
                   <i class="fa fa-heart fa-3x"></i>
                 </a>
                 <a href="#" class="btn btn-default">
-                  <i class="fa fa-laptop fa-3x"></i>
+                  <i class="fa fa-user fa-3x"></i>
                 </a>
                 <a href="#" class="btn btn-default">
-                  <i class="fa fa-cloud-upload fa-3x"></i>
+                  <i class="fa fa-edit fa-3x"></i>
                 </a>
             </div>
         </div>
