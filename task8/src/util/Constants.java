@@ -13,4 +13,6 @@ public class Constants {
 
 	public static String[] IMAGE_SUFFIXES = new String[] { ".jpg", ".png",
 			".gif", ".bmp" };
+	
+	public static boolean ENABLE_WORKER = false;
 }

@@ -52,6 +52,10 @@ public class DefaultInstagramAccountsUpdateTask implements Runnable {
 
 	@Override
 	public void run() {
+		if (!Constants.ENABLE_WORKER) {
+			return;
+		}
+		
 		if (accessToken == null) {
 			Util.e("accessToken is null");
 			return;

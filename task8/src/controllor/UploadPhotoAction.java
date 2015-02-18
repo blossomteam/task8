@@ -45,7 +45,6 @@ public class UploadPhotoAction extends Action {
 
 		try {
 			User user = (User) request.getSession(false).getAttribute("user");
-
 			UploadPhotoForm form = formBeanFactory.create(request);
 			errors.addAll(form.getValidationErrors());
 			if (errors.size() > 0)
@@ -99,6 +98,7 @@ public class UploadPhotoAction extends Action {
 		if (Util.isEmpty(fileName)) {
 			return null;
 		}
+		fileName = fileName.toLowerCase();
 		for (String suffix : Constants.IMAGE_SUFFIXES) {
 			if (fileName.endsWith(suffix)) {
 				return suffix;
