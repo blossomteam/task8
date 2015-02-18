@@ -38,13 +38,20 @@
         <div class="col-lg-12 text-center v-center">
           
           <a href="#" class="site-brand text-center"><strong>Petagram</strong></a>
-          <p class="lead">He used Petagram to connect to the world</p>
+          <p class="lead">They use Petagram to communicate with the world</p>
           
           <br><br><br>
           
           <form class="form col-md-12 center-block" method="post" action="instagram-login.do">
+            <div class="form-group" style="width:440px;height:80px;text-align:center;margin:0 auto;">
+              <button class="btn btn-primary btn-lg btn-block"><span
+									class="fa fa-instagram"></span> Continued with Instagram</button>
+            </div>
+           </form>
+           <form class="form col-md-12 center-block" method="post" action="twitter-login.do">
             <div class="form-group" style="width:440px;height:150px;text-align:center;margin:0 auto;">
-              <button class="btn btn-primary btn-lg btn-block">Continued with Instagram</button>
+              <button class="btn btn-primary btn-lg btn-block"><span
+									class="fa fa-twitter"></span> Continued with Twitter</button>
             </div>
            </form>
            <form class="form col-md-12 center-block" method="post" action="register.do">

@@ -9,7 +9,7 @@ public class Constants {
 
 	public static long UPDATE_INTERVAL = 1 * 60 * 1000;// in milliseconds
 	public static String RESULT_JSP = "template-result.jsp";
-	public static int PHOTO_NUMBER_PER_PAGE = 20;
+	public static int PHOTO_NUMBER_PER_PAGE = 21;
 
 	public static String[] IMAGE_SUFFIXES = new String[] { ".jpg", ".png",
 			".gif", ".bmp" };

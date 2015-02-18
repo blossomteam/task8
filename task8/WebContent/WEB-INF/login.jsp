@@ -23,12 +23,14 @@
       <div class="modal-body">
           <form class="form col-md-12 center-block" method="post" action="instagram-login.do">
             <div class="form-group">
-              <button class="btn btn-success btn-lg btn-block">Login with Instagram</button>
+              <button class="btn btn-success btn-lg btn-block"><span
+									class="fa fa-instagram"></span>  Login with Instagram</button>
             </div>
            </form>
            <form class="form col-md-12 center-block" method="post" action="twitter-login.do">
             <div class="form-group">
-              <button class="btn btn-danger btn-lg btn-block">Login with Twitter</button>
+              <button class="btn btn-danger btn-lg btn-block"><span
+									class="fa fa-twitter"></span>  Login with Twitter</button>
             </div>
            </form>
            <form class="form col-md-12 center-block" method="post" action="login.do">

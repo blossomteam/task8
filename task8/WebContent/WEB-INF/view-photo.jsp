@@ -151,7 +151,7 @@
 					<div class="col-md-2">
 					<a href="https://twitter.com/share" 
 					class="twitter-share-button" 
-					data-text="Testing: " 
+					data-text="I have found very funny pictures here in Petagram: " 
 					data-url="http://chitoo.sinaapp.com:8080/task8/view-photo.do?id=${photo.getId()}"
 					data-size="large"
 					data-count="none">Tweet</a>
