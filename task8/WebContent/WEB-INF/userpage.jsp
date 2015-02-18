@@ -409,7 +409,7 @@ div.user-menu div.user-menu-content:not(.active){
 	                    <div class="user-pad">
 	                        <h2>${viewUser.getUserName() }</h2>
 	                        <a type="button" class="btn btn-labeled btn-info" href="connection.do?action=unfollow&id=${viewUser.getId() }">
-	                            <span class="btn-label"><i class="fa fa-ban-circle"></i></span>Followed</a>
+	                            <span class="btn-label"><i class="fa fa-minus"></i></span>Following</a>
 	                    </div>
 					</c:when>
 					<c:when test="${followable.equals(\"follow\")}">
@@ -442,7 +442,7 @@ div.user-menu div.user-menu-content:not(.active){
                     <h4>${fn:length(followeds)}</h4></a>
                 </div>
                 <div class="col-md-4 user-pad text-center">
-                    <h3 style="color:#FF44AA">LIKES</h3>
+                    <h3 style="color:#FF44AA">HUGS</h3>
                     <h4>${likes }</h4>
                 </div>
             </div>
@@ -464,7 +464,7 @@ div.user-menu div.user-menu-content:not(.active){
             </div>
         </div>
         <div class="col-md-4 user-menu">
-            <div class="user-menu-content">
+            <div class="user-menu-content active">
                 <div id="visit_trend" ></div>
             </div>
             <div class="user-menu-content">

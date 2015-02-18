@@ -409,7 +409,7 @@ div.user-menu div.user-menu-content:not(.active){
 	                    <div class="user-pad">
 	                        <h2>${viewUser.getUserName() }</h2>
 	                        <a type="button" class="btn btn-labeled btn-info" href="connection.do?action=unfollow&id=${viewUser.getId() }">
-	                            <span class="btn-label"><i class="fa fa-ban-circle"></i></span>Followed</a>
+	                            <span class="btn-label"><i class="fa fa-minus"></i></span>Following</a>
 	                    </div>
 					</c:when>
 					<c:when test="${followable.equals(\"follow\")}">
@@ -425,7 +425,7 @@ div.user-menu div.user-menu-content:not(.active){
                 </div>
                 <div class="col-md-6 no-pad">
                     <div class="user-image">
-                        <img src="images/bg.jpg" class="img-responsive thumbnail">
+                        <img src="https://secure.gravatar.com/avatar/de9b11d0f9c0569ba917393ed5e5b3ab?s=140&r=g&d=mm" class="img-responsive thumbnail">
                     </div>
                 </div>
             </div>
@@ -442,7 +442,7 @@ div.user-menu div.user-menu-content:not(.active){
                     <h4>${fn:length(followeds)}</h4></a>
                 </div>
                 <div class="col-md-4 user-pad text-center">
-                    <h3 style="color:#FF44AA">LIKES</h3>
+                    <h3 style="color:#FF44AA">HUGS</h3>
                     <h4>${likes }</h4>
                 </div>
             </div>
@@ -456,15 +456,15 @@ div.user-menu div.user-menu-content:not(.active){
                   <i class="fa fa-heart fa-3x"></i>
                 </a>
                 <a href="#" class="btn btn-default">
-                  <i class="fa fa-laptop fa-3x"></i>
+                  <i class="fa fa-user fa-3x"></i>
                 </a>
                 <a href="#" class="btn btn-default">
-                  <i class="fa fa-cloud-upload fa-3x"></i>
+                  <i class="fa fa-edit fa-3x"></i>
                 </a>
             </div>
         </div>
         <div class="col-md-4 user-menu">
-            <div class="user-menu-content">
+            <div class="user-menu-content active">
                 <div id="visit_trend" ></div>
             </div>
             <div class="user-menu-content">
@@ -537,19 +537,20 @@ div.user-menu div.user-menu-content:not(.active){
         <div class="main-posts">
             <div class="container">
              <c:forEach var="follower" items="${followers}">
-             <br><br>
-				<div class="container-fluid well span6">
-					<div class="row-fluid">
-				        <div class="span2" >
-						    <img src="https://secure.gravatar.com/avatar/de9b11d0f9c0569ba917393ed5e5b3ab?s=140&r=g&d=mm" class="img-circle">
-				        </div>
-				        
-				        <div class="span8">
-				            <h3>${follower.getFollower()}</h3>
-				            <h6><a href="view-user.do?userName=${follower.getFollower()}">More... </a></h6>
-				        </div>
-				</div>
-				</div>
+		        <div class="container-fluid well span6 col-md-4 col-sm-1" style="background: transparent">
+		          <div class="row-fluid">
+		                <div class="span2 col-sm-5" >
+		                <img src="https://secure.gravatar.com/avatar/de9b11d0f9c0569ba917393ed5e5b3ab?s=140&r=g&d=mm" class="img-circle">
+		                </div>
+		                
+		                <div class="span2 col-sm-1" style="padding:50px">
+		                    <h3 style="color:#fff">${follower.getFollower()}</h3>
+		                    <br>
+		                    <h6><a href="view-user.do?userName=${follower.getFollower()}">More...  </a></h6>
+		                </div>
+		          </div>
+		        </div>
+		        
              </c:forEach>
             </div>
          </div>

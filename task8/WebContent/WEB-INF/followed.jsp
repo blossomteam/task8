@@ -409,7 +409,7 @@ div.user-menu div.user-menu-content:not(.active){
 	                    <div class="user-pad">
 	                        <h2>${viewUser.getUserName() }</h2>
 	                        <a type="button" class="btn btn-labeled btn-info" href="connection.do?action=unfollow&id=${viewUser.getId() }">
-	                            <span class="btn-label"><i class="fa fa-ban-circle"></i></span>Followed</a>
+	                            <span class="btn-label"><i class="fa fa-ok"></i></span>Following</a>
 	                    </div>
 					</c:when>
 					<c:when test="${followable.equals(\"follow\")}">
@@ -442,7 +442,7 @@ div.user-menu div.user-menu-content:not(.active){
                     <h4>${fn:length(followeds)}</h4></a>
                 </div>
                 <div class="col-md-4 user-pad text-center">
-                    <h3 style="color:#FF44AA">LIKES</h3>
+                    <h3 style="color:#FF44AA">HUGS</h3>
                     <h4>${likes }</h4>
                 </div>
             </div>
@@ -464,7 +464,7 @@ div.user-menu div.user-menu-content:not(.active){
             </div>
         </div>
         <div class="col-md-4 user-menu">
-            <div class="user-menu-content">
+            <div class="user-menu-content active">
                 <div id="visit_trend" ></div>
             </div>
             <div class="user-menu-content">
@@ -536,22 +536,25 @@ div.user-menu div.user-menu-content:not(.active){
         <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
         <div class="main-posts">
             <div class="container">
+             
              <c:forEach var="followed" items="${followeds}">
-             <br><br>
-		        <div class="container-fluid well span6">
+		        <div class="container-fluid well span6 col-md-4 col-sm-1" style="background: transparent">
 		          <div class="row-fluid">
-		                <div class="span2" >
+		                <div class="span2 col-sm-5" >
 		                <img src="https://secure.gravatar.com/avatar/de9b11d0f9c0569ba917393ed5e5b3ab?s=140&r=g&d=mm" class="img-circle">
 		                </div>
 		                
-		                <div class="span8">
-		                    <h3>${followed.getFollowed()}</h3>
+		                <div class="span2 col-sm-1" style="padding:50px">
+		                    <h3 style="color:#fff">${followed.getFollowed()}</h3>
+		                    <br>
 		                    <h6><a href="view-user.do?userName=${followed.getFollowed()}">More... </a></h6>
 		                </div>
 		          </div>
 		        </div>
+		        
              </c:forEach>
-            </div>
+           
+         </div>
          </div>
 
         <!-- FOOTER -->
