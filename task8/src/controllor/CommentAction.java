@@ -75,6 +75,7 @@ public class CommentAction extends Action {
 			comment.setComment(form.getComment());
 			comment.setTime(System.currentTimeMillis());
 			commentDAO.create(comment);
+			model.commentHistoryDAO.inc(photo.getUserId());
 
 			return Util.getString(ViewPhotoAction.NAME, "?id=", photo.getId());
 		} catch (RollbackException e) {

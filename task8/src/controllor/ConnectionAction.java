@@ -75,8 +75,10 @@ public class ConnectionAction extends Action {
 
 			if (form.isFollow()) {
 				model.connectionDAO.createIfNotExists(connection);
+				model.followerHistoryDAO.inc(targetUser.getId());
 			} else {
 				model.connectionDAO.deleteIfExists(connection);
+				model.followerHistoryDAO.dec(targetUser.getId());
 			}
 			return Util.getString(ViewUserAction.NAME, "?userName=",
 					targetUser.getUserName());

@@ -30,6 +30,8 @@ public class Model {
 	public ConnectionDAO connectionDAO;
 	public VisitHistoryDAO visitHistoryDAO;
 	public LikeHistoryDAO likeHistoryDAO;
+	public FollowerHistoryDAO followerHistoryDAO;
+	public CommentHistoryDAO commentHistoryDAO;
 
 	public Model(ServletConfig config) throws ServletException {
 		try {
@@ -60,6 +62,8 @@ public class Model {
 			connectionDAO = new ConnectionDAO("connection", pool);
 			visitHistoryDAO = new VisitHistoryDAO("visit", pool);
 			likeHistoryDAO = new LikeHistoryDAO("likeHistory", pool);
+			followerHistoryDAO = new FollowerHistoryDAO("followerHistory", pool);
+			commentHistoryDAO = new CommentHistoryDAO("commentHistory", pool);
 			commentDAO = new CommentDAO("comment", pool);
 		} catch (DAOException e) {
 			throw new ServletException(e);

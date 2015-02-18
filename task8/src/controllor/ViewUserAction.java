@@ -21,7 +21,9 @@ import org.genericdao.Transaction;
 
 import util.Constants;
 import util.Util;
+import databeans.CommentHistory;
 import databeans.Connection;
+import databeans.FollowerHistory;
 import databeans.LikeHistory;
 import databeans.Photo;
 import databeans.User;
@@ -85,6 +87,16 @@ public class ViewUserAction extends Action {
 			LikeHistory[] likeHistory = model.likeHistoryDAO
 					.getWeeklyHistory(viewUser.getId());
 			request.setAttribute("likeHistory", likeHistory);
+
+			// follower history
+			FollowerHistory[] followerHistory = model.followerHistoryDAO
+					.getWeeklyHistory(viewUser.getId());
+			request.setAttribute("followerHistory", followerHistory);
+
+			// comment history
+			CommentHistory[] commentHistory = model.commentHistoryDAO
+					.getWeeklyHistory(viewUser.getId());
+			request.setAttribute("commentHistory", commentHistory);
 
 			// follow info
 			Connection[] followers = model.connectionDAO.getFollowerOf(viewUser
