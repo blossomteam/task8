@@ -48,6 +48,7 @@ public class HomeAction extends Action {
 
 			// get photos
 			ArrayList<Integer> followedIds = getFollowedIdsOf(user);
+			followedIds.add(user.getId());
 			Photo[] photos = photoDAO.getPhotoOfFollowed(followedIds);
 			if (photos == null || photos.length == 0) {
 				return HOME_JSP;
