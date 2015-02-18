@@ -109,20 +109,16 @@ public class ViewUserAction extends Action {
 			// get photos
 			PhotoDAO photoDAO = model.getPhotoDAO();
 			Photo[] photos = photoDAO.getPhotosOfUser(viewUser.getId());
+			request.setAttribute("likes", calculateLike(photos));
 
 			String action = request.getParameter("action");
 			Util.i("action = ", action);
 			if ("follower".equals(action)) {
-				request.setAttribute("likes", calculateLike(photos));
 				return FOLLOWER_JSP;
 			} else if ("followed".equals(action)) {
-				request.setAttribute("likes", calculateLike(photos));
 				return FOLLOWED_JSP;
 			}
 
-			if (photos == null || photos.length == 0) {
-				return HOME_JSP;
-			}
 			Photo[] validPhotos = null;
 			if (minId != 0) {
 				validPhotos = PhotoDAO.getOldestN(
@@ -133,11 +129,11 @@ public class ViewUserAction extends Action {
 						PhotoDAO.filter(photos, minId, maxId),
 						Constants.PHOTO_NUMBER_PER_PAGE);
 			}
+			request.setAttribute("likes", calculateLike(photos));
 			if (validPhotos == null || validPhotos.length == 0) {
 				return HOME_JSP;
 			}
 
-			request.setAttribute("likes", calculateLike(photos));
 			request.setAttribute("photos", validPhotos);
 			request.setAttribute("hasPrev",
 					validPhotos[0] != photos[photos.length - 1]);

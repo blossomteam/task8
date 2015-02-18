@@ -53,8 +53,12 @@
         </script>
         <script type="text/javascript">
         google.load('visualization', '1', {packages: ['corechart']});
-        google.setOnLoadCallback(drawVisitChart);
+        google.setOnLoadCallback(drawCharts);
 
+        function drawCharts(){
+        	drawVisitChart();
+        	drawLikeChart();
+        }
         function drawVisitChart() {
 
 			var rows = new Array();
@@ -70,17 +74,19 @@
 			var data = google.visualization.arrayToDataTable(rows);
 			
 			var options = {
-'width':350,
-'legend':'top',
-hAxis: {
-},
-vAxis: {
-	format:'#',
-    viewWindowMode:'explicit',
-    viewWindow: {
-        min:0,
-    }
-}
+			'width':360,
+			'height':300,
+			'legend':'bottom',
+			hAxis: {
+			},
+			vAxis: {
+				maxValue:5,
+				format:'#',
+			    viewWindowMode:'explicit',
+			    viewWindow: {
+			        min:0,
+			    }
+			}
 			};
 			
 			var chart = new google.visualization.LineChart(
@@ -89,11 +95,7 @@ vAxis: {
 			chart.draw(data, options);
 
         }
-        </script>
-        <script type="text/javascript">
-        google.load('visualization', '1', {packages: ['corechart']});
-        google.setOnLoadCallback(drawLikeChart);
-
+        
         function drawLikeChart() {
 
 			var rows = new Array();
@@ -109,11 +111,13 @@ vAxis: {
 			var data = google.visualization.arrayToDataTable(rows);
 			
 			var options = {
-				'width':350,
-				'legend':'top',
+					'width':360,
+					'height':300,
+					'legend':'bottom',
 				hAxis: {
 				},
 				vAxis: {
+					maxValue:5,
 					format:'#',
 				    viewWindowMode:'explicit',
 				    viewWindow: {
@@ -446,10 +450,10 @@ div.user-menu div.user-menu-content:not(.active){
         <div class="col-md-1 user-menu-btns">
             <div class="btn-group-vertical square" id="responsive">
                 <a href="#" class="btn btn-block btn-default active">
-                  <i class="fa fa-bell-o fa-3x"></i>
+                  <i class="fa fa-eye fa-3x"></i>
                 </a>
                 <a href="#" class="btn btn-default">
-                  <i class="fa fa-envelope-o fa-3x"></i>
+                  <i class="fa fa-heart fa-3x"></i>
                 </a>
                 <a href="#" class="btn btn-default">
                   <i class="fa fa-laptop fa-3x"></i>
@@ -459,9 +463,9 @@ div.user-menu div.user-menu-content:not(.active){
                 </a>
             </div>
         </div>
-        <div class="col-md-4 user-menu user-pad">
-            <div class="user-menu-content active">
-                <div id="visit_trend"></div>
+        <div class="col-md-4 user-menu">
+            <div class="user-menu-content">
+                <div id="visit_trend" ></div>
             </div>
             <div class="user-menu-content">
                 <div id="like_trend"></div>
@@ -534,19 +538,18 @@ div.user-menu div.user-menu-content:not(.active){
             <div class="container">
              <c:forEach var="followed" items="${followeds}">
              <br><br>
-            
-        <div class="container-fluid well span6">
-          <div class="row-fluid">
-                <div class="span2" >
-                <img src="https://secure.gravatar.com/avatar/de9b11d0f9c0569ba917393ed5e5b3ab?s=140&r=g&d=mm" class="img-circle">
-                </div>
-                
-                <div class="span8">
-                    <h3>${followed.getFollowed()}</h3>
-                    <h6><a href="view-user.do?userName=${followed.getFollowed()}">More... </a></h6>
-                </div>
-          </div>
-        </div>
+		        <div class="container-fluid well span6">
+		          <div class="row-fluid">
+		                <div class="span2" >
+		                <img src="https://secure.gravatar.com/avatar/de9b11d0f9c0569ba917393ed5e5b3ab?s=140&r=g&d=mm" class="img-circle">
+		                </div>
+		                
+		                <div class="span8">
+		                    <h3>${followed.getFollowed()}</h3>
+		                    <h6><a href="view-user.do?userName=${followed.getFollowed()}">More... </a></h6>
+		                </div>
+		          </div>
+		        </div>
              </c:forEach>
             </div>
          </div>

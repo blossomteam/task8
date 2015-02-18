@@ -53,8 +53,12 @@
         </script>
         <script type="text/javascript">
         google.load('visualization', '1', {packages: ['corechart']});
-        google.setOnLoadCallback(drawVisitChart);
+        google.setOnLoadCallback(drawCharts);
 
+        function drawCharts(){
+        	drawVisitChart();
+        	drawLikeChart();
+        }
         function drawVisitChart() {
 
 			var rows = new Array();
@@ -70,17 +74,19 @@
 			var data = google.visualization.arrayToDataTable(rows);
 			
 			var options = {
-'width':350,
-'legend':'top',
-hAxis: {
-},
-vAxis: {
-	format:'#',
-    viewWindowMode:'explicit',
-    viewWindow: {
-        min:0,
-    }
-}
+			'width':360,
+			'height':300,
+			'legend':'bottom',
+			hAxis: {
+			},
+			vAxis: {
+				maxValue:5,
+				format:'#',
+			    viewWindowMode:'explicit',
+			    viewWindow: {
+			        min:0,
+			    }
+			}
 			};
 			
 			var chart = new google.visualization.LineChart(
@@ -89,11 +95,7 @@ vAxis: {
 			chart.draw(data, options);
 
         }
-        </script>
-        <script type="text/javascript">
-        google.load('visualization', '1', {packages: ['corechart']});
-        google.setOnLoadCallback(drawLikeChart);
-
+        
         function drawLikeChart() {
 
 			var rows = new Array();
@@ -109,11 +111,13 @@ vAxis: {
 			var data = google.visualization.arrayToDataTable(rows);
 			
 			var options = {
-				'width':350,
-				'legend':'top',
+					'width':360,
+					'height':300,
+					'legend':'bottom',
 				hAxis: {
 				},
 				vAxis: {
+					maxValue:5,
 					format:'#',
 				    viewWindowMode:'explicit',
 				    viewWindow: {
@@ -375,10 +379,10 @@ div.user-menu div.user-menu-content:not(.active){
                     <a href="home.do" class="site-brand pull-left"><strong>Petagram</strong></a>                  
                         <div class="row">
                           <div class="col-md-4 col-md-offset-6">
-                               <form action="" class="search-form">
+                               <form action="search-photo.do" class="search-form" method="post">
                                   <div class="form-group has-feedback">
                                     <label for="search" class="sr-only">Search</label>
-                                     <input type="text" class="form-control" name="search" id="search" placeholder="search">
+                                     <input type="text" class="form-control" name="keyword" id="search" placeholder="search">
                                 <span class="glyphicon glyphicon-search form-control-feedback"></span> 
                                   </div>               
                                </form>
@@ -398,7 +402,7 @@ div.user-menu div.user-menu-content:not(.active){
 				<c:choose>
 					<c:when test="${followable == null}">
 	                    <div class="user-pad">
-	                        <h2>Welcome back! ${viewUser.getUserName() }</h2>
+	                        <h2>Welcome back, ${viewUser.getUserName() }</h2>
 	                    </div>
 					</c:when>
 					<c:when test="${followable.equals(\"followed\")}">
@@ -425,14 +429,17 @@ div.user-menu div.user-menu-content:not(.active){
                     </div>
                 </div>
             </div>
+            <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
             <div class="row overview">
                 <div class="col-md-4 user-pad text-center">
                     <h3 style="color:#FF44AA">FOLLOWERS</h3>
-                    <h4>${followers.length() }</h4>
+	            	<a href="view-user.do?action=follower&userName=${viewUser.getUserName() }"> 
+                    <h4>${fn:length(followers)}</h4></a>
                 </div>
                 <div class="col-md-4 user-pad text-center">
                     <h3 style="color:#FF44AA">FOLLOWING</h3>
-                    <h4>${followeds.length() }</h4>
+	            	<a href="view-user.do?action=followed&userName=${viewUser.getUserName() }"> 
+                    <h4>${fn:length(followeds)}</h4></a>
                 </div>
                 <div class="col-md-4 user-pad text-center">
                     <h3 style="color:#FF44AA">LIKES</h3>
@@ -443,10 +450,10 @@ div.user-menu div.user-menu-content:not(.active){
         <div class="col-md-1 user-menu-btns">
             <div class="btn-group-vertical square" id="responsive">
                 <a href="#" class="btn btn-block btn-default active">
-                  <i class="fa fa-bell-o fa-3x"></i>
+                  <i class="fa fa-eye fa-3x"></i>
                 </a>
                 <a href="#" class="btn btn-default">
-                  <i class="fa fa-envelope-o fa-3x"></i>
+                  <i class="fa fa-heart fa-3x"></i>
                 </a>
                 <a href="#" class="btn btn-default">
                   <i class="fa fa-laptop fa-3x"></i>
@@ -456,9 +463,9 @@ div.user-menu div.user-menu-content:not(.active){
                 </a>
             </div>
         </div>
-        <div class="col-md-4 user-menu user-pad">
-            <div class="user-menu-content active">
-                <div id="visit_trend"></div>
+        <div class="col-md-4 user-menu">
+            <div class="user-menu-content">
+                <div id="visit_trend" ></div>
             </div>
             <div class="user-menu-content">
                 <div id="like_trend"></div>
@@ -531,18 +538,18 @@ div.user-menu div.user-menu-content:not(.active){
             <div class="container">
              <c:forEach var="follower" items="${followers}">
              <br><br>
-<div class="container-fluid well span6">
-	<div class="row-fluid">
-        <div class="span2" >
-		    <img src="https://secure.gravatar.com/avatar/de9b11d0f9c0569ba917393ed5e5b3ab?s=140&r=g&d=mm" class="img-circle">
-        </div>
-        
-        <div class="span8">
-            <h3>${follower.getFollower()}</h3>
-            <h6><a href="view-user.do?userName=${follower.getFollower()}">More... </a></h6>
-        </div>
-</div>
-</div>
+				<div class="container-fluid well span6">
+					<div class="row-fluid">
+				        <div class="span2" >
+						    <img src="https://secure.gravatar.com/avatar/de9b11d0f9c0569ba917393ed5e5b3ab?s=140&r=g&d=mm" class="img-circle">
+				        </div>
+				        
+				        <div class="span8">
+				            <h3>${follower.getFollower()}</h3>
+				            <h6><a href="view-user.do?userName=${follower.getFollower()}">More... </a></h6>
+				        </div>
+				</div>
+				</div>
              </c:forEach>
             </div>
          </div>
