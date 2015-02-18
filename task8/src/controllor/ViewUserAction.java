@@ -108,7 +108,7 @@ public class ViewUserAction extends Action {
 			Util.i("followers.length = ", followers.length);
 			if (isMyself) {
 				request.setAttribute("followable", null);
-			} else if (isFollowed(followers, viewUser)) {
+			} else if (isFollowed(followers, user)) {
 				request.setAttribute("followable", "followed");
 			} else {
 				request.setAttribute("followable", "follow");
@@ -172,7 +172,7 @@ public class ViewUserAction extends Action {
 
 	private boolean isFollowed(Connection[] followers, User myself) {
 		for (Connection follower : followers) {
-			if (myself.getUserName().equals(follower.getFollowed())) {
+			if (myself.getUserName().equals(follower.getFollower())) {
 				return true;
 			}
 		}
